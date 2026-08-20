@@ -1,6 +1,6 @@
 ---
 name: elegiac-board-workspace
-description: Organize Elegiac outputs into Production Boards: scene boards, trailer-kit boards, character boards, pitch boards, and launch-kit boards. Use after generating or finding assets/workflows when the user wants results placed into a usable filmmaker work surface.
+description: "Organize Elegiac outputs into Production Boards: scene boards, trailer-kit boards, character boards, pitch boards, and launch-kit boards. Use after generating or finding assets/workflows when the user wants results placed into a usable filmmaker work surface."
 allowed-tools: Bash
 argument-hint: "[production, board, workflow, or scene goal]"
 references:

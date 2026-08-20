@@ -24,6 +24,9 @@ claude plugin marketplace add optera15/elegiac-skills
 claude plugin install elegiac-filmmaker
 ```
 
+Installing a bundle also registers the Elegiac MCP server — run `/mcp` to authenticate it.
+Installing several bundles is safe; identical server configs de-duplicate.
+
 **Agent Plugins hosts** (Cursor, VS Code / Copilot, Copilot CLI, Kiro, ChatGPT/Codex apps):
 each directory under `plugins/` is a standard [Agent Plugins](https://agent-plugins.org)
 package (`plugin.json` + `skills/` + `mcp.json`). Install from this repo using your

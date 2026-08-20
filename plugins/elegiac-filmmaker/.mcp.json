@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "elegiac": {
+      "type": "http",
+      "url": "https://elegiac.vercel.app/api/mcp"
+    }
+  }
+}

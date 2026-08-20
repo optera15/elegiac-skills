@@ -1,6 +1,6 @@
 ---
 name: elegiac-virtual-influencer
-description: Build and run a persistent synthetic persona that posts — virtual influencers with Elegiac: persona design, locked identity, content in the persona's voice, talking posts. Use when the user asks for a virtual influencer, AI persona, brand character for socials, or a synthetic spokesperson with a persistent identity.
+description: "Build and run a persistent synthetic persona that posts — virtual influencers with Elegiac: persona design, locked identity, content in the persona's voice, talking posts. Use when the user asks for a virtual influencer, AI persona, brand character for socials, or a synthetic spokesperson with a persistent identity."
 allowed-tools: Bash
 argument-hint: "[persona concept + the platforms it will live on]"
 references:

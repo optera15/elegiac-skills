@@ -1,6 +1,6 @@
 ---
 name: elegiac-campaign-pack
-description: Generate multi-asset campaign packs with Elegiac: hero stills, social variants, short videos, and platform-specific creative sets. Use when the user asks for a multi-format campaign, launch pack, or teaser pack.
+description: "Generate multi-asset campaign packs with Elegiac: hero stills, social variants, short videos, and platform-specific creative sets. Use when the user asks for a multi-format campaign, launch pack, or teaser pack."
 allowed-tools: Bash
 argument-hint: "[campaign brief]"
 references:
