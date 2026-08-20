@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "elegiac-marketing",
+  "version": "0.1.0",
+  "description": "Marketing and ads: campaign packs, product photography, A/B ad variants, UGC-style spots, and platform cutdowns with brand continuity.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "marketing"
+  ]
+}

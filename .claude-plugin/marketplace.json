@@ -1,0 +1,33 @@
+{
+  "name": "elegiac",
+  "owner": {
+    "name": "Elegiac"
+  },
+  "plugins": [
+    {
+      "name": "elegiac-filmmaker",
+      "source": "./plugins/elegiac-filmmaker",
+      "description": "Filmmaker core: shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend."
+    },
+    {
+      "name": "elegiac-marketing",
+      "source": "./plugins/elegiac-marketing",
+      "description": "Marketing and ads: campaign packs, product photography, A/B ad variants, UGC-style spots, and platform cutdowns with brand continuity."
+    },
+    {
+      "name": "elegiac-social",
+      "source": "./plugins/elegiac-social",
+      "description": "Social and creators: virtual influencers, content calendars, and click-worthy thumbnails/covers with series consistency."
+    },
+    {
+      "name": "elegiac-youtube",
+      "source": "./plugins/elegiac-youtube",
+      "description": "YouTube creators: channel identity kits, narrated/faceless video pipelines, native Shorts, and title/description/chapter packaging."
+    },
+    {
+      "name": "elegiac-studio-tools",
+      "source": "./plugins/elegiac-studio-tools",
+      "description": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "elegiac-youtube",
+  "version": "0.1.0",
+  "description": "YouTube creators: channel identity kits, narrated/faceless video pipelines, native Shorts, and title/description/chapter packaging.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "youtube"
+  ]
+}

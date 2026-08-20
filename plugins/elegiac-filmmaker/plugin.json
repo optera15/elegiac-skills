@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "elegiac-filmmaker",
+  "version": "0.1.0",
+  "description": "Filmmaker core: shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "filmmaker"
+  ]
+}

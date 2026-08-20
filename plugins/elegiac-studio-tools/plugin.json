@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "elegiac-studio-tools",
+  "version": "0.1.0",
+  "description": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "studio-tools"
+  ]
+}

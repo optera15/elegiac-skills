@@ -1,0 +1,16 @@
+interface:
+  display_name: "Elegiac Generate"
+  short_description: "Use Elegiac MCP for models and media jobs"
+  brand_color: "#7C3AED"
+  default_prompt: "Use $elegiac-generate to list Elegiac generation models without generating anything."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "elegiac"
+      description: "Elegiac MCP server"
+      transport: "streamable_http"
+      url: "https://elegiac.vercel.app/api/mcp"
+
+policy:
+  allow_implicit_invocation: true
