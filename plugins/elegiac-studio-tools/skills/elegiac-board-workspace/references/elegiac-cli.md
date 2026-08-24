@@ -54,6 +54,7 @@ elegiac generate video --prompt "$PROMPT" --model "$MODEL_ID" --duration 5 --res
 elegiac generate animate --prompt "$MOTION" --start-image "$STILL_URL" --duration 5 --max-credits "$CAP" --wait --json
 elegiac generate audio --prompt "$LINE" --type speech --max-credits "$CAP" --wait --json
 elegiac generate audio --prompt "$MUSIC_BRIEF" --type music --max-credits "$CAP" --wait --json     # lyria: add --model lyria-3 --lyria-endpoint clip
+elegiac generate audio --prompt "$SONG_BRIEF" --type music --model minimax-music-3 --lyrics "$LYRIC_SHEET" --music-duration 180 --max-credits "$CAP" --wait --json   # full song, sung lyrics; duration is a MAX and the unused length is refunded
 elegiac generate lipsync --video "$CLIP_URL" --audio "$SPEECH_URL" --max-credits "$CAP" --wait --json
 ```
 

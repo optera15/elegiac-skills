@@ -23,7 +23,7 @@ Read `references/style-vocabulary.md` before naming the style. Before any spend 
 2. **Lock before the series.** One approved keeper → `create_style_system` (or promote from a board card). NegativePrompt carries the forbiddens ("no photorealism, no clean digital gradients").
 3. **Series pattern:** keeper first, then remaining pieces via `generate_image` with {styleSystemId + the keeper in `referenceImageUrls`} → `wait_for_job` each. Recurring characters in comics/books need cast memory (`create_character` + references), or they'll drift by page 3.
 4. **Local fixes via `edit_image`:** wrong object, off-palette corner, busy background — a surgical instruction on the approved piece rather than re-rolling it.
-5. Route per `references/model-catalog.md`: stylized/painterly → Seedream/Flux families; pages needing lettering → text-capable model, verify spelling.
+5. Route per `references/model-catalog.md`: stylized/painterly → Seedream 5.0 / Reve; pages needing lettering → text-capable model, verify spelling.
 
 ## CLI
 

@@ -26,7 +26,7 @@ Read `references/style-vocabulary.md` before naming directions, `references/mode
 ## MCP Workflow
 
 - Workspace: `create_brainstorm_board`; one `add_visual_style_board` card per direction (title, palette, keywords).
-- Grid: `generate_image` per direction; route per `model-catalog.md` (stylized → Seedream/Flux; photoreal → Imagen).
+- Grid: `generate_image` per direction; route per `model-catalog.md` (stylized → Seedream 5.0 / Reve; photoreal → Nano Banana Pro or GPT Image 2).
 - Lock: `promote_visual_style_to_style_system` on the winning card.
 
 ## CLI
