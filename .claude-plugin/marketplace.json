@@ -3,11 +3,20 @@
   "owner": {
     "name": "Elegiac"
   },
+  "metadata": {
+    "description": "Elegiac creative skills and MCP connector: install All Skills or choose a smaller workflow bundle.",
+    "version": "0.2.0"
+  },
   "plugins": [
+    {
+      "name": "elegiac-all",
+      "source": "./plugins/elegiac-all",
+      "description": "Elegiac — All Skills: the complete filmmaking, marketing, social, YouTube, and studio toolkit with the Elegiac MCP connector."
+    },
     {
       "name": "elegiac-filmmaker",
       "source": "./plugins/elegiac-filmmaker",
-      "description": "Filmmaker core: shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend."
+      "description": "Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend."
     },
     {
       "name": "elegiac-marketing",

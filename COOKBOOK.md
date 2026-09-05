@@ -28,6 +28,12 @@ Result: a timed, ordered previz package from one scene of script, with most shot
 
 `elegiac-story-bible` writes the production, cast bibles, location registry, and style system — near-zero credits. Every later skill inherits this memory automatically.
 
+## Bare Premise to MicroDrama
+
+> Two true-crime-obsessed friends try to prove an innocent man killed his wife. Build the show with me, but take the lead everywhere except casting and dialogue.
+
+`elegiac-microdrama` records a Fast Track profile with Director overrides, proposes the renewable story engine, plans the full App Standard 60 × 75-second season in text, and creates one Production plus `00 — Series Bible` and one Episode 1 Board. It quotes only a small vertical proof set, produces one episode at a time, then freezes approved sources for a HyperFrames edit and 1080 × 1920 master. Planning never implies generation or render approval.
+
 ## Trailer Kit
 
 > Cut a 60-second festival teaser for "Saltlight". Use frames from my scene boards where possible.

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "elegiac-all",
+  "version": "0.2.0",
+  "description": "Elegiac — All Skills: the complete filmmaking, marketing, social, YouTube, and studio toolkit with the Elegiac MCP connector.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "all"
+  ]
+}

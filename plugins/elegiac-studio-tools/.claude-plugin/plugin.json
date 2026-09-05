@@ -1,7 +1,7 @@
 {
   "name": "elegiac-studio-tools",
   "description": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Elegiac"
   }

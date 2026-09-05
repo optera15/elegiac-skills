@@ -39,5 +39,11 @@ Every Elegiac skill follows these rules. Skills reference this file instead of d
 
 ## Reporting results
 
-- Poll `wait_for_job` / `wait_for_workflow` before reporting when the user expects finished assets.
+- Poll `wait_for_job` / `wait_for_workflow` before reporting when the user expects finished assets. Use 20-second windows (server maximum 25), follow `nextPollAfterMs`, and reuse the existing IDs. A pending response or wait-window expiry is not failure and never authorizes replacement generation. If `stage=submission_unknown`, stop resubmission and reconcile the existing operation. Report delivery and billing state separately from the quote.
 - Return **labeled URLs**, not raw JSON: one line per asset with what it is, then the URL. Include credit spend when the user asked about cost.
+
+## Durable media and episode handoff
+
+Generation starts return an accepted operation, with no dependency on keeping the chat open. Use the returned job/workflow ID, or recover a lost start response with the identical idempotency key. A wait defaults to 20 seconds and is capped at 25; expiry is normal pending progress. If `requiresAction` is true (`submission_unknown` or `recovery_required`), preserve the ID and surface the reconciliation need; do not keep polling or generate a replacement automatically.
+
+MCP `upload_asset`, `export_pack`, and `export_production_kit` also return `job.id`. Poll `get_job` / `wait_for_job`. An import is registered only when the job completes: record `job.result.id` in the call sheet. A completed export's `job.result.url` downloads the JSON manifest containing the existing kit/files/media structure. Follow `kit.nextBoardOffset` for additional Boards. Large local masters must first use the app/storage upload path; register the resulting HTTPS `mediaUrl`, and mark registration incomplete until an asset ID is returned. Use one stable idempotency key for each import/export version.

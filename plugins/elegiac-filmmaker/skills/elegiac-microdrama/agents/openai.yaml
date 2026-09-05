@@ -1,0 +1,16 @@
+interface:
+  display_name: "Elegiac MicroDrama"
+  short_description: "Create polished vertical episodic dramas"
+  brand_color: "#7C3AED"
+  default_prompt: "Use $elegiac-microdrama to turn my premise into a vertical series plan and a production-ready first episode."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "elegiac"
+      description: "Elegiac MCP server"
+      transport: "streamable_http"
+      url: "https://elegiac.ai/api/mcp"
+
+policy:
+  allow_implicit_invocation: true

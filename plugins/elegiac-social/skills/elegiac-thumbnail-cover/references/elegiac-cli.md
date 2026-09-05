@@ -8,7 +8,7 @@ and `--wait`; if `--wait` times out but a job id was returned, run `elegiac job 
 ## Auth & account
 
 ```bash
-elegiac auth login --api-base "${ELEGIAC_API_BASE:-https://elegiac.vercel.app}"
+elegiac auth login --api-base "${ELEGIAC_API_BASE:-https://elegiac.ai}"
 elegiac auth status --json
 elegiac account status --json
 ```

@@ -1,7 +1,7 @@
 {
   "name": "elegiac-filmmaker",
-  "description": "Filmmaker core: shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
-  "version": "0.1.0",
+  "description": "Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
+  "version": "0.2.0",
   "author": {
     "name": "Elegiac"
   }
