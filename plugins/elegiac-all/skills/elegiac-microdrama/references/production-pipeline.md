@@ -11,11 +11,11 @@ One **cut** = one shot ID in the shot list. Every cut gets exactly one still and
 | 3 Motion | `animate_image` | `grok-imagine-video-1-5` at 720p, image-to-video | one **non-speaking** 9:16 clip per cut |
 | 4 Lipsync | `generate_lipsync` | `veed-lipsync-v2` | finished talking clip for cuts where the speaker's mouth is visible |
 
-Run each stage as one homogeneous batch: quote it, get one approval (or a standing policy from the approval page), then start every job in the batch. Poll with `wait_for_job` / `wait_for_workflow`. Never start stage N+1 for a cut whose stage N output is unapproved.
+Run each stage as one homogeneous batch: quote it, get one approval (or a standing policy from the approval page), then start every job in the batch. Poll with `wait_for_job` / `wait_for_workflow`. Never start stage N+1 for a cut whose stage N output is unapproved. Every generation call carries `productionId` and `boardId` (the Episode Board): results then register in the Production **and** land on the board canvas automatically, so the board is the visual ledger of the episode without any manual `add_asset_to_board` calls.
 
 ## Stage 0 — prerequisites (no spend)
 
-- Approved anchors in Elegiac memory: cast references per principal, location plates per recurring location, hero props, StyleSystem.
+- Approved anchors in Elegiac memory: one Cast member per principal carrying a Consistent Character sheet (built with the concept → `create_character_on_board` → `make_board_character_consistent` → link-mode `promote_character_concept` chain in `new-show.md`, step 8), location plates per recurring location, hero props, StyleSystem.
 - **One ElevenLabs Voice ID per principal**, stored in the series manifest / Character Bible (`voiceId`). Ask the user for their ElevenLabs voice IDs, or cast from the built-in voices and record the choice; reuse the same ID for that character in every episode. A missing voice ID blocks stage 1 for that character.
 - A shot list where every cut carries: shot ID, duration target (whole seconds, 2–10), framing string (from `list_framings`), references (which cast/location/prop anchors), dialogue lines as performed, and `mouthVisible: true|false` for the speaking character.
 
@@ -30,17 +30,18 @@ Run each stage as one homogeneous batch: quote it, get one approval (or a standi
 
 - Reframe first: one `enhance_prompt` call per scene with `shots: [{ id: "<shot id>", prompt: "<shot description>", framing: "<list_framings string>" }]` and the shared `referenceImageUrls` (location plate, cast references, props). Use each `enhancedPrompt` verbatim.
 - Generate the scene with `generate_shots`: `model: "muse-image"`, `aspectRatio: "9:16"`, `productionId`, `boardId` (the Episode Board), `usageType: "shot"`, the same references (1–10 per shot; references switch Muse to its edit endpoint automatically). **Always pass `aspectRatio: "9:16"` explicitly** — Muse edits otherwise follow the references' framing. Flat 3 credits per still, so iterate here, not in motion.
+- Because the call carries `productionId` + `boardId`, the finished stills are placed on the Episode Board canvas automatically as one labelled frame when the batch completes (`workflow.boardPlacement` confirms it). Do not call `add_workflow_results_to_board` afterwards; it would only report `alreadyPlaced`.
 - Review every still for identity, wardrobe, props, geography, screen direction, lighting key, phone-size safe zones, and a clean first frame for motion. Repair or regenerate stills until approved; a still is the cheapest place to fix anything.
 
 ## Stage 3 — motion (Grok Imagine 1.5, 720p, non-speaking)
 
-- One `animate_image` job per approved still: `model: "grok-imagine-video-1-5"`, `mode: "image-to-video"`, `startImageUrl: "<approved still URL>"`, `resolution: "720p"`, `duration` = the cut's target in whole seconds (at least the dialogue stem length plus 1 s of handle; 1–15). Do not pass `aspectRatio`: image-to-video inherits the still's 9:16.
+- One `animate_image` job per approved still: `model: "grok-imagine-video-1-5"`, `mode: "image-to-video"`, `startImageUrl: "<approved still URL>"`, `resolution: "720p"`, `duration` = the cut's target in whole seconds (at least the dialogue stem length plus 1 s of handle; 1–15), plus `productionId` and `boardId` so the clip lands on the Episode Board automatically (`result.boardPlacement`). Do not pass `aspectRatio`: image-to-video inherits the still's 9:16.
 - The prompt is one camera move plus the character's behaviour for the beat, and it must always contain a non-speaking clause even when the character speaks in the finished scene: "no dialogue, no speech, no lip movement; natural listening/breathing behaviour; ambient sound only." Grok always renders audio, including implied dialogue, so unprompted mouths produce baked-in speech that lipsync cannot cleanly overwrite. The Grok audio track is discarded in the edit; stems, music, and SFX replace it.
 - Cost: about 140 credits per 5 s at 720p (plus 2 per request), so roughly 170 credits for a 6 s cut. 1080p (about 250 per 5 s) is a premium option only when the user asks for it; the default master is rendered at 1080 × 1920 from 720 × 1280 sources and the call sheet discloses that.
 
 ## Stage 4 — lipsync (VEED Lipsync V2) for on-screen speech only
 
-- For each speaking cut with `mouthVisible: true`: `generate_lipsync` with `model: "veed-lipsync-v2"`, `videoUrl` = the stage-3 clip, `audioUrl` = that cut's stem, `duration` = the clip's seconds (drives the quote). Cost: 14 credits per second.
+- For each speaking cut with `mouthVisible: true`: `generate_lipsync` with `model: "veed-lipsync-v2"`, `videoUrl` = the stage-3 clip, `audioUrl` = that cut's stem, `duration` = the clip's seconds (drives the quote), plus `productionId` and `boardId` so the finished talking clip is placed on the Episode Board automatically. Cost: 14 credits per second.
 - VEED has no sync modes: clip and stem must be within about half a second of each other. Trim leading silence from the stem; if the clip is shorter than the stem, regenerate the clip at the right duration rather than accepting a cut-off line. Only fall back to `sync-lipsync-v2-pro` with `syncMode` when lengths cannot be matched.
 - Cuts where the speaker is off screen, back to camera, in profile beyond ~30°, or covered: **no lipsync**. Lay the stem under the non-speaking clip in the edit (reaction shots and inserts are the cheapest way to carry dialogue).
 

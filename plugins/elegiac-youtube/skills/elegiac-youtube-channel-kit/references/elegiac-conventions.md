@@ -25,7 +25,7 @@ Every Elegiac skill follows these rules. Skills reference this file instead of d
 ## Memory discipline
 
 - **Reuse before create.** Check `list_characters`, `find_style_system`, `find_campaign_memory`, `list_boards` before creating anything new.
-- **Promote keepers.** Approved board artifacts go to durable memory (`promote_character_concept`, `promote_visual_style_to_style_system`, `promote_character_variant`).
+- **Promote keepers.** Approved board artifacts go to durable memory (`promote_character_concept`, `promote_visual_style_to_style_system`, `promote_character_variant`). When a board character already exists for a concept, promote it with `castMemberId` (link mode) so the card fills that cast member instead of creating a duplicate.
 - Apply style systems by `styleSystemId`, never by copying their text into prompts. Honor a style system's `negativePrompt` strictly — it is brand governance, not a suggestion.
 - Archive (soft-delete) rather than abandon; archived records restore cleanly.
 

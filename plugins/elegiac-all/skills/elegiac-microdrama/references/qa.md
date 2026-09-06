@@ -40,6 +40,8 @@ Apply gates proportional to the requested stopping point. A script-only request 
 - Render is probed for declared dimensions, duration, frame rate, streams, codecs, decodability, and no unintended black frames.
 - Master, SRT/VTT, poster, edit manifest, delivery manifest, provenance, credits, Board link, and omissions are returned.
 - Elegiac registration is either verified on the correct Episode Board or explicitly `not_registered`.
+- Each principal is exactly one Cast member with an `isConsistentCharacter` sheet; `list_characters` shows no duplicate entries created by promoting a concept without `castMemberId`.
+- Every approved still, clip, and stem shows on the Episode Board canvas (automatic placement from `productionId` + `boardId`; check `boardPlacement` on each job/workflow). A completed job whose `boardPlacement` is `skipped` or `error` is reported, never silently re-added.
 
 ## Suggested acceptance scenarios
 

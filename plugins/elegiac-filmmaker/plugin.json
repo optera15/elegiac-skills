@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "elegiac-filmmaker",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
   "author": {
     "name": "Elegiac",

@@ -133,10 +133,14 @@ If `create_scene_board_from_production_memory` returns missing or ambiguous cast
 Board Character path:
 
 ```text
-create_character_on_board({ productionId, boardId, characterName, description, maxCredits })
-make_board_character_consistent({ productionId, boardId, boardItemId, maxCredits })
+add_character_concept({ productionId, boardId, characterName, role, backstory, wardrobe, personality, lookNotes })
+create_character_on_board({ productionId, boardId, characterName, description, maxCredits })   // returns castMemberId
+make_board_character_consistent({ productionId, boardId, boardItemId, maxCredits })            // 7-panel sheet on the same cast member
+promote_character_concept({ productionId, boardId, boardItemId, castMemberId })                // link mode: fills the bible, no duplicate cast entry
 create_board_character_variation({ productionId, boardId, boardItemId, variationPrompt, variationLabel, maxCredits })
 ```
+
+Promote a concept **without** `castMemberId` only when no board character exists for it yet; otherwise you create a second cast member for the same character.
 
 ## CLI
 

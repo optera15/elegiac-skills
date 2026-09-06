@@ -20,7 +20,7 @@ before spending, and mutating calls may pause on an approval link in your Elegia
 
 ### Claude Desktop / Cowork
 
-1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.2.1).
+1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.2.2).
 2. Open **Customize → Plugins**, choose the option to upload a plugin, and select the ZIP as downloaded.
 3. Connect the included Elegiac connector and sign in to your Elegiac account. If your build does not add the connector, use the [manual connector setup](#manual-connector-setup) below.
 4. Start a fresh conversation in the Claude mode where the plugin is available and run the read-only check below.
