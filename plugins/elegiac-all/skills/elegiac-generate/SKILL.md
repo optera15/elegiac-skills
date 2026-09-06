@@ -25,6 +25,8 @@ When choosing a model, consult `references/model-catalog.md`; when a result miss
 ## MCP Read Behavior
 
 - For "list models", call the Elegiac MCP `list_models` tool directly.
+- For camera framings ("what framings are there", "give me a two-shot framing"), call `list_framings` — no arguments for the per-group summary, then `{ group: "<id>" }` or `{ query: "<text>" }`. Pick one framing string per shot; it is guidance for reframing a prompt, not a generation parameter.
+- To reframe shot prompts against their references (the web app's Enhance With Framing), call `enhance_prompt` with `shots[]` + shared `referenceImageUrls` (5 credits per shot, one approval), `wait_for_job`, then generate with `generate_shots` (batch) or `generate_image` using each `enhancedPrompt` verbatim and the same references. Never send enhanced prompts to `generate_storyboard`; it rewrites them into storyboard panels.
 - For "quote", call `quote_generation`; do not start a generation job.
 - For "list productions" or "list assets", use the matching MCP read tool.
 - If the MCP call fails for auth, report that Elegiac needs MCP authentication. Do not open a browser or attempt OAuth manually unless the user asks.

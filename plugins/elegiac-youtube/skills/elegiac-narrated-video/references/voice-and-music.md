@@ -47,7 +47,9 @@ Structure: **genre anchor + instrumentation + tempo + emotional arc + duration +
 
 One sound per job, concrete and physical: "heavy wooden door slams, large empty hall reverb" / "rain on a car roof, interior perspective, steady." Ambient beds: name the space + 2-3 sources + "steady, no events."
 
-## Lipsync constraints (Sync Lipsync V2 Pro)
+## Lipsync constraints (VEED Lipsync V2, Sync Lipsync V2 Pro)
+
+- **VEED Lipsync V2** (`veed-lipsync-v2`) is the microdrama default: `generate_lipsync` with `videoUrl` + `audioUrl`, 14 credits per second, no sync modes — clip and stem must be within about half a second of each other, so generate the clip at the stem's length plus a 1 s handle. Source clips should be generated **non-speaking** (no dialogue, no lip movement in the video prompt) so the sync has nothing to fight.
 
 - Input video should be a clean talking-framing: MCU/CU, subject facing camera within ~30°, mouth unobstructed, minimal fast head motion.
 - Generate the speech first, approve the read, *then* run lipsync — re-syncing is cheaper than re-voicing.

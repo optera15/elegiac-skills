@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "skillCount": 35,
   "artifacts": [
     {
@@ -42,8 +42,8 @@
         "elegiac-virtual-influencer",
         "elegiac-youtube-channel-kit"
       ],
-      "sizeBytes": 424456,
-      "sha256": "2b135fd328d47f3b85d4ea821f6249ffb23cf4b2d0876866d6f05d19cb0d52e7"
+      "sizeBytes": 440665,
+      "sha256": "e1273b2aee5da7c35d32780df8fbdb4fe6a633a1a0f6a18a322fd137f49706f0"
     },
     {
       "file": "elegiac-filmmaker-plugin.zip",
@@ -63,8 +63,8 @@
         "elegiac-character-cast",
         "elegiac-launch-kit"
       ],
-      "sizeBytes": 177187,
-      "sha256": "487d25fd5f8e4046264247b7d16f774c174bc3cf587aff2cbad83efe7b312a6d"
+      "sizeBytes": 187240,
+      "sha256": "4f07a6455e7f51ee6cfeb4621f9f842106bf278570844ed184aea075e952f9b6"
     },
     {
       "file": "elegiac-marketing-plugin.zip",
@@ -76,8 +76,8 @@
         "elegiac-ugc-ads",
         "elegiac-platform-cutdowns"
       ],
-      "sizeBytes": 60377,
-      "sha256": "37bbf13a17dc87217a6c80d68ff917dbf2a51aee18f853f6e1e8b7bb27df984e"
+      "sizeBytes": 61740,
+      "sha256": "ea94dfd660bad1d9adb4b35bd455dff92783e85508fd443c3a8c7aba99ae4ad7"
     },
     {
       "file": "elegiac-social-plugin.zip",
@@ -87,8 +87,8 @@
         "elegiac-content-calendar",
         "elegiac-thumbnail-cover"
       ],
-      "sizeBytes": 37427,
-      "sha256": "98329b009e8ecd92d5521d1f2e0883b7a81322998bfd4aedd249b75f7d3d647e"
+      "sizeBytes": 38328,
+      "sha256": "4295ec562e90b8bca75fcdd30e7e403242354dce61658a7c03a261b8248d2016"
     },
     {
       "file": "elegiac-youtube-plugin.zip",
@@ -99,8 +99,8 @@
         "elegiac-shorts-factory",
         "elegiac-video-packaging"
       ],
-      "sizeBytes": 46733,
-      "sha256": "9cc8efac102349bad58ae332aa137f402b84aa09c7b61695cb27fe4c0b5bffcf"
+      "sizeBytes": 47974,
+      "sha256": "472671c934d8c13bc84a9692da25139073bc75778606672ebc881b8cbb5067d0"
     },
     {
       "file": "elegiac-studio-tools-plugin.zip",
@@ -117,8 +117,8 @@
         "elegiac-deliver-pack",
         "elegiac-production-kit"
       ],
-      "sizeBytes": 108155,
-      "sha256": "f688c6c078dc187b70cc317aaee9fcb3c87f149458f299c088248c2a1a347b61"
+      "sizeBytes": 110805,
+      "sha256": "14959f7055712d57d082f62acc9d9a5c200e0966c574760eaba0bc37223fcedc"
     },
     {
       "file": "elegiac-ad-variants-claude.zip",
@@ -126,8 +126,8 @@
       "skills": [
         "elegiac-ad-variants"
       ],
-      "sizeBytes": 10507,
-      "sha256": "82d5eeb2b4b387345c94433ed38bcead8e059b1bffaf339f4739ae90d6d6b193"
+      "sizeBytes": 10738,
+      "sha256": "3c3f53d4eaa8f7123f0cff9d855ee6d328baa31adc46b9422a3cd0f694f1393b"
     },
     {
       "file": "elegiac-ad-variants-codex.zip",
@@ -135,8 +135,8 @@
       "skills": [
         "elegiac-ad-variants"
       ],
-      "sizeBytes": 10507,
-      "sha256": "82d5eeb2b4b387345c94433ed38bcead8e059b1bffaf339f4739ae90d6d6b193"
+      "sizeBytes": 10738,
+      "sha256": "3c3f53d4eaa8f7123f0cff9d855ee6d328baa31adc46b9422a3cd0f694f1393b"
     },
     {
       "file": "elegiac-animatic-claude.zip",
@@ -144,8 +144,8 @@
       "skills": [
         "elegiac-animatic"
       ],
-      "sizeBytes": 8968,
-      "sha256": "4661639c4531f239daf5e10bf02b632212b3ce6404afe5a0c4cc831d9c8491d2"
+      "sizeBytes": 9308,
+      "sha256": "bd53ca51885344372ed5d8693df557a91f59e52be6e4c106a913ea2b57e08c44"
     },
     {
       "file": "elegiac-animatic-codex.zip",
@@ -153,8 +153,8 @@
       "skills": [
         "elegiac-animatic"
       ],
-      "sizeBytes": 8968,
-      "sha256": "4661639c4531f239daf5e10bf02b632212b3ce6404afe5a0c4cc831d9c8491d2"
+      "sizeBytes": 9308,
+      "sha256": "bd53ca51885344372ed5d8693df557a91f59e52be6e4c106a913ea2b57e08c44"
     },
     {
       "file": "elegiac-board-workspace-claude.zip",
@@ -162,8 +162,8 @@
       "skills": [
         "elegiac-board-workspace"
       ],
-      "sizeBytes": 8210,
-      "sha256": "0d21a527c74c76ab6757620d2eef82e5981dc050870baab76b08003a96eb8bca"
+      "sizeBytes": 8441,
+      "sha256": "83ceda7025c3821c986ec17ffc8209e8e20482e75604a70d674ecd16c4e07e04"
     },
     {
       "file": "elegiac-board-workspace-codex.zip",
@@ -171,8 +171,8 @@
       "skills": [
         "elegiac-board-workspace"
       ],
-      "sizeBytes": 8210,
-      "sha256": "0d21a527c74c76ab6757620d2eef82e5981dc050870baab76b08003a96eb8bca"
+      "sizeBytes": 8441,
+      "sha256": "83ceda7025c3821c986ec17ffc8209e8e20482e75604a70d674ecd16c4e07e04"
     },
     {
       "file": "elegiac-brand-memory-claude.zip",
@@ -180,8 +180,8 @@
       "skills": [
         "elegiac-brand-memory"
       ],
-      "sizeBytes": 8469,
-      "sha256": "15007bc4aa82bf93bc901bcd50130cb257c393229a3f7437d4fa533ba4ba4f60"
+      "sizeBytes": 8700,
+      "sha256": "cc11617a66b331b66dd16c0acfa18434b784cc14c1f481c37639db9d70ecc00c"
     },
     {
       "file": "elegiac-brand-memory-codex.zip",
@@ -189,8 +189,8 @@
       "skills": [
         "elegiac-brand-memory"
       ],
-      "sizeBytes": 8469,
-      "sha256": "15007bc4aa82bf93bc901bcd50130cb257c393229a3f7437d4fa533ba4ba4f60"
+      "sizeBytes": 8700,
+      "sha256": "cc11617a66b331b66dd16c0acfa18434b784cc14c1f481c37639db9d70ecc00c"
     },
     {
       "file": "elegiac-campaign-pack-claude.zip",
@@ -198,8 +198,8 @@
       "skills": [
         "elegiac-campaign-pack"
       ],
-      "sizeBytes": 11040,
-      "sha256": "fdd693e5524a43a03b282eae049a8f271fe1c62544b59d5447910736e41ed023"
+      "sizeBytes": 11271,
+      "sha256": "20373e761053eb7b998018e40e07c53cd4ffc8b789e1199abdf914fbed298e88"
     },
     {
       "file": "elegiac-campaign-pack-codex.zip",
@@ -207,8 +207,8 @@
       "skills": [
         "elegiac-campaign-pack"
       ],
-      "sizeBytes": 11040,
-      "sha256": "fdd693e5524a43a03b282eae049a8f271fe1c62544b59d5447910736e41ed023"
+      "sizeBytes": 11271,
+      "sha256": "20373e761053eb7b998018e40e07c53cd4ffc8b789e1199abdf914fbed298e88"
     },
     {
       "file": "elegiac-character-cast-claude.zip",
@@ -216,8 +216,8 @@
       "skills": [
         "elegiac-character-cast"
       ],
-      "sizeBytes": 10289,
-      "sha256": "8c0c49cce228d1c3e54c28300f576ff93fb1716aad346a4b8fad45dff067d063"
+      "sizeBytes": 10520,
+      "sha256": "dd6848e4abfbc31b92354d7cdf1f2d8ee8aca500d94a3c6b47828ad27929d9a9"
     },
     {
       "file": "elegiac-character-cast-codex.zip",
@@ -225,8 +225,8 @@
       "skills": [
         "elegiac-character-cast"
       ],
-      "sizeBytes": 10289,
-      "sha256": "8c0c49cce228d1c3e54c28300f576ff93fb1716aad346a4b8fad45dff067d063"
+      "sizeBytes": 10520,
+      "sha256": "dd6848e4abfbc31b92354d7cdf1f2d8ee8aca500d94a3c6b47828ad27929d9a9"
     },
     {
       "file": "elegiac-content-calendar-claude.zip",
@@ -234,8 +234,8 @@
       "skills": [
         "elegiac-content-calendar"
       ],
-      "sizeBytes": 8630,
-      "sha256": "0d7a222042d04cb7d406828fcf5df578a5c5d26bfb6256f5df54c7ef639427c5"
+      "sizeBytes": 8861,
+      "sha256": "a5081d357f1f6040588632fe5cfffc2d93aa25049fe4021b1979af6c4d9ccdb0"
     },
     {
       "file": "elegiac-content-calendar-codex.zip",
@@ -243,8 +243,8 @@
       "skills": [
         "elegiac-content-calendar"
       ],
-      "sizeBytes": 8630,
-      "sha256": "0d7a222042d04cb7d406828fcf5df578a5c5d26bfb6256f5df54c7ef639427c5"
+      "sizeBytes": 8861,
+      "sha256": "a5081d357f1f6040588632fe5cfffc2d93aa25049fe4021b1979af6c4d9ccdb0"
     },
     {
       "file": "elegiac-deliver-pack-claude.zip",
@@ -252,8 +252,8 @@
       "skills": [
         "elegiac-deliver-pack"
       ],
-      "sizeBytes": 6609,
-      "sha256": "cb672fac4113d50d98b152b3de9d08158ea7ce1d309a7471a313cbbbe4e079c4"
+      "sizeBytes": 6840,
+      "sha256": "aea757d3d78535744dc6479f1ff37e230ccc810011bc8cf4dfec5b04e43f92ad"
     },
     {
       "file": "elegiac-deliver-pack-codex.zip",
@@ -261,8 +261,8 @@
       "skills": [
         "elegiac-deliver-pack"
       ],
-      "sizeBytes": 6609,
-      "sha256": "cb672fac4113d50d98b152b3de9d08158ea7ce1d309a7471a313cbbbe4e079c4"
+      "sizeBytes": 6840,
+      "sha256": "aea757d3d78535744dc6479f1ff37e230ccc810011bc8cf4dfec5b04e43f92ad"
     },
     {
       "file": "elegiac-dialogue-scene-claude.zip",
@@ -270,8 +270,8 @@
       "skills": [
         "elegiac-dialogue-scene"
       ],
-      "sizeBytes": 11187,
-      "sha256": "8d7311306535d193b8b6ff88486455acf6d52e6e3ae65d9c54cdd81c0f6e01e4"
+      "sizeBytes": 11735,
+      "sha256": "0091e0ed8f1d839fe935a6fe8682b9ff918e976e8be038dedf0cfb2b49b2bc6e"
     },
     {
       "file": "elegiac-dialogue-scene-codex.zip",
@@ -279,8 +279,8 @@
       "skills": [
         "elegiac-dialogue-scene"
       ],
-      "sizeBytes": 11187,
-      "sha256": "8d7311306535d193b8b6ff88486455acf6d52e6e3ae65d9c54cdd81c0f6e01e4"
+      "sizeBytes": 11735,
+      "sha256": "0091e0ed8f1d839fe935a6fe8682b9ff918e976e8be038dedf0cfb2b49b2bc6e"
     },
     {
       "file": "elegiac-generate-claude.zip",
@@ -288,8 +288,8 @@
       "skills": [
         "elegiac-generate"
       ],
-      "sizeBytes": 14652,
-      "sha256": "97d314aa31108dfbefbf491cb5815b7d886900d9ea4c89803ce0cdae2d86f242"
+      "sizeBytes": 15223,
+      "sha256": "7bb5b816a796fec33d64f3dd44b7b5d5b338193472113d5cc0e6bbf3a12543ae"
     },
     {
       "file": "elegiac-generate-codex.zip",
@@ -297,8 +297,8 @@
       "skills": [
         "elegiac-generate"
       ],
-      "sizeBytes": 14652,
-      "sha256": "97d314aa31108dfbefbf491cb5815b7d886900d9ea4c89803ce0cdae2d86f242"
+      "sizeBytes": 15223,
+      "sha256": "7bb5b816a796fec33d64f3dd44b7b5d5b338193472113d5cc0e6bbf3a12543ae"
     },
     {
       "file": "elegiac-illustration-claude.zip",
@@ -306,8 +306,8 @@
       "skills": [
         "elegiac-illustration"
       ],
-      "sizeBytes": 15921,
-      "sha256": "67fe8b169fbb066621d5cf242c56c7e51ffe5cb0af87268cc757c77cabbf91cc"
+      "sizeBytes": 16152,
+      "sha256": "dbe6e2550585e543904f565f41f3d2f9a0fcadeab7914cc97ed8e17e0629316d"
     },
     {
       "file": "elegiac-illustration-codex.zip",
@@ -315,8 +315,8 @@
       "skills": [
         "elegiac-illustration"
       ],
-      "sizeBytes": 15921,
-      "sha256": "67fe8b169fbb066621d5cf242c56c7e51ffe5cb0af87268cc757c77cabbf91cc"
+      "sizeBytes": 16152,
+      "sha256": "dbe6e2550585e543904f565f41f3d2f9a0fcadeab7914cc97ed8e17e0629316d"
     },
     {
       "file": "elegiac-key-art-claude.zip",
@@ -324,8 +324,8 @@
       "skills": [
         "elegiac-key-art"
       ],
-      "sizeBytes": 15888,
-      "sha256": "3161da41278a5b868efae900226221f93abd7c7cc4d859ae6ff2df9bc921236e"
+      "sizeBytes": 16119,
+      "sha256": "5003d9d1a8f280887f92ba3d3376243702119c2789eb37b4bfaf038c1d5e91c3"
     },
     {
       "file": "elegiac-key-art-codex.zip",
@@ -333,8 +333,8 @@
       "skills": [
         "elegiac-key-art"
       ],
-      "sizeBytes": 15888,
-      "sha256": "3161da41278a5b868efae900226221f93abd7c7cc4d859ae6ff2df9bc921236e"
+      "sizeBytes": 16119,
+      "sha256": "5003d9d1a8f280887f92ba3d3376243702119c2789eb37b4bfaf038c1d5e91c3"
     },
     {
       "file": "elegiac-launch-kit-claude.zip",
@@ -342,8 +342,8 @@
       "skills": [
         "elegiac-launch-kit"
       ],
-      "sizeBytes": 12764,
-      "sha256": "3aa32d4884d586c87c8d8f8a573c7156ae887d803997913a70ccf36538826fa7"
+      "sizeBytes": 12995,
+      "sha256": "fac467dceaf0cf9e37e7f34da2bfa3b0c2344e3d9aafb2b8a47450cc522c5d47"
     },
     {
       "file": "elegiac-launch-kit-codex.zip",
@@ -351,8 +351,8 @@
       "skills": [
         "elegiac-launch-kit"
       ],
-      "sizeBytes": 12764,
-      "sha256": "3aa32d4884d586c87c8d8f8a573c7156ae887d803997913a70ccf36538826fa7"
+      "sizeBytes": 12995,
+      "sha256": "fac467dceaf0cf9e37e7f34da2bfa3b0c2344e3d9aafb2b8a47450cc522c5d47"
     },
     {
       "file": "elegiac-location-scout-claude.zip",
@@ -360,8 +360,8 @@
       "skills": [
         "elegiac-location-scout"
       ],
-      "sizeBytes": 13130,
-      "sha256": "3d0f7c830c84691939a3636467aa9caaf4f761964539cbe9140eb0085e07ae59"
+      "sizeBytes": 13470,
+      "sha256": "8c14a9046ccc7e9f58a14297c5d25e30630e930e0130d76ba1ab42c3d5b19e34"
     },
     {
       "file": "elegiac-location-scout-codex.zip",
@@ -369,8 +369,8 @@
       "skills": [
         "elegiac-location-scout"
       ],
-      "sizeBytes": 13130,
-      "sha256": "3d0f7c830c84691939a3636467aa9caaf4f761964539cbe9140eb0085e07ae59"
+      "sizeBytes": 13470,
+      "sha256": "8c14a9046ccc7e9f58a14297c5d25e30630e930e0130d76ba1ab42c3d5b19e34"
     },
     {
       "file": "elegiac-microdrama-claude.zip",
@@ -378,8 +378,8 @@
       "skills": [
         "elegiac-microdrama"
       ],
-      "sizeBytes": 34839,
-      "sha256": "8c489cf7ff4e1319e60ce95c0cb73ae49015d8b60b02031fa5d016299cc015ee"
+      "sizeBytes": 40927,
+      "sha256": "95b4d6f5343cceee6f71b9eaaf7814bdedd50532dde71d0b166618d03c8c131d"
     },
     {
       "file": "elegiac-microdrama-codex.zip",
@@ -387,8 +387,8 @@
       "skills": [
         "elegiac-microdrama"
       ],
-      "sizeBytes": 34839,
-      "sha256": "8c489cf7ff4e1319e60ce95c0cb73ae49015d8b60b02031fa5d016299cc015ee"
+      "sizeBytes": 40927,
+      "sha256": "95b4d6f5343cceee6f71b9eaaf7814bdedd50532dde71d0b166618d03c8c131d"
     },
     {
       "file": "elegiac-model-compare-claude.zip",
@@ -396,8 +396,8 @@
       "skills": [
         "elegiac-model-compare"
       ],
-      "sizeBytes": 12053,
-      "sha256": "e4a281fb2ad56e3b0e119d5d541e7eaaa9192ec6e3901d24698aa1d349236e2e"
+      "sizeBytes": 12284,
+      "sha256": "4a6f670b963e664017cada78fddf7906c2a356aa097f72aecf02cf1a5686d3cb"
     },
     {
       "file": "elegiac-model-compare-codex.zip",
@@ -405,8 +405,8 @@
       "skills": [
         "elegiac-model-compare"
       ],
-      "sizeBytes": 12053,
-      "sha256": "e4a281fb2ad56e3b0e119d5d541e7eaaa9192ec6e3901d24698aa1d349236e2e"
+      "sizeBytes": 12284,
+      "sha256": "4a6f670b963e664017cada78fddf7906c2a356aa097f72aecf02cf1a5686d3cb"
     },
     {
       "file": "elegiac-narrated-video-claude.zip",
@@ -414,8 +414,8 @@
       "skills": [
         "elegiac-narrated-video"
       ],
-      "sizeBytes": 13723,
-      "sha256": "8bc97f1fcef54870e5457cb52e99a31ec08ca8456b80d635a6145b8a8bc30ca7"
+      "sizeBytes": 14271,
+      "sha256": "719413bc73631c7d8304771283f241ce22638ebbbf0c4eebdfc187a79532b4b6"
     },
     {
       "file": "elegiac-narrated-video-codex.zip",
@@ -423,8 +423,8 @@
       "skills": [
         "elegiac-narrated-video"
       ],
-      "sizeBytes": 13723,
-      "sha256": "8bc97f1fcef54870e5457cb52e99a31ec08ca8456b80d635a6145b8a8bc30ca7"
+      "sizeBytes": 14271,
+      "sha256": "719413bc73631c7d8304771283f241ce22638ebbbf0c4eebdfc187a79532b4b6"
     },
     {
       "file": "elegiac-pitch-deck-claude.zip",
@@ -432,8 +432,8 @@
       "skills": [
         "elegiac-pitch-deck"
       ],
-      "sizeBytes": 10485,
-      "sha256": "c1cd26c7f4bf9bb904147dab6aba04352e2d855c86257391306e4f9c8354e56a"
+      "sizeBytes": 10716,
+      "sha256": "7993c647876880dce0e9a49fe6bab86feb3bfa9f71d11a3cc906a90b7753dfdb"
     },
     {
       "file": "elegiac-pitch-deck-codex.zip",
@@ -441,8 +441,8 @@
       "skills": [
         "elegiac-pitch-deck"
       ],
-      "sizeBytes": 10485,
-      "sha256": "c1cd26c7f4bf9bb904147dab6aba04352e2d855c86257391306e4f9c8354e56a"
+      "sizeBytes": 10716,
+      "sha256": "7993c647876880dce0e9a49fe6bab86feb3bfa9f71d11a3cc906a90b7753dfdb"
     },
     {
       "file": "elegiac-platform-cutdowns-claude.zip",
@@ -450,8 +450,8 @@
       "skills": [
         "elegiac-platform-cutdowns"
       ],
-      "sizeBytes": 8731,
-      "sha256": "64adb4180f23b00fe31933e80618deac477abae3527ab01520e0d0b2b7901516"
+      "sizeBytes": 8962,
+      "sha256": "48af5a81f75656635a7f0765157a45bb010cd73d3c56676a46bcba36687f73c7"
     },
     {
       "file": "elegiac-platform-cutdowns-codex.zip",
@@ -459,8 +459,8 @@
       "skills": [
         "elegiac-platform-cutdowns"
       ],
-      "sizeBytes": 8731,
-      "sha256": "64adb4180f23b00fe31933e80618deac477abae3527ab01520e0d0b2b7901516"
+      "sizeBytes": 8962,
+      "sha256": "48af5a81f75656635a7f0765157a45bb010cd73d3c56676a46bcba36687f73c7"
     },
     {
       "file": "elegiac-product-shots-claude.zip",
@@ -468,8 +468,8 @@
       "skills": [
         "elegiac-product-shots"
       ],
-      "sizeBytes": 15928,
-      "sha256": "b24bc5f0dc03aab828c48f634d4b1fc3af1cd43fa31e2147c3718b9647f0392d"
+      "sizeBytes": 16159,
+      "sha256": "f068481bdad95c9d4e35eb846d023a38ba45cbb2ba42b0e16f6a00cdd8126cec"
     },
     {
       "file": "elegiac-product-shots-codex.zip",
@@ -477,8 +477,8 @@
       "skills": [
         "elegiac-product-shots"
       ],
-      "sizeBytes": 15928,
-      "sha256": "b24bc5f0dc03aab828c48f634d4b1fc3af1cd43fa31e2147c3718b9647f0392d"
+      "sizeBytes": 16159,
+      "sha256": "f068481bdad95c9d4e35eb846d023a38ba45cbb2ba42b0e16f6a00cdd8126cec"
     },
     {
       "file": "elegiac-production-audit-claude.zip",
@@ -486,8 +486,8 @@
       "skills": [
         "elegiac-production-audit"
       ],
-      "sizeBytes": 6694,
-      "sha256": "ba9ae5dd696625cda5d083d601dac7c044f1e43f79805d4df5bb7b10031234bf"
+      "sizeBytes": 6925,
+      "sha256": "bdbde96e6830b96e910f9ebf047a9375bb9f64622ac8a64364e2e8cdb050021e"
     },
     {
       "file": "elegiac-production-audit-codex.zip",
@@ -495,8 +495,8 @@
       "skills": [
         "elegiac-production-audit"
       ],
-      "sizeBytes": 6694,
-      "sha256": "ba9ae5dd696625cda5d083d601dac7c044f1e43f79805d4df5bb7b10031234bf"
+      "sizeBytes": 6925,
+      "sha256": "bdbde96e6830b96e910f9ebf047a9375bb9f64622ac8a64364e2e8cdb050021e"
     },
     {
       "file": "elegiac-production-kit-claude.zip",
@@ -504,8 +504,8 @@
       "skills": [
         "elegiac-production-kit"
       ],
-      "sizeBytes": 5511,
-      "sha256": "1c145f97d009f4cef3dfc1a64e2e9c67dfd3ce6d047481e66c312f9c29180b5d"
+      "sizeBytes": 5742,
+      "sha256": "d6beea6ab545e58e5a8898967b6e498b3b30c5b51b3c7b6569cfc745d6b8f0c8"
     },
     {
       "file": "elegiac-production-kit-codex.zip",
@@ -513,8 +513,8 @@
       "skills": [
         "elegiac-production-kit"
       ],
-      "sizeBytes": 5511,
-      "sha256": "1c145f97d009f4cef3dfc1a64e2e9c67dfd3ce6d047481e66c312f9c29180b5d"
+      "sizeBytes": 5742,
+      "sha256": "d6beea6ab545e58e5a8898967b6e498b3b30c5b51b3c7b6569cfc745d6b8f0c8"
     },
     {
       "file": "elegiac-prompt-doctor-claude.zip",
@@ -522,8 +522,8 @@
       "skills": [
         "elegiac-prompt-doctor"
       ],
-      "sizeBytes": 14159,
-      "sha256": "716972e692f9fbc1a0b94d0cf24500b510ac84f0294ababa944c5c243d84e92d"
+      "sizeBytes": 14390,
+      "sha256": "57c52d2212f2805d76bf77d981d927d4ddee031ef9f17b885ed0aaa8ab717912"
     },
     {
       "file": "elegiac-prompt-doctor-codex.zip",
@@ -531,8 +531,8 @@
       "skills": [
         "elegiac-prompt-doctor"
       ],
-      "sizeBytes": 14159,
-      "sha256": "716972e692f9fbc1a0b94d0cf24500b510ac84f0294ababa944c5c243d84e92d"
+      "sizeBytes": 14390,
+      "sha256": "57c52d2212f2805d76bf77d981d927d4ddee031ef9f17b885ed0aaa8ab717912"
     },
     {
       "file": "elegiac-scene-continuity-claude.zip",
@@ -540,8 +540,8 @@
       "skills": [
         "elegiac-scene-continuity"
       ],
-      "sizeBytes": 11353,
-      "sha256": "daa45737c1ba88f0e2ca578cb4fbedf9bec18940a8e36adeb96306f67b6dfb33"
+      "sizeBytes": 11693,
+      "sha256": "246019df605383bb1d9c5dc8b0486ec6b23f52b4567dd5f05506fe6552cbe512"
     },
     {
       "file": "elegiac-scene-continuity-codex.zip",
@@ -549,8 +549,8 @@
       "skills": [
         "elegiac-scene-continuity"
       ],
-      "sizeBytes": 11353,
-      "sha256": "daa45737c1ba88f0e2ca578cb4fbedf9bec18940a8e36adeb96306f67b6dfb33"
+      "sizeBytes": 11693,
+      "sha256": "246019df605383bb1d9c5dc8b0486ec6b23f52b4567dd5f05506fe6552cbe512"
     },
     {
       "file": "elegiac-shorts-factory-claude.zip",
@@ -558,8 +558,8 @@
       "skills": [
         "elegiac-shorts-factory"
       ],
-      "sizeBytes": 10952,
-      "sha256": "90cd332980476677439f48094b4d601c47d5aa8a6fbe69ab1cd4bbafd992236f"
+      "sizeBytes": 11183,
+      "sha256": "53672c3a149b276fda00f923d990d9850ff78fd4f0c025a266e8770cf900c4ea"
     },
     {
       "file": "elegiac-shorts-factory-codex.zip",
@@ -567,8 +567,8 @@
       "skills": [
         "elegiac-shorts-factory"
       ],
-      "sizeBytes": 10952,
-      "sha256": "90cd332980476677439f48094b4d601c47d5aa8a6fbe69ab1cd4bbafd992236f"
+      "sizeBytes": 11183,
+      "sha256": "53672c3a149b276fda00f923d990d9850ff78fd4f0c025a266e8770cf900c4ea"
     },
     {
       "file": "elegiac-shotlist-claude.zip",
@@ -576,8 +576,8 @@
       "skills": [
         "elegiac-shotlist"
       ],
-      "sizeBytes": 11115,
-      "sha256": "8a229e069d32802777204a7de435748e9f9ecbb42dc98d80e1aeb90c989a7d8f"
+      "sizeBytes": 11455,
+      "sha256": "41f9748e22eac10b9e7cc2d448c0fad8b864fa787b397ea7c9a3755fb3779ae1"
     },
     {
       "file": "elegiac-shotlist-codex.zip",
@@ -585,8 +585,8 @@
       "skills": [
         "elegiac-shotlist"
       ],
-      "sizeBytes": 11115,
-      "sha256": "8a229e069d32802777204a7de435748e9f9ecbb42dc98d80e1aeb90c989a7d8f"
+      "sizeBytes": 11455,
+      "sha256": "41f9748e22eac10b9e7cc2d448c0fad8b864fa787b397ea7c9a3755fb3779ae1"
     },
     {
       "file": "elegiac-story-bible-claude.zip",
@@ -594,8 +594,8 @@
       "skills": [
         "elegiac-story-bible"
       ],
-      "sizeBytes": 8678,
-      "sha256": "e898dfdc396c8c9a7730d68123544f7d757f8a4dba1949c46a0524fa381d4ca7"
+      "sizeBytes": 8909,
+      "sha256": "b38f610e2093e796cad981005b8e381d749be8c9c3ae8e13ab2d37bdbf8ff16d"
     },
     {
       "file": "elegiac-story-bible-codex.zip",
@@ -603,8 +603,8 @@
       "skills": [
         "elegiac-story-bible"
       ],
-      "sizeBytes": 8678,
-      "sha256": "e898dfdc396c8c9a7730d68123544f7d757f8a4dba1949c46a0524fa381d4ca7"
+      "sizeBytes": 8909,
+      "sha256": "b38f610e2093e796cad981005b8e381d749be8c9c3ae8e13ab2d37bdbf8ff16d"
     },
     {
       "file": "elegiac-storyboard-claude.zip",
@@ -612,8 +612,8 @@
       "skills": [
         "elegiac-storyboard"
       ],
-      "sizeBytes": 10781,
-      "sha256": "fc660fe2760ba368dc7e8fafb0a3d848f85ce1d6873c2799a662641b047a42d9"
+      "sizeBytes": 11121,
+      "sha256": "ef81b9c960a9e7f2dc73adc8c26c80512e3daec79c766e980153f904d0b205a1"
     },
     {
       "file": "elegiac-storyboard-codex.zip",
@@ -621,8 +621,8 @@
       "skills": [
         "elegiac-storyboard"
       ],
-      "sizeBytes": 10781,
-      "sha256": "fc660fe2760ba368dc7e8fafb0a3d848f85ce1d6873c2799a662641b047a42d9"
+      "sizeBytes": 11121,
+      "sha256": "ef81b9c960a9e7f2dc73adc8c26c80512e3daec79c766e980153f904d0b205a1"
     },
     {
       "file": "elegiac-style-explorer-claude.zip",
@@ -630,8 +630,8 @@
       "skills": [
         "elegiac-style-explorer"
       ],
-      "sizeBytes": 13853,
-      "sha256": "0bae426edc6d780be24853f2ce9262ae6f3b4e7b42476a6482eb01ec8047c354"
+      "sizeBytes": 14084,
+      "sha256": "5009be686c8649574505e077ec913af2fe2e2eeb325f529eaac7811470598f15"
     },
     {
       "file": "elegiac-style-explorer-codex.zip",
@@ -639,8 +639,8 @@
       "skills": [
         "elegiac-style-explorer"
       ],
-      "sizeBytes": 13853,
-      "sha256": "0bae426edc6d780be24853f2ce9262ae6f3b4e7b42476a6482eb01ec8047c354"
+      "sizeBytes": 14084,
+      "sha256": "5009be686c8649574505e077ec913af2fe2e2eeb325f529eaac7811470598f15"
     },
     {
       "file": "elegiac-thumbnail-cover-claude.zip",
@@ -648,8 +648,8 @@
       "skills": [
         "elegiac-thumbnail-cover"
       ],
-      "sizeBytes": 16542,
-      "sha256": "26128f9ae8f6e133e32476c55905358c51c11b53f0423b7eb9306c05bd3b71c6"
+      "sizeBytes": 16773,
+      "sha256": "87472eb0c97d961735cdf3aaa0ccb045e72d0a56bfe8dd53470b1f2ec9d79ec7"
     },
     {
       "file": "elegiac-thumbnail-cover-codex.zip",
@@ -657,8 +657,8 @@
       "skills": [
         "elegiac-thumbnail-cover"
       ],
-      "sizeBytes": 16542,
-      "sha256": "26128f9ae8f6e133e32476c55905358c51c11b53f0423b7eb9306c05bd3b71c6"
+      "sizeBytes": 16773,
+      "sha256": "87472eb0c97d961735cdf3aaa0ccb045e72d0a56bfe8dd53470b1f2ec9d79ec7"
     },
     {
       "file": "elegiac-trailer-kit-claude.zip",
@@ -666,8 +666,8 @@
       "skills": [
         "elegiac-trailer-kit"
       ],
-      "sizeBytes": 15111,
-      "sha256": "679cb3c009f84fea91c5313448f68559342b489054eb0f73c55f56546a4afc44"
+      "sizeBytes": 15659,
+      "sha256": "8aa5d1dbc93cae3bd94ad1b8f24aa0f1f56506f0cc90b695d77295bac19ebee3"
     },
     {
       "file": "elegiac-trailer-kit-codex.zip",
@@ -675,8 +675,8 @@
       "skills": [
         "elegiac-trailer-kit"
       ],
-      "sizeBytes": 15111,
-      "sha256": "679cb3c009f84fea91c5313448f68559342b489054eb0f73c55f56546a4afc44"
+      "sizeBytes": 15659,
+      "sha256": "8aa5d1dbc93cae3bd94ad1b8f24aa0f1f56506f0cc90b695d77295bac19ebee3"
     },
     {
       "file": "elegiac-ugc-ads-claude.zip",
@@ -684,8 +684,8 @@
       "skills": [
         "elegiac-ugc-ads"
       ],
-      "sizeBytes": 12438,
-      "sha256": "896c47d78285b21d2e57564f0a2325b0b567368d96f1640e0d58e56ac61eda4a"
+      "sizeBytes": 12877,
+      "sha256": "31d77f51366cee0294b573a03550b3267156da77541767ac49d600e4ef6fe0f6"
     },
     {
       "file": "elegiac-ugc-ads-codex.zip",
@@ -693,8 +693,8 @@
       "skills": [
         "elegiac-ugc-ads"
       ],
-      "sizeBytes": 12438,
-      "sha256": "896c47d78285b21d2e57564f0a2325b0b567368d96f1640e0d58e56ac61eda4a"
+      "sizeBytes": 12877,
+      "sha256": "31d77f51366cee0294b573a03550b3267156da77541767ac49d600e4ef6fe0f6"
     },
     {
       "file": "elegiac-video-packaging-claude.zip",
@@ -702,8 +702,8 @@
       "skills": [
         "elegiac-video-packaging"
       ],
-      "sizeBytes": 9088,
-      "sha256": "8295442162d7db49fbfadc045495a3c549414d196a1f9cf3dc35ea59ceb2e4bd"
+      "sizeBytes": 9319,
+      "sha256": "2be8896dc1ba12a30ba05e1bfa1110a4132a8729c7aca3011079fe32d46fce3c"
     },
     {
       "file": "elegiac-video-packaging-codex.zip",
@@ -711,8 +711,8 @@
       "skills": [
         "elegiac-video-packaging"
       ],
-      "sizeBytes": 9088,
-      "sha256": "8295442162d7db49fbfadc045495a3c549414d196a1f9cf3dc35ea59ceb2e4bd"
+      "sizeBytes": 9319,
+      "sha256": "2be8896dc1ba12a30ba05e1bfa1110a4132a8729c7aca3011079fe32d46fce3c"
     },
     {
       "file": "elegiac-virtual-influencer-claude.zip",
@@ -720,8 +720,8 @@
       "skills": [
         "elegiac-virtual-influencer"
       ],
-      "sizeBytes": 10723,
-      "sha256": "844e054c8fd2098bec08357351b981593846517c69feeeb9f6926bcfb4bceb15"
+      "sizeBytes": 11162,
+      "sha256": "8766a7e6f5fdbb4c7cf4f104a0b0946923e91e2e91599f51620a989567328335"
     },
     {
       "file": "elegiac-virtual-influencer-codex.zip",
@@ -729,8 +729,8 @@
       "skills": [
         "elegiac-virtual-influencer"
       ],
-      "sizeBytes": 10723,
-      "sha256": "844e054c8fd2098bec08357351b981593846517c69feeeb9f6926bcfb4bceb15"
+      "sizeBytes": 11162,
+      "sha256": "8766a7e6f5fdbb4c7cf4f104a0b0946923e91e2e91599f51620a989567328335"
     },
     {
       "file": "elegiac-youtube-channel-kit-claude.zip",
@@ -738,8 +738,8 @@
       "skills": [
         "elegiac-youtube-channel-kit"
       ],
-      "sizeBytes": 11349,
-      "sha256": "ed49745c754c5b22423e0828df152c9b874ae9256e55f1f42107b81bf1617bfb"
+      "sizeBytes": 11580,
+      "sha256": "7d37c6177ead592e2bb10c954f4eb656d117f7e2bb0ad07ff90753c1a6e8c841"
     },
     {
       "file": "elegiac-youtube-channel-kit-codex.zip",
@@ -747,8 +747,8 @@
       "skills": [
         "elegiac-youtube-channel-kit"
       ],
-      "sizeBytes": 11349,
-      "sha256": "ed49745c754c5b22423e0828df152c9b874ae9256e55f1f42107b81bf1617bfb"
+      "sizeBytes": 11580,
+      "sha256": "7d37c6177ead592e2bb10c954f4eb656d117f7e2bb0ad07ff90753c1a6e8c841"
     },
     {
       "file": "elegiac-skills-all.zip",
@@ -790,8 +790,8 @@
         "elegiac-virtual-influencer",
         "elegiac-youtube-channel-kit"
       ],
-      "sizeBytes": 419622,
-      "sha256": "bdcce5d2b10099a2dae25d9912b2a808e247aa7b59ee0397edb38a1f0df3b973"
+      "sizeBytes": 435816,
+      "sha256": "e0fab46f4550b3ad613a341f1d419938f6e80d86bf6b1152252afa8fe8df6b78"
     }
   ]
 }

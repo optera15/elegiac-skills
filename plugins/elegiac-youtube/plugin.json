@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "elegiac-youtube",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "YouTube creators: channel identity kits, narrated/faceless video pipelines, native Shorts, and title/description/chapter packaging.",
   "author": {
     "name": "Elegiac",

@@ -12,6 +12,7 @@ Every Elegiac skill follows these rules. Skills reference this file instead of d
 ## Permissions
 
 - A mutating tool may return a `permission_required` error containing an `approvalUrl`. Show the quoted cost and the URL, ask the user to approve in Elegiac, then **retry the exact same call** (same params, same `idempotencyKey`).
+- **Standing policies beat repeated approvals.** When a loop will call the same spend action many times with different params (a scene of `enhance_prompt` + `generate_shots`), tell the user on the first `permission_required` that the approval page has an "Also permit … in future" checkbox (scoped to the production or the client, optionally capped at the quoted credits). One approval then covers the loop; the policy is revocable under Agent Integrations → Permissions. Host-side tool approvals are separate.
 - `idempotencyKey` policy: a fresh key per distinct attempt; reuse the same key only when retrying an identical call after a transport error or an approval, so the job is not double-billed.
 
 ## Defaults

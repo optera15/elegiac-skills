@@ -64,6 +64,28 @@ For every episode row store `episodeId`, number, title, promise, hook, turn, cli
 }
 ```
 
+### Shot ledger (per cut, in `shot-list.md` front matter or a `shots[]` array on the blueprint)
+
+```json
+{
+  "shotId": "S01E01-030",
+  "durationSeconds": 6,
+  "framing": "over the shoulder portrait with cinematic framing",
+  "referenceAssetIds": ["cast-asset-id", "location-asset-id"],
+  "speaker": "character-id",
+  "voiceId": "elevenlabs-voice-id",
+  "line": "I told you— [sighs] …it doesn't matter now.",
+  "mouthVisible": true,
+  "dialogueStemAssetId": null,
+  "stillAssetId": null,
+  "clipAssetId": null,
+  "lipsyncAssetId": null,
+  "pipeline": "default"
+}
+```
+
+`pipeline` is `default` (see `production-pipeline.md`) or `override:<model id>` when the user chose another route for that cut. Asset ids fill in as stages complete; a resumed session skips any stage whose id is already set.
+
 ## Edit manifest
 
 All file paths are local to `root` passed to the scripts. Remote URLs and paths outside that root are invalid. Run the validator with `--write-hashes` once sources are frozen; subsequent validation detects changed media.

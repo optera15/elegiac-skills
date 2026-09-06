@@ -11,11 +11,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-ad-variants-codex.zip",
-        "sizeBytes": 10507
+        "sizeBytes": 10738
       },
       "claude": {
         "file": "elegiac-ad-variants-claude.zip",
-        "sizeBytes": 10507
+        "sizeBytes": 10738
       }
     }
   },
@@ -30,11 +30,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-animatic-codex.zip",
-        "sizeBytes": 8968
+        "sizeBytes": 9308
       },
       "claude": {
         "file": "elegiac-animatic-claude.zip",
-        "sizeBytes": 8968
+        "sizeBytes": 9308
       }
     }
   },
@@ -48,11 +48,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-board-workspace-codex.zip",
-        "sizeBytes": 8210
+        "sizeBytes": 8441
       },
       "claude": {
         "file": "elegiac-board-workspace-claude.zip",
-        "sizeBytes": 8210
+        "sizeBytes": 8441
       }
     }
   },
@@ -67,11 +67,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-brand-memory-codex.zip",
-        "sizeBytes": 8469
+        "sizeBytes": 8700
       },
       "claude": {
         "file": "elegiac-brand-memory-claude.zip",
-        "sizeBytes": 8469
+        "sizeBytes": 8700
       }
     }
   },
@@ -87,11 +87,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-campaign-pack-codex.zip",
-        "sizeBytes": 11040
+        "sizeBytes": 11271
       },
       "claude": {
         "file": "elegiac-campaign-pack-claude.zip",
-        "sizeBytes": 11040
+        "sizeBytes": 11271
       }
     }
   },
@@ -106,11 +106,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-character-cast-codex.zip",
-        "sizeBytes": 10289
+        "sizeBytes": 10520
       },
       "claude": {
         "file": "elegiac-character-cast-claude.zip",
-        "sizeBytes": 10289
+        "sizeBytes": 10520
       }
     }
   },
@@ -125,11 +125,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-content-calendar-codex.zip",
-        "sizeBytes": 8630
+        "sizeBytes": 8861
       },
       "claude": {
         "file": "elegiac-content-calendar-claude.zip",
-        "sizeBytes": 8630
+        "sizeBytes": 8861
       }
     }
   },
@@ -143,11 +143,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-deliver-pack-codex.zip",
-        "sizeBytes": 6609
+        "sizeBytes": 6840
       },
       "claude": {
         "file": "elegiac-deliver-pack-claude.zip",
-        "sizeBytes": 6609
+        "sizeBytes": 6840
       }
     }
   },
@@ -163,11 +163,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-dialogue-scene-codex.zip",
-        "sizeBytes": 11187
+        "sizeBytes": 11735
       },
       "claude": {
         "file": "elegiac-dialogue-scene-claude.zip",
-        "sizeBytes": 11187
+        "sizeBytes": 11735
       }
     }
   },
@@ -183,11 +183,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-generate-codex.zip",
-        "sizeBytes": 14652
+        "sizeBytes": 15223
       },
       "claude": {
         "file": "elegiac-generate-claude.zip",
-        "sizeBytes": 14652
+        "sizeBytes": 15223
       }
     }
   },
@@ -204,11 +204,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-illustration-codex.zip",
-        "sizeBytes": 15921
+        "sizeBytes": 16152
       },
       "claude": {
         "file": "elegiac-illustration-claude.zip",
-        "sizeBytes": 15921
+        "sizeBytes": 16152
       }
     }
   },
@@ -225,11 +225,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-key-art-codex.zip",
-        "sizeBytes": 15888
+        "sizeBytes": 16119
       },
       "claude": {
         "file": "elegiac-key-art-claude.zip",
-        "sizeBytes": 15888
+        "sizeBytes": 16119
       }
     }
   },
@@ -246,11 +246,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-launch-kit-codex.zip",
-        "sizeBytes": 12764
+        "sizeBytes": 12995
       },
       "claude": {
         "file": "elegiac-launch-kit-claude.zip",
-        "sizeBytes": 12764
+        "sizeBytes": 12995
       }
     }
   },
@@ -267,11 +267,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-location-scout-codex.zip",
-        "sizeBytes": 13130
+        "sizeBytes": 13470
       },
       "claude": {
         "file": "elegiac-location-scout-claude.zip",
-        "sizeBytes": 13130
+        "sizeBytes": 13470
       }
     }
   },
@@ -287,11 +287,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-microdrama-codex.zip",
-        "sizeBytes": 34839
+        "sizeBytes": 40927
       },
       "claude": {
         "file": "elegiac-microdrama-claude.zip",
-        "sizeBytes": 34839
+        "sizeBytes": 40927
       }
     }
   },
@@ -306,11 +306,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-model-compare-codex.zip",
-        "sizeBytes": 12053
+        "sizeBytes": 12284
       },
       "claude": {
         "file": "elegiac-model-compare-claude.zip",
-        "sizeBytes": 12053
+        "sizeBytes": 12284
       }
     }
   },
@@ -327,11 +327,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-narrated-video-codex.zip",
-        "sizeBytes": 13723
+        "sizeBytes": 14271
       },
       "claude": {
         "file": "elegiac-narrated-video-claude.zip",
-        "sizeBytes": 13723
+        "sizeBytes": 14271
       }
     }
   },
@@ -347,11 +347,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-pitch-deck-codex.zip",
-        "sizeBytes": 10485
+        "sizeBytes": 10716
       },
       "claude": {
         "file": "elegiac-pitch-deck-claude.zip",
-        "sizeBytes": 10485
+        "sizeBytes": 10716
       }
     }
   },
@@ -366,11 +366,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-platform-cutdowns-codex.zip",
-        "sizeBytes": 8731
+        "sizeBytes": 8962
       },
       "claude": {
         "file": "elegiac-platform-cutdowns-claude.zip",
-        "sizeBytes": 8731
+        "sizeBytes": 8962
       }
     }
   },
@@ -387,11 +387,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-product-shots-codex.zip",
-        "sizeBytes": 15928
+        "sizeBytes": 16159
       },
       "claude": {
         "file": "elegiac-product-shots-claude.zip",
-        "sizeBytes": 15928
+        "sizeBytes": 16159
       }
     }
   },
@@ -405,11 +405,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-production-audit-codex.zip",
-        "sizeBytes": 6694
+        "sizeBytes": 6925
       },
       "claude": {
         "file": "elegiac-production-audit-claude.zip",
-        "sizeBytes": 6694
+        "sizeBytes": 6925
       }
     }
   },
@@ -422,11 +422,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-production-kit-codex.zip",
-        "sizeBytes": 5511
+        "sizeBytes": 5742
       },
       "claude": {
         "file": "elegiac-production-kit-claude.zip",
-        "sizeBytes": 5511
+        "sizeBytes": 5742
       }
     }
   },
@@ -442,11 +442,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-prompt-doctor-codex.zip",
-        "sizeBytes": 14159
+        "sizeBytes": 14390
       },
       "claude": {
         "file": "elegiac-prompt-doctor-claude.zip",
-        "sizeBytes": 14159
+        "sizeBytes": 14390
       }
     }
   },
@@ -462,11 +462,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-scene-continuity-codex.zip",
-        "sizeBytes": 11353
+        "sizeBytes": 11693
       },
       "claude": {
         "file": "elegiac-scene-continuity-claude.zip",
-        "sizeBytes": 11353
+        "sizeBytes": 11693
       }
     }
   },
@@ -482,11 +482,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-shorts-factory-codex.zip",
-        "sizeBytes": 10952
+        "sizeBytes": 11183
       },
       "claude": {
         "file": "elegiac-shorts-factory-claude.zip",
-        "sizeBytes": 10952
+        "sizeBytes": 11183
       }
     }
   },
@@ -502,11 +502,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-shotlist-codex.zip",
-        "sizeBytes": 11115
+        "sizeBytes": 11455
       },
       "claude": {
         "file": "elegiac-shotlist-claude.zip",
-        "sizeBytes": 11115
+        "sizeBytes": 11455
       }
     }
   },
@@ -521,11 +521,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-story-bible-codex.zip",
-        "sizeBytes": 8678
+        "sizeBytes": 8909
       },
       "claude": {
         "file": "elegiac-story-bible-claude.zip",
-        "sizeBytes": 8678
+        "sizeBytes": 8909
       }
     }
   },
@@ -541,11 +541,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-storyboard-codex.zip",
-        "sizeBytes": 10781
+        "sizeBytes": 11121
       },
       "claude": {
         "file": "elegiac-storyboard-claude.zip",
-        "sizeBytes": 10781
+        "sizeBytes": 11121
       }
     }
   },
@@ -561,11 +561,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-style-explorer-codex.zip",
-        "sizeBytes": 13853
+        "sizeBytes": 14084
       },
       "claude": {
         "file": "elegiac-style-explorer-claude.zip",
-        "sizeBytes": 13853
+        "sizeBytes": 14084
       }
     }
   },
@@ -582,11 +582,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-thumbnail-cover-codex.zip",
-        "sizeBytes": 16542
+        "sizeBytes": 16773
       },
       "claude": {
         "file": "elegiac-thumbnail-cover-claude.zip",
-        "sizeBytes": 16542
+        "sizeBytes": 16773
       }
     }
   },
@@ -604,11 +604,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-trailer-kit-codex.zip",
-        "sizeBytes": 15111
+        "sizeBytes": 15659
       },
       "claude": {
         "file": "elegiac-trailer-kit-claude.zip",
-        "sizeBytes": 15111
+        "sizeBytes": 15659
       }
     }
   },
@@ -625,11 +625,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-ugc-ads-codex.zip",
-        "sizeBytes": 12438
+        "sizeBytes": 12877
       },
       "claude": {
         "file": "elegiac-ugc-ads-claude.zip",
-        "sizeBytes": 12438
+        "sizeBytes": 12877
       }
     }
   },
@@ -644,11 +644,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-video-packaging-codex.zip",
-        "sizeBytes": 9088
+        "sizeBytes": 9319
       },
       "claude": {
         "file": "elegiac-video-packaging-claude.zip",
-        "sizeBytes": 9088
+        "sizeBytes": 9319
       }
     }
   },
@@ -664,11 +664,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-virtual-influencer-codex.zip",
-        "sizeBytes": 10723
+        "sizeBytes": 11162
       },
       "claude": {
         "file": "elegiac-virtual-influencer-claude.zip",
-        "sizeBytes": 10723
+        "sizeBytes": 11162
       }
     }
   },
@@ -684,11 +684,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-youtube-channel-kit-codex.zip",
-        "sizeBytes": 11349
+        "sizeBytes": 11580
       },
       "claude": {
         "file": "elegiac-youtube-channel-kit-claude.zip",
-        "sizeBytes": 11349
+        "sizeBytes": 11580
       }
     }
   }

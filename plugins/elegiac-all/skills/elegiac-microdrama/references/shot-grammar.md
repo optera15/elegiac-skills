@@ -2,6 +2,8 @@
 
 How to translate story intent into frame prompts and motion prompts that AI image/video models execute reliably.
 
+The complete curated framing vocabulary (about 430 strings in 15 groups) is available live through `list_framings`; pass one string as the `framing` of an `enhance_prompt` shot rather than paraphrasing it.
+
 ## Shot sizes (and what they say)
 
 | Size | Abbrev | Use it when |

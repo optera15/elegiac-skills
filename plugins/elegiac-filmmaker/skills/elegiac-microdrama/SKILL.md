@@ -21,7 +21,7 @@ Read `references/elegiac-conventions.md` first. It governs spend, permission ret
 Choose from the user's actual starting point. Do not ask them to select a mode when it is evident.
 
 - Bare premise, title, or new series → read `references/new-show.md`, then `references/craft.md` and `references/schemas.md`.
-- Existing Production plus a request to plan or make an episode → read `references/new-episode.md`, then `references/craft.md`, `references/schemas.md`, and `references/qa.md`.
+- Existing Production plus a request to plan or make an episode → read `references/new-episode.md`, then `references/production-pipeline.md` (the default clip pipeline), `references/craft.md`, `references/schemas.md`, and `references/qa.md`.
 - Existing clips, Episode Board, Production Kit, rough cut, or HyperFrames project → read `references/edit.md`, `references/schemas.md`, and `references/qa.md`. Read `references/craft.md` when story pacing is in scope.
 
 If a request spans modes, run them in that order and retain one state ledger. Stop when the user's requested deliverable is complete; planning does not authorize generation, and generation does not authorize rendering.
@@ -44,7 +44,7 @@ Accept department overrides such as “Fast Track except dialogue and casting.�
 - An Episode is exactly one Board named `S01E01 — <Title>`. Keep every episode artifact and workflow result on that Board. Shot IDs are `S01E01-010`, `S01E01-020`, leaving gaps for inserts.
 - **App Standard** is 60 episodes × 75 seconds. Keep visible alternatives for 24 or 30 episodes at 60–120 seconds and a Custom profile.
 - Plan the whole season in text, but produce only one episode at a time. Never turn “make the series” into bulk generation.
-- Native final master is 1080 × 1920; this approved MicroDrama contract overrides the shared 720p default. A 720 × 1280 output is a disclosed budget/model fallback; 480 × 854 is draft-only and may not be labeled final.
+- Native final master is 1080 × 1920, rendered in post. Source clips from the default pipeline (`references/production-pipeline.md`: ElevenLabs V3 dialogue → Muse Image 9:16 stills → Grok Imagine 1.5 non-speaking 720p clips → VEED Lipsync V2 where the mouth is visible) are 720 × 1280 and the call sheet discloses that; 1080p clips are a premium option on explicit request. 480 × 854 is draft-only and may not be labeled final.
 - Use fixed IDs and structured files to determine the next episode; Board count and chat memory are not authoritative.
 
 ## Source of truth and resumption
@@ -55,7 +55,7 @@ At resumable checkpoints, report a compact **MicroDrama Call Sheet**: show/seaso
 
 ## Spend and production invariant
 
-Planning, scripts, manifests, and Board organization are no-spend work. Before media generation, quote each homogeneous batch, show the total and cap, then wait for authorization. Start with 3–6 vertical storyboard frames and repair stills before motion. Generate one episode only. Follow exact idempotency-key retry rules in the shared conventions.
+Planning, scripts, manifests, and Board organization are no-spend work. Before media generation, quote each homogeneous batch, show the total and cap, then wait for authorization. Start with 3–6 vertical proof stills and repair stills before motion. Then produce clips through the default pipeline in `references/production-pipeline.md`, one stage-batch at a time (dialogue stems, framed stills, non-speaking motion, lipsync only where the mouth is visible), unless the user names a different model or route — record that as a pipeline override. Generate one episode only. Follow exact idempotency-key retry rules in the shared conventions.
 
 Recurring identity, style, locations, props, voices, and rights belong in durable Elegiac memory. Reuse approved assets. A missing or ambiguous required anchor blocks generation rather than permitting a generic substitute.
 

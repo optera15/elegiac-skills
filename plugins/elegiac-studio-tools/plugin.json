@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "elegiac-studio-tools",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports.",
   "author": {
     "name": "Elegiac",

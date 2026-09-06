@@ -27,6 +27,8 @@ Apply gates proportional to the requested stopping point. A script-only request 
 
 - Dialogue is intelligible on phone speakers, music does not mask it, and no stream clips.
 - Lipsync reads at normal playback. Room tone and ambience do not jump distractingly across cuts.
+- Default-pipeline clips were generated non-speaking (no baked-in Grok dialogue or lip movement under the lipsync); Grok's own audio track is muted in the edit; every speaking cut has its own stem; lipsync was applied only where the speaker's mouth is visible.
+- Each character uses the same stored ElevenLabs Voice ID across every cut and episode.
 - Captions match approved dialogue, timing, spelling, speaker intent, and safe zones.
 - The story works muted and gains value with sound.
 

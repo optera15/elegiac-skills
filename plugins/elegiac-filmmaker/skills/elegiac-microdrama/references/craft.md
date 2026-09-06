@@ -64,6 +64,13 @@ Popular commercial lanes include romance and relationship melodrama, family/stat
 - Build a recurring title/episode bug, caption style, end-card system, music palette, ambience palette, and a small set of signature sound marks.
 - The episode must work muted and improve with sound. Captions are story timing, not an afterthought.
 
+## Framing and prompt enhancement
+
+- Frame every still against its references, not from memory. For each shot: pick one framing from `list_framings` (group `distance-zoom` for coverage size, `conversation-dialogue` for two-handers, `dramatic` for turns; free text is allowed when nothing fits), then call `enhance_prompt` once per scene with `shots[]` (raw shot description + framing each) and the shared `referenceImageUrls` you will generate with (location plate, approved cast references, props). One quote, one approval, 5 credits per shot; `wait_for_job` returns each `enhancedPrompt`.
+- Generate with `generate_shots` (batch, one approval) or per-shot `generate_image`, passing each `enhancedPrompt` VERBATIM with the same references. Never send enhanced prompts to `generate_storyboard`: it rewrites them into numbered storyboard panels and cannot carry a location plate.
+- Never enhance twice for one shot and never feed an enhanced prompt back in as the raw prompt. Keep the framing string on the shot record; it is the continuity key when you re-run a beat.
+- On the first `permission_required`, tell the user the approval page can save a standing Permit for `enhance_prompt` / `generate_shots` in this production (optionally capped at the quoted credits), so the rest of the episode runs without prompts. Host-side tool approvals (Claude, ChatGPT) are separate and need their own always-allow.
+
 ## Development package that earns its keep
 
 Maintain only artifacts with downstream value: series bible and spine; character/relationship canon; recurring location/prop registry; approved 9:16 identity, dialogue, action, and lighting tests; StyleSystem; title/caption/end-card system; sound palette; episode index and loop ledger; and one complete Episode Board.
