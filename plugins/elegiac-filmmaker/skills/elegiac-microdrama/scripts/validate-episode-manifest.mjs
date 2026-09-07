@@ -14,9 +14,40 @@ const OUTPUT_PROFILES = new Map([
 const HASH_RE = /^[a-f0-9]{64}$/;
 const REMOTE_RE = /^(?:https?:|data:|blob:)/i;
 const COLLABORATION_PROFILES = new Set(['fast-track', 'co-creator', 'director']);
+const MARK_STATUSES = new Set(['provided', 'typographic', 'waived']);
+const STING_STATUSES = new Set(['provided', 'waived']);
+const OPENING_MODES = new Set(['none', 'overlay-mark', 'splash']);
+const END_CARD_MODES = new Set(['none', 'mark-only', 'mark-and-sting']);
+const CREDIT_MODES = new Set(['none', 'end-matter']);
+const GROUND_MODES = new Set(['gradient', 'texture', 'plate-blur']);
+
+/** True for a hex colour whose channels are all under ~0x24, i.e. visually black. */
+function isNearBlack(color) {
+  const match = typeof color === 'string' ? color.trim().match(/^#([0-9a-f]{6})$/i) : null;
+  if (!match) return false;
+  const value = Number.parseInt(match[1], 16);
+  return ((value >> 16) & 0xff) < 0x24 && ((value >> 8) & 0xff) < 0x24 && (value & 0xff) < 0x24;
+}
 
 function finiteNumber(value) {
   return typeof value === 'number' && Number.isFinite(value);
+}
+
+function inRange(value, min, max) {
+  return finiteNumber(value) && value >= min && value <= max;
+}
+
+/** Seconds the branding bookends add after the story cut (splash + blackout + end card + end matter). */
+export function computeBookendSeconds(branding) {
+  if (!branding || typeof branding !== 'object') return 0;
+  let total = 0;
+  if (branding.opening?.mode === 'splash' && finiteNumber(branding.opening.durationSeconds)) total += branding.opening.durationSeconds;
+  if (branding.endCard?.mode && branding.endCard.mode !== 'none') {
+    if (finiteNumber(branding.endCard.blackoutSeconds)) total += branding.endCard.blackoutSeconds;
+    if (finiteNumber(branding.endCard.durationSeconds)) total += branding.endCard.durationSeconds;
+  }
+  if (branding.credits?.mode === 'end-matter' && finiteNumber(branding.credits.durationSeconds)) total += branding.credits.durationSeconds;
+  return Number(total.toFixed(3));
 }
 
 function nonEmpty(value) {
@@ -98,6 +129,107 @@ async function validateFrozenSource(source, label, context) {
     warnings.push(`${label} is not approved`);
   }
   return 0;
+}
+
+async function validateBranding(manifest, context) {
+  const { errors, warnings } = context;
+  const branding = manifest.branding;
+  let hashesWritten = 0;
+  if (!branding || typeof branding !== 'object' || Array.isArray(branding)) {
+    errors.push('branding is required: resolve the brand punctuation package (references/branding.md) or waive each element with a reason');
+    return 0;
+  }
+
+  const mark = branding.seriesMark;
+  const markStatus = mark?.status;
+  if (!MARK_STATUSES.has(markStatus)) {
+    errors.push('branding.seriesMark.status must be provided, typographic, or waived');
+  } else if (markStatus === 'provided') {
+    hashesWritten += await validateFrozenSource(mark, 'branding.seriesMark', context);
+  } else if (markStatus === 'typographic') {
+    if (!nonEmpty(mark.title)) errors.push('branding.seriesMark.title is required for a typographic mark');
+    if (!nonEmpty(mark.fontFamily)) errors.push('branding.seriesMark.fontFamily is required for a typographic mark');
+  } else if (!nonEmpty(mark.reason)) {
+    errors.push('branding.seriesMark.reason is required when the series mark is waived');
+  }
+  const markAvailable = markStatus === 'provided' || markStatus === 'typographic';
+
+  const sting = branding.sting;
+  const stingStatus = sting?.status;
+  if (!STING_STATUSES.has(stingStatus)) {
+    errors.push('branding.sting.status must be provided or waived');
+  } else if (stingStatus === 'provided') {
+    hashesWritten += await validateFrozenSource(sting, 'branding.sting', context);
+    if (!inRange(sting.durationSeconds, 0.3, 3)) {
+      errors.push('branding.sting.durationSeconds must be between 0.3 and 3 (a sonic signature, not a theme)');
+    }
+  } else if (!nonEmpty(sting.reason)) {
+    errors.push('branding.sting.reason is required when the sting is waived');
+  }
+  const stingAvailable = stingStatus === 'provided';
+
+  const opening = branding.opening;
+  if (!OPENING_MODES.has(opening?.mode)) {
+    errors.push('branding.opening.mode must be none, overlay-mark, or splash');
+  } else {
+    if (opening.mode !== 'none' && !markAvailable) {
+      errors.push(`branding.opening.mode ${opening.mode} requires a series mark that is not waived`);
+    }
+    if (opening.mode === 'splash') {
+      if (!inRange(opening.durationSeconds, 0.5, 2)) {
+        errors.push('branding.opening.durationSeconds must be between 0.5 and 2 for a splash');
+      }
+      if (Number.isInteger(manifest.episode) && manifest.episode > 1) {
+        warnings.push(`branding.opening.mode splash on episode ${manifest.episode}: episodes after the first normally use overlay-mark or none; record the reason`);
+      }
+    }
+  }
+
+  const endCard = branding.endCard;
+  if (!END_CARD_MODES.has(endCard?.mode)) {
+    errors.push('branding.endCard.mode must be none, mark-only, or mark-and-sting');
+  } else if (endCard.mode !== 'none') {
+    if (!markAvailable) errors.push(`branding.endCard.mode ${endCard.mode} requires a series mark that is not waived`);
+    if (endCard.mode === 'mark-and-sting' && !stingAvailable) errors.push('branding.endCard.mode mark-and-sting requires a provided sting');
+    if (!inRange(endCard.blackoutSeconds ?? 0, 0, 0.5)) errors.push('branding.endCard.blackoutSeconds must be between 0 and 0.5');
+    if (!inRange(endCard.durationSeconds, 0.5, 1.5)) {
+      errors.push('branding.endCard.durationSeconds must be between 0.5 and 1.5 (brand punctuation, not an outro)');
+    }
+    if (endCard.mode === 'mark-only' && stingAvailable) {
+      warnings.push('branding.endCard.mode is mark-only although a sting is provided; the reveal → sting → mark conditioning is weaker');
+    }
+    if (endCard.nextText !== undefined && endCard.nextText !== null && !nonEmpty(endCard.nextText)) {
+      errors.push('branding.endCard.nextText must be a non-empty string when present');
+    }
+  }
+
+  const credits = branding.credits ?? { mode: 'none' };
+  if (!CREDIT_MODES.has(credits?.mode)) {
+    errors.push('branding.credits.mode must be none or end-matter');
+  } else if (credits.mode === 'end-matter') {
+    if (!inRange(credits.durationSeconds, 0.5, 3)) errors.push('branding.credits.durationSeconds must be between 0.5 and 3 for end matter');
+    warnings.push('branding.credits.mode end-matter: keep credits after the end card and outside the dramatic flow; confirm the requirement is contractual');
+  }
+
+  if (!markAvailable && opening?.mode === 'none' && endCard?.mode === 'none') {
+    warnings.push('branding carries no series identity in the episode; the platform UI and key art must carry it');
+  }
+
+  const usesCard = opening?.mode === 'splash' || (endCard?.mode && endCard.mode !== 'none');
+  if (usesCard) {
+    const ground = branding.ground;
+    if (!ground || !GROUND_MODES.has(ground.mode)) {
+      warnings.push('branding.ground is missing: bookends need a full-bleed brand ground (gradient, texture, or plate-blur); a small mark on bare black reads as unfinished');
+    } else if (ground.mode === 'gradient') {
+      const colors = Array.isArray(ground.colors) ? ground.colors : [];
+      if (colors.length < 2) errors.push('branding.ground.colors needs two colours for a gradient');
+      else if (colors.every(isNearBlack)) warnings.push('branding.ground gradient is all near-black; use at least one palette colour so the mark has a ground to sit on');
+    } else if (ground.mode === 'plate-blur' && !nonEmpty(ground.plateId)) {
+      errors.push('branding.ground.plateId is required for plate-blur');
+    }
+  }
+
+  return hashesWritten;
 }
 
 function validateArgs(argv) {
@@ -224,7 +356,30 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
         if (transition >= visible) errors.push(`${label}.transitionOutSeconds must be shorter than the clip edit`);
         editDurationSeconds += visible - transition;
       }
+      if (clip?.continuityStatus === undefined) {
+        warnings.push(`${label}.continuityStatus is absent; copy shot.continuity.status from the blueprint so the manifest proves the continuity gate ran`);
+      } else if (clip.continuityStatus !== 'pass') {
+        errors.push(`${label}.continuityStatus is "${clip.continuityStatus}"; only stills that passed the continuity gate may be cut (references/continuity-gate.md)`);
+      }
       hashesWritten += await validateFrozenSource(clip, label, context);
+    }
+  }
+
+  if (manifest.mix !== undefined) {
+    if (!manifest.mix || typeof manifest.mix !== 'object' || Array.isArray(manifest.mix)) {
+      errors.push('mix must be an object');
+    } else if (manifest.mix.method === 'automation-lanes') {
+      errors.push('mix.method automation-lanes is rejected: data-automation volume lanes route beds through WebAudio in Studio and silence native dialogue; use timeline-tweens');
+    } else if (manifest.mix.method !== undefined && manifest.mix.method !== 'timeline-tweens') {
+      errors.push('mix.method must be timeline-tweens');
+    }
+  }
+  if (manifest.sourceSpec !== undefined) {
+    const spec = manifest.sourceSpec;
+    if (!spec || !finiteNumber(spec.width) || !finiteNumber(spec.height) || !finiteNumber(spec.fps)) {
+      errors.push('sourceSpec must carry width, height, and fps');
+    } else if (spec.width < (manifest.canvas?.width ?? 0) || spec.fps !== manifest.canvas?.fps) {
+      warnings.push(`sourceSpec ${spec.width}x${spec.height}@${spec.fps} is conformed to the ${manifest.canvas?.width}x${manifest.canvas?.height}@${manifest.canvas?.fps} master; disclose the upscale/frame-rate conversion in delivery`);
     }
   }
 
@@ -248,6 +403,9 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
   }
 
   if (!nonEmpty(manifest.captions?.language)) errors.push('captions.language must be a non-empty string');
+  if (manifest.captions?.burnIn === true) {
+    warnings.push('captions.burnIn is true: burned-in captions are opt-in (the platform overlays its own); confirm the user asked for them');
+  }
   if (!nonEmpty(manifest.captions?.sidecar)) {
     warnings.push('captions.sidecar is absent; record this omission before delivery');
   } else {
@@ -279,6 +437,9 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
     if (!nonEmpty(manifest.story?.[key])) errors.push(`story.${key} must be a non-empty string`);
   }
 
+  hashesWritten += await validateBranding(manifest, context);
+  const bookendSeconds = computeBookendSeconds(manifest.branding);
+
   const roundedDuration = Number(editDurationSeconds.toFixed(3));
   if (finiteNumber(manifest.targetDurationSeconds) && finiteNumber(tolerance)) {
     const difference = Math.abs(roundedDuration - manifest.targetDurationSeconds);
@@ -302,6 +463,8 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
       clipCount: Array.isArray(manifest.clips) ? manifest.clips.length : 0,
       editDurationSeconds: roundedDuration,
       targetDurationSeconds: manifest.targetDurationSeconds ?? null,
+      bookendSeconds,
+      masterDurationSeconds: Number((roundedDuration + bookendSeconds).toFixed(3)),
       hashesWritten,
       root: options.root,
     },
@@ -324,7 +487,7 @@ async function main() {
   } else {
     console.log(`${result.errors.length === 0 ? 'PASS' : 'FAIL'} ${result.summary?.episodeId ?? options.manifestPath}`);
     if (result.summary) {
-      console.log(`  ${result.summary.clipCount} clips · ${result.summary.editDurationSeconds}s · ${result.summary.outputProfile}`);
+      console.log(`  ${result.summary.clipCount} clips · ${result.summary.editDurationSeconds}s story + ${result.summary.bookendSeconds}s bookends = ${result.summary.masterDurationSeconds}s · ${result.summary.outputProfile}`);
       if (result.summary.hashesWritten) console.log(`  wrote ${result.summary.hashesWritten} source hash(es)`);
     }
     for (const warning of result.warnings) console.log(`  warning: ${warning}`);

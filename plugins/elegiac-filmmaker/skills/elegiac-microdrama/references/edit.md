@@ -6,15 +6,31 @@ An Elegiac Episode Board, `export_pack` result, exported Production Kit, local c
 
 ## Workflow
 
-1. **Inventory read-only.** Resolve the script/blueprint and probe each file's duration, dimensions, frame rate, codec, audio streams, name, and source. Detect missing, duplicate, unapproved, or draft-only shots.
-2. **Diagnose.** Separate story/pacing, picture continuity, performance/lipsync, framing/safe zones, dialogue intelligibility, music/SFX, captions, graphics/CTA, and delivery issues.
-3. **Propose the cut.** Present ordered shots with trim, duration, transition, audio, and caption notes. Mark each item `editorial`, `asset substitution`, or `new generation`. Editing never silently authorizes generation.
-4. **Freeze approved sources.** Export/download them into the Production Kit, retain Elegiac asset IDs or explicit user provenance, and compute SHA-256 hashes. HyperFrames may not fetch remote media during render.
+1. **Inventory read-only.** Resolve the script/blueprint and probe each file's duration, dimensions, frame rate, codec, audio streams, name, and source (`ffprobe`). Default-pipeline clips are 704 × 1280 at 25 fps; note it. Detect missing, duplicate, unapproved, or draft-only shots, and any shot whose `continuity.status` is not `pass`.
+2. **Diagnose.** Separate story/pacing, picture continuity, performance/lipsync, framing/safe zones, dialogue intelligibility, music/SFX, captions, graphics/CTA, and delivery issues. A picture-continuity problem found here means the continuity gate was skipped or failed; say so and route the still back through `continuity-gate.md` rather than trying to hide it in the cut.
+3. **Propose the cut.** Present ordered shots with trim, duration, transition, audio, and caption notes, ending on the cliffhanger frame. Mark each item `editorial`, `asset substitution`, or `new generation`. If the story cut is over the profile target, the proposal includes a specific trim list, not a binary "accept the exception". Editing never silently authorizes generation.
+4. **Freeze approved sources.** Export/download them into the Production Kit with `curl` (not a Python downloader; the local Python may lack a certificate store), retain Elegiac asset IDs or explicit user provenance, and compute SHA-256 hashes. HyperFrames may not fetch remote media during render.
 5. **Prefer editorial repair.** Trim dead air; reframe; use approved inserts, reactions, still holds, J/L cuts, dialogue stems, ambience, and caption timing. Try a surgical image/audio fix before proposing regeneration. Quote any replacement separately.
-6. **Write `edit-manifest.json`.** Use `schemas.md`; run the validator from the Production Kit root. Resolve every error before generating a handoff.
-7. **Enter HyperFrames correctly.** For a fresh project, initialize it first, then build `BRIEF.md`; load the installed `hyperframes` entry skill and follow its `general-video` route. Fast Track maps to `flow: automation`; Co-Creator/Director or an edit department override maps to `flow: companion`. For an existing project, make only the requested edit and preserve its brief/state.
-8. **Verify and approve.** Run HyperFrames checks, inspect shot/scene midpoints and first/last frames, watch once muted and once with sound, proof captions, confirm exact duration, and obtain explicit final Studio preview approval. Then render.
-9. **Deliver.** Probe the master and return the declared output profile, SRT/VTT, poster, optional clean/textless master, edit/delivery manifests, hashes/source ledger, Board link, and explicit omissions. Upload/register only when a safe supported path exists.
+6. **Resolve the brand punctuation package.** Run the pre-render branding checklist in `branding.md` **before the first cut is built**, so the bookends are built once: reuse `series-manifest.branding` when it exists; otherwise ask the user once for the series mark, sonic sting, typography/colour, bookend ground, opening and end-card policy, and any required credits, offering a recommended default and quoted generation for each, and record explicit waivers with reasons. Freeze provided or generated files into `brand/` and hash them. Do not proceed to the manifest with the package unresolved.
+7. **Write `edit-manifest.json`.** Use `schemas.md`, including the `branding` block copied from the series package; `captions.burnIn` is `false` unless the user asked for burned-in captions. Run the validator from the Production Kit root. Resolve every error before generating a handoff.
+8. **Enter HyperFrames correctly.** For a fresh project, initialize it first, then build `BRIEF.md`; load the installed `hyperframes` entry skill and follow its `general-video` route. Fast Track maps to `flow: automation`; Co-Creator/Director or an edit department override maps to `flow: companion`. For an existing project, make only the requested edit and preserve its brief/state. `build-edit-handoff.mjs` owns `BRIEF.md` and regenerates it on every run, preserving only an `## Editor notes` section if one exists.
+9. **Compose to the house rules** (each one cost a rebuild on Tessa S01E01):
+   - **Dialogue** comes from the original stems, not the padded lipsync drivers, placed at the cut's start plus the speech lead; the Grok audio track is never used.
+   - **Ducking and fades are timeline volume tweens** (`tl.to("#bed", { volume: … })`), never `data-automation` lanes. Automation lanes route the element through WebAudio in Studio, stutter the beds, and mute the native dialogue elements, so the preview cannot be trusted and the user hears no voices.
+   - **One sub-composition per scene or location**, not one monolithic `index.html`: a single track with more than twenty timed elements trips `timeline_track_too_dense` and hides real warnings.
+   - **Beds are normalised** to about −24 dB mean before placement (`ffmpeg -af loudnorm` or a measured gain), music sits around −20 dB below dialogue peaks, dialogue is untouched; ducking dips beds to roughly 45 % with 80 ms ramps. A generated bed shorter than the story is tiled with 2 s crossfades and disclosed.
+   - **No burned-in captions by default.** The platform overlays its own; a caption pill in the picture is distracting and doubles the caption-zone risk. If burn-in is requested, use one tested caption component with `bottom:auto; height:auto; align-items:flex-start` on the container so the `.clip{inset:0}` rule cannot stretch it.
+   - **Fonts** come from the list HyperFrames can supply from Google Fonts (Inter, Bebas Neue, JetBrains Mono, Space Grotesk, …); Inter Tight is not among them.
+   - **Bookends** follow the template in `branding.md`: full-bleed brand ground, mark at 60–70 % of frame width, no blend-mode tricks to hide a mark's own background (use a transparent PNG).
+10. **Verify and approve.** Run `hyperframes check --snapshots` at hero timestamps, inspect shot/scene midpoints and first/last frames, watch once muted and once with sound, proof the sidecar captions in the preview, confirm the story cut and the bookends (cliffhanger frame untouched, end card 0.5–1.5 s, sting inside the end card, nothing after it but declared end matter), and obtain explicit final Studio preview approval. If the Studio player misbehaves, render a `--quality draft` proxy and review that; do not ship a mix nobody has heard.
+11. **Render.** Always with the low-memory flag for a vertical over 60 s; frame capture otherwise needs more than 20 GB of scratch:
+
+    ```bash
+    HYPERFRAMES_BROWSER_PATH="<chrome>" npx hyperframes render post/hyperframes --quality high --low-memory-mode --output deliverables/s01e01/<show>_S01E01_<title>_1080x1920_master.mp4
+    ```
+
+    Quality values are `draft`, `standard`, `high`. Probe the output (`ffprobe`), measure the mix (`volumedetect`), and pull the poster frame.
+12. **Deliver.** Probe the master and return the declared output profile, SRT/VTT, poster, a **review proxy under 30 MB** (`--quality draft` or an ffmpeg CRF 30 transcode, so it can travel through chat and phone attachments), optional clean/textless master, edit/delivery manifests, hashes/source ledger, Board link, and explicit omissions. Upload/register only when a safe supported path exists.
 
 ## Fresh-project handoff
 
@@ -26,8 +42,8 @@ node <installed-skill>/scripts/validate-episode-manifest.mjs episodes/s01e01/edi
 node <installed-skill>/scripts/build-edit-handoff.mjs episodes/s01e01/edit-manifest.json --root . --output post/hyperframes/BRIEF.md
 ```
 
-The handoff builder is deterministic and spends no Elegiac credits. Run it only after the HyperFrames project exists because `BRIEF.md` is created after initialization.
+The handoff builder is deterministic and spends no Elegiac credits. Run it only after the HyperFrames project exists because `BRIEF.md` lives inside it. Re-run it after every manifest change; it overwrites the generated sections and keeps `## Editor notes`.
 
 ## Current-alpha round-trip limit
 
-`upload_asset` can register supported URL/base64 inputs, but a large rendered MP4 should not be base64-transferred merely to claim completion. When no secure large-media path is available, keep the verified master local, mark `registration.status` as `not_registered`, and tell the user exactly what remains.
+`upload_asset` can register supported URL/base64 inputs, but a large rendered MP4 should not be base64-transferred merely to claim completion. When no secure large-media path is available, keep the verified master local, mark `registration.status` as `not_registered`, and tell the user exactly what remains. The review proxy is what travels; the master stays on disk.

@@ -287,11 +287,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-microdrama-codex.zip",
-        "sizeBytes": 42005
+        "sizeBytes": 89076
       },
       "claude": {
         "file": "elegiac-microdrama-claude.zip",
-        "sizeBytes": 42005
+        "sizeBytes": 89076
       }
     }
   },
