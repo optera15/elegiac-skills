@@ -1,5 +1,18 @@
 # elegiac-microdrama changelog
 
+## 2.2.0 — 2026-09-08 — after the Another League S01E01 pilot
+
+- **Motion default is MiniMax H3 Max Turbo at 768p** (`minimax-h3`, `qualityTier: "turbo"`, `duration` as a string, minimum `"5"`), about 10 credits per second against Grok Imagine 1.5's 28–50. True output 768 × 1344 at 24 fps. Grok 1.5 is now a per-shot repair option **at 1080p only**: its 720p tier is a smaller frame than H3's and conforms worse into the master.
+- **The non-speaking clause is withdrawn.** Video models ignore negations — "no lip movement" produced talking mouths on H3 and fluent gibberish on Grok — and VEED overwrites the mouth region wholesale, so an articulating face syncs *better* than a closed one. Motion prompts now carry no speech vocabulary at all, in the prompt or the negative prompt, and name the room tone instead.
+- **Stems are no longer padded to match clips.** Audio longer than picture makes VEED fill the gap by running the clip backwards; trailing room counts as audio. Generate the clip at stem length plus a handle, drive the lipsync with the tightest take, and cut every lipsynced shot on its last word. `pad-stem.sh` is demoted to a last resort. `syncMode: "silence"` does not pad; VEED v2 *does* expose `syncMode`, contrary to 2.0/2.1.
+- **A lipsync is welded to the stem that drove it.** New rule and mechanical check: match stems by asset id, and assert `|stem − lipsync| < 0.2 s` before rendering. Trimming a lipsynced shot trims picture and stem equally.
+- **Continuity gate section 0: a still is the first frame of its clip.** Never write a still as though a state change already happened; the change is performed inside a clip. New `state` check row. Matched OTS/reverse pairs are one geometry.
+- **Branding:** generated wordmarks are a poor buy; illustrate a real moment with the cast sheets attached and crop the mark from it. Never use a blurred grab of the splash as the end-card ground. Verify a supplied "transparent" PNG actually has an alpha channel.
+- **Edit house rules:** sub-composition asset paths are root-relative; alternate dialogue track indices; cue music rather than bedding it; drive the whole cut from one build script. Judge sound from a draft render, never from Studio, and never from a concat rough (it plays each clip's baked audio and hides stem bugs).
+- **Still model default is GPT Image 2** at `quality: "medium"`, `resolution: "2k"`, 15 credits, replacing Nano Banana Pro at 25: it follows a long enhanced prompt more literally, holds identity from cast sheets, renders legible in-frame text, and costs less. Nano Banana Pro stays available as a per-show override. **Muse Image at 3 credits is hardened as the draft model** — cheap enough to run staging, blocking and composition loops freely before spending a keeper credit.
+- **Character references have their own section** (`production-pipeline.md`, stage 2). `generate_shots` silently drops per-shot `referenceImageUrls` past the first at `source_frame_limit`, so cast must travel in `castMemberIds`, `referenceImageUrls` carries the plate and props, and batches are grouped by character. The symptom is a stranger in the wrong wardrobe, which reads as identity drift and sends you to the wrong fix. `enhance_prompt` is unaffected and takes up to 8 URLs; its own trap is a hand-typed Firebase token.
+- New `references/field-notes.md`: model and connector gotchas, ffmpeg recipes, and how the notes actually arrive from a user.
+
 ## 2.1.0 — 2026-09-07 — performance and framing defaults
 
 - **Handheld by default.** Every motion prompt opens with a handheld camera with subtle organic drift (no shaky-cam); a locked-off frame needs a narrative reason recorded on the shot (`cameraLock`).

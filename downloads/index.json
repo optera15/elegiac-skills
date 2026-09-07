@@ -163,11 +163,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-dialogue-scene-codex.zip",
-        "sizeBytes": 11798
+        "sizeBytes": 12668
       },
       "claude": {
         "file": "elegiac-dialogue-scene-claude.zip",
-        "sizeBytes": 11798
+        "sizeBytes": 12668
       }
     }
   },
@@ -183,11 +183,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-generate-codex.zip",
-        "sizeBytes": 15286
+        "sizeBytes": 15359
       },
       "claude": {
         "file": "elegiac-generate-claude.zip",
-        "sizeBytes": 15286
+        "sizeBytes": 15359
       }
     }
   },
@@ -204,11 +204,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-illustration-codex.zip",
-        "sizeBytes": 16215
+        "sizeBytes": 16288
       },
       "claude": {
         "file": "elegiac-illustration-claude.zip",
-        "sizeBytes": 16215
+        "sizeBytes": 16288
       }
     }
   },
@@ -225,11 +225,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-key-art-codex.zip",
-        "sizeBytes": 16182
+        "sizeBytes": 16255
       },
       "claude": {
         "file": "elegiac-key-art-claude.zip",
-        "sizeBytes": 16182
+        "sizeBytes": 16255
       }
     }
   },
@@ -287,11 +287,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-microdrama-codex.zip",
-        "sizeBytes": 89076
+        "sizeBytes": 101294
       },
       "claude": {
         "file": "elegiac-microdrama-claude.zip",
-        "sizeBytes": 89076
+        "sizeBytes": 101294
       }
     }
   },
@@ -306,11 +306,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-model-compare-codex.zip",
-        "sizeBytes": 12347
+        "sizeBytes": 12420
       },
       "claude": {
         "file": "elegiac-model-compare-claude.zip",
-        "sizeBytes": 12347
+        "sizeBytes": 12420
       }
     }
   },
@@ -327,11 +327,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-narrated-video-codex.zip",
-        "sizeBytes": 14334
+        "sizeBytes": 15204
       },
       "claude": {
         "file": "elegiac-narrated-video-claude.zip",
-        "sizeBytes": 14334
+        "sizeBytes": 15204
       }
     }
   },
@@ -387,11 +387,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-product-shots-codex.zip",
-        "sizeBytes": 16222
+        "sizeBytes": 16295
       },
       "claude": {
         "file": "elegiac-product-shots-claude.zip",
-        "sizeBytes": 16222
+        "sizeBytes": 16295
       }
     }
   },
@@ -442,11 +442,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-prompt-doctor-codex.zip",
-        "sizeBytes": 14453
+        "sizeBytes": 14526
       },
       "claude": {
         "file": "elegiac-prompt-doctor-claude.zip",
-        "sizeBytes": 14453
+        "sizeBytes": 14526
       }
     }
   },
@@ -561,11 +561,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-style-explorer-codex.zip",
-        "sizeBytes": 14147
+        "sizeBytes": 14220
       },
       "claude": {
         "file": "elegiac-style-explorer-claude.zip",
-        "sizeBytes": 14147
+        "sizeBytes": 14220
       }
     }
   },
@@ -582,11 +582,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-thumbnail-cover-codex.zip",
-        "sizeBytes": 16836
+        "sizeBytes": 16909
       },
       "claude": {
         "file": "elegiac-thumbnail-cover-claude.zip",
-        "sizeBytes": 16836
+        "sizeBytes": 16909
       }
     }
   },
@@ -604,11 +604,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-trailer-kit-codex.zip",
-        "sizeBytes": 15722
+        "sizeBytes": 16592
       },
       "claude": {
         "file": "elegiac-trailer-kit-claude.zip",
-        "sizeBytes": 15722
+        "sizeBytes": 16592
       }
     }
   },
@@ -625,11 +625,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-ugc-ads-codex.zip",
-        "sizeBytes": 12940
+        "sizeBytes": 13810
       },
       "claude": {
         "file": "elegiac-ugc-ads-claude.zip",
-        "sizeBytes": 12940
+        "sizeBytes": 13810
       }
     }
   },
@@ -664,11 +664,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-virtual-influencer-codex.zip",
-        "sizeBytes": 11225
+        "sizeBytes": 12095
       },
       "claude": {
         "file": "elegiac-virtual-influencer-claude.zip",
-        "sizeBytes": 11225
+        "sizeBytes": 12095
       }
     }
   },

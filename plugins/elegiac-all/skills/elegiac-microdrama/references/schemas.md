@@ -26,7 +26,7 @@ These v1 JSON contracts are canonical local state for the skill-only alpha. Stor
     "lightingKey": "late-afternoon Gulf sun, soft haze, warm key from screen left"
   },
   "pipeline": {
-    "stillModel": { "keeper": "nano-banana-pro", "keeperCredits": 25, "draft": "muse-image", "draftCredits": 3 },
+    "stillModel": { "keeper": "gpt-image-2", "keeperQuality": "medium", "keeperResolution": "2k", "keeperCredits": 15, "draft": "muse-image", "draftCredits": 3 },
     "motionModel": "grok-imagine-video-1-5",
     "lipsyncModel": "veed-lipsync-v2",
     "speechModel": "elevenlabs-v3",
@@ -152,7 +152,7 @@ For every episode row store `episodeId`, number, title, promise, hook, turn, cli
   "mouthVisible": true,
   "faceCount": 1,
   "wardrobeAnatomy": null,
-  "stillModel": "nano-banana-pro",
+  "stillModel": "gpt-image-2",
   "dialogueStemAssetId": null,
   "stemDurationSeconds": null,
   "clipDurationSeconds": null,

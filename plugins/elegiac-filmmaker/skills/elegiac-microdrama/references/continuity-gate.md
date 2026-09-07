@@ -1,8 +1,17 @@
 # The continuity gate: no still animates unreviewed
 
-This gate sits between stage 2 (stills) and stage 3 (motion) of `production-pipeline.md`. It costs nothing and it is where an episode is won or lost: a Grok clip and a VEED pass cost roughly 250 credits per cut, a still costs 3–25, and a broken still animated is a broken clip paid for twice. Tessa S01E01 skipped this gate and delivered "unwatchable slop" on staging alone: a character leaning on a truck, then twenty feet in front of it, then on a slightly different truck; extra trucks around the lot; the protagonist in a cab identical to the other character's truck; a cab shot through the windshield that made no spatial sense. Every one of those was visible in the still.
+This gate sits between stage 2 (stills) and stage 3 (motion) of `production-pipeline.md`. It costs nothing and it is where an episode is won or lost: an H3 Turbo clip and a VEED pass cost roughly 200 credits per cut, a still costs 3–25, and a broken still animated is a broken clip paid for twice. Tessa S01E01 skipped this gate and delivered "unwatchable slop" on staging alone: a character leaning on a truck, then twenty feet in front of it, then on a slightly different truck; extra trucks around the lot; the protagonist in a cab identical to the other character's truck; a cab shot through the windshield that made no spatial sense. Every one of those was visible in the still.
 
 The gate has two halves: a **per-still checklist** written into the ledger and a **stills animatic** the user watches before saying "animate".
+
+## 0. A still is the FIRST FRAME of its clip, not a snapshot of the scene
+
+Every check below depends on this and it is the rule most easily lost. A still is not "a picture of this beat"; it is the frame the clip starts on. Two things follow, and both were learned the expensive way on Another League S01E01:
+
+- **Never write a still as though a state change has already happened.** If a car door is open at the end of one shot, it is open at the start of the next, and the *closing* is performed inside a clip. That episode's opening was built with the door open while a boy talks and closed in the reverse, so the door shut in the gap between two cuts and the scene was unplayable. Both stills and both clips had to be re-shot. Ask of every still: does its opening state match the **end** state of the previous cut, and is every change between them performed on screen by someone?
+- **The stills animatic cannot catch this**, because it holds stills and shows no motion. This gate is the only place it gets caught, so check it here rather than trusting the animatic to reveal it.
+
+The same reasoning applies to a matched pair. An over-the-shoulder and its reverse are one geometry: fix who is screen-left and who is screen-right in the OTS, and the reverse must honour it. Generating the reverse from a fresh description rather than from the pair is how a scene ends up with two characters looking the same way.
 
 ## 1. Per-still checklist (shot order, always)
 
@@ -19,7 +28,8 @@ Review stills in edit order, never as a pile. For each still, open the plate it 
 | `anatomy` | Hands, arms, skin age, nails, fingers, teeth against the identity sheet? | A nineteen-year-old with a sixty-year-old hand |
 | `props` | Every plot object present, same object, same state, in the hand or place the previous still left it? | The bag appears, disappears, changes colour |
 | `light` | Same lighting key and time of day as the plate and neighbours? | Sunset in one still, overcast in the next |
-| `face` | For a speaking cut: exactly one visible face, mouth closed, within ~30° of camera, unobstructed? | Two faces (lipsync will pick one); mouth open (baked-in speech) |
+| `face` | For a speaking cut: exactly one visible face, mouth closed, within ~30° of camera, unobstructed? | Two faces (lipsync will pick one); mouth open (reads as mid-word in a held frame) |
+| `state` | Does this frame's opening state match the END of the previous cut — doors, props, who is standing, what is in whose hand? Is every change between the two performed on screen? | A door open in one shot and already shut in the next |
 | `frame` | Native 9:16 staging, subject in the upper-middle, caption zone clear, nothing important in the platform UI zones? | Face at the very top; hands cropped |
 | `text` | Any generated text (phone screens, signs) legible at phone size and correct? | Phone message unreadable |
 | `sense` | Would a script supervisor accept this frame in the cut? | Anything that makes you say "wait, where are we?" |
@@ -83,4 +93,4 @@ Stage 3 reads `animatic.approvedAt` and compares the still hashes to the files o
 
 ## 4. What the gate does not cover
 
-It does not review motion. After the pilot batch of clips (stage 3), look at first and last frames and one midpoint per clip for the same checks; Grok can introduce a vehicle or move a character too. Motion review is cheaper than lipsync, which is why the pilot batch exists.
+It does not review motion. After the pilot batch of clips (stage 3), look at first and last frames and one midpoint per clip for the same checks; a motion model can introduce a vehicle or move a character too, and the last frames are where a VEED reversal shows. Motion review is cheaper than lipsync, which is why the pilot batch exists.

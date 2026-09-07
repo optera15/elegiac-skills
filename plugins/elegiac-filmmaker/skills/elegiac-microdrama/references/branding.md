@@ -18,6 +18,14 @@ The package is designed once per show, stored in durable memory, and reused byte
 
 The conditioning the package creates is `reveal → sting → mark → NEXT`. Anything that dissipates that (a slow fade, a theme song, cast credits, production-company logos, a "next episode" preview) is prohibited.
 
+## Making the mark when there is no logo yet
+
+Two findings from Another League S01E01, where the first four attempts were rejected outright ("these are junk"):
+
+- **Generated wordmarks are a poor buy.** A model asked for "a logo for X" returns clip art: correct letters, no idea. Three `muse-image` wordmarks were rejected in a row.
+- **Illustrated key art with the actual cast is the thing that lands.** Ask for a full-frame 9:16 poster of a real moment from the show — the premise in one image — with the title lettering inside the illustration, and pass the cast identity sheets as `referenceImageUrls` so the figures are the characters rather than strangers. That poster then serves twice: as the Episode 1 splash, and cropped to its title band as the series mark. The keeper came from `gpt-image-2` at medium 2K with four cast sheets attached; `reve` was tried first and returned a downstream 500 on two jobs with 100 credits deducted and unrefunded.
+- **Verify a supplied "transparent" PNG actually has an alpha channel.** A user-supplied file named `..._transparent.png` had the checkerboard flattened into the pixels, and `ffprobe` reports `rgb24` for it. Check with PIL (`Image.open(f).mode`), and if there is no alpha, key it back out by saturation and luminance — brand colours are saturated, the checker greys are not — rather than compositing the grid into the render.
+
 ## Bookend design
 
 **Episode 1 opening** (`opening.mode`): `splash` (0.5–2 s title treatment, after or instead of a beat that can afford it) or `overlay-mark` (translucent mark over the opening shot, no added time). Never delay the cold hook past the first three seconds.
@@ -32,10 +40,10 @@ The conditioning the package creates is `reveal → sting → mark → NEXT`. An
 
 | Element | Spec | Sources, in order of preference | Stored |
 | --- | --- | --- | --- |
-| Series mark | PNG with real transparency (or SVG), reads at phone width when scaled to **60–70 %** of the frame; or a typographic lockup (title + font) that HyperFrames renders | user file → StyleSystem/key-art title treatment → generated via `generate_image` on `muse-image` (3 credits, renders wordmarks reliably; Ideogram's safety filter refused every photoreal-adjacent wordmark on Tessa, Recraft costs 50) with a prompt that asks for a **transparent or flat single-colour background** so no blend-mode trick is needed later → typographic | `brand/series-mark.<ext>` in the Production Kit; `series-manifest.branding.seriesMark` |
+| Series mark | PNG with real transparency (or SVG), reads at phone width when scaled to **60–70 %** of the frame; or a typographic lockup (title + font) that HyperFrames renders | user file → StyleSystem/key-art title treatment → **illustrated key art the mark is cropped from** (see below) → generated wordmark on `muse-image` (3 credits) → typographic | `brand/series-mark.<ext>` in the Production Kit; `series-manifest.branding.seriesMark` |
 | Sonic sting | 0.3–3 s (target ~1 s), one clear hit, clean tail that ends inside the end card, intelligible on a phone speaker | user file → `generate_audio` with `audioCategory: "sfx"`, `model: "elevenlabs-sfx-v2"`, `sfxDuration: 1`, `loop: false` ("brand sting: short rising synth hit with a hard cinematic impact, dry tail") or a 2–3 s music job → waived | `brand/sting.<ext>`; `series-manifest.branding.sting` |
 | Typography and colour | One display family for the mark/end card/episode bug and one caption family, **chosen from the families HyperFrames can fetch from Google Fonts** (Inter, Bebas Neue, Space Grotesk, JetBrains Mono, Oswald, Playfair Display, …; Inter Tight is not one of them); one or two brand colours | StyleSystem → user brand kit → chosen once with the user | `series-manifest.branding.typography` / `palette` |
-| Bookend ground | The surface behind the mark on the splash and end card: a full-bleed gradient or texture in the brand palette, or a blurred, darkened frame from the episode's own plate. **Never bare black**: a small mark floating on `#000` reads as unfinished (the Tessa S01E01 complaint). | chosen once with the user; `mode: gradient` (two palette colours, 20° angle, subtle grain) is the default | `series-manifest.branding.ground` |
+| Bookend ground | The surface behind the mark on the splash and end card: a full-bleed gradient or texture in the brand palette, or dedicated key art. **Never bare black** (the Tessa complaint) and **never a blurred grab of the splash** (the Another League complaint: "ugly grab from the splash screen"). A blurred frame of your own poster reads as a placeholder, because it is one. | chosen once with the user; `mode: gradient` is the safe default, a dedicated `texture` plate is better | `series-manifest.branding.ground` |
 | Opening treatment | `splash` / `overlay-mark` / `none` per the bookend design | decided once per show, Episode 1 vs later | `series-manifest.branding.opening` (`episode1` and `later`) |
 | End card | mode, blackout, duration, `nextText` pattern | decided once per show | `series-manifest.branding.endCard` |
 | Episode bug | `S1 · EP7`, translucent, inside the phone-safe zone, first 2–3 s only, optional | convention | `edit-manifest.graphics.episodeBug` |
@@ -52,7 +60,7 @@ Both bookends share one layout so the show is recognisable in a single frame:
 - **Splash (Episode 1)**: inserted after the cold-hook shot has landed (never before it), 0.5–2 s, hard cut in, hard cut out, sting on the cut in.
 - **Overlay mark (later episodes)**: 36 % width, 70 % opacity, top-centre inside the safe zone for the first 2–3 s of the opening shot; no ground.
 - **End card**: cliffhanger frame → hard cut or ≤ 0.5 s black → ground + mark + `nextText` in the caption family at 4 % frame height under the mark → sting starting on the cut to black, ending inside the card.
-- **Sponsor or credits end matter**: only when `credits.mode` is `end-matter`; the same ground, the sponsor's own logo at ≤ 30 % width with its tagline, 0.5–1.5 s, after the end card.
+- **Sponsor or credits end matter**: only when `credits.mode` is `end-matter`; the sponsor's own ground and palette (a sponsor card is *their* brand, not the show's), logo at ≤ 30 % width with its tagline, 0.5–1.5 s, after the end card and never before it. Stagger the fades so the card assembles rather than pops, keep it silent, and ask for the sponsor's fonts — at 1 s a tagline is a glance, so if the URL has to register, argue for 1.5 s.
 
 The stills animatic uses the same template so the bookends are reviewed with the stills, not discovered at the render.
 

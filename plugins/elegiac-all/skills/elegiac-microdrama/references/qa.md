@@ -25,20 +25,21 @@ Apply gates proportional to the requested stopping point. A script-only request 
 
 - Native 9:16 staging, not an accidental crop; faces, action, evidence, and titles survive phone-size safe-zone preview with the platform's own caption overlay in mind.
 - No identity drift, anatomy failures (hands and skin age against the identity sheet), unreadable generated text, discontinuous plot objects, duplicate or swapped vehicles, frozen mouths, or unexplained axis jumps.
-- The first and last frames of every clip work as still images; the pilot motion batch was inspected at first, mid, and last frame before the rest of stage 3.
+- **No state jump between cuts**: every door, prop, posture and hand position at the head of a shot matches the tail of the shot before it, and every change between them is performed on screen rather than in the gap.
+- The first and last frames of every clip work as still images; the pilot motion batch was inspected at first, mid, and last frame before the rest of stage 3. **The last frames of every lipsynced clip were checked for a VEED reversal** (the subject moving backwards through poses it already held) and the shot cut on its last word.
 - Every still was framed through `enhance_prompt` with a named `list_framings` entry recorded on the shot; consecutive cuts vary in size or side.
 - Every clip's camera is handheld with subtle drift (no shaky-cam, no tripod look) unless the shot records a narrative reason for a locked frame; every character shows small natural behaviour (weight shifts, glances, nods, gestures) so no figure reads as a mannequin.
-- Draft sources are not labeled premium finals; the call sheet disclosed the true source spec (704 × 1280 at 25 fps for the default pipeline).
+- Draft sources are not labeled premium finals; the call sheet disclosed the true source spec (768 × 1344 at 24 fps from H3 Max Turbo, 25 fps out of VEED).
 
 ## Sound and captions
 
 - Dialogue is intelligible on phone speakers, music does not mask it, and no stream clips.
 - Lipsync reads at normal playback and was applied only to cuts with exactly one visible speaking face. Room tone and ambience do not jump distractingly across cuts; beds were normalised before placement.
-- Default-pipeline clips were generated non-speaking (no baked-in Grok dialogue or lip movement under the lipsync); Grok's own audio track is muted in the edit; every speaking cut has its own stem from the original ElevenLabs file, not a padded driver; lipsync drivers were padded by script, never by pushing bytes through the model.
+- Every clip's native audio is muted in the edit; every speaking cut plays its own stem from the original ElevenLabs file, and that stem is the exact take that drove its lipsync (checked by asset id, and by `|stem − lipsync| < 0.2 s`); no lipsync driver was padded to match a clip; no lipsynced shot runs past its last word into a VEED reversal.
 - Each role, bit parts included, uses the same stored ElevenLabs Voice ID across every cut and episode. No line ships caption-only for want of a voice.
 - Every stem was performed with a leading and trailing beat and normalised to a 0.3 s head and 0.4 s tail; no dialogue pops or clicks at a clip boundary and every cut has room for a J/L edit.
 - Captions are a sidecar SRT that matches approved dialogue, timing, spelling, and speaker intent; they are burned in only on explicit request.
-- Ducking and fades are timeline volume tweens; the Studio preview plays every track audibly. If a draft render was used as the review medium, say so.
+- Ducking and fades are timeline volume tweens. **Sound was judged on a draft render, not on the Studio player**, which stutters on a dialogue timeline; if a preview link was handed over, that limitation was stated with it.
 - Music returned at the requested length or the tiling is disclosed; the underscore reuses the sting motif.
 - The story works muted and gains value with sound.
 

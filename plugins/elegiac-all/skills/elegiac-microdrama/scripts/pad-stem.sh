@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Pad (or trim) a dialogue stem to a clip's whole-second length so VEED Lipsync V2 sees equal lengths,
-# without the model ever reading audio bytes into its context.
+# LAST RESORT ONLY (see references/production-pipeline.md, stage 4).
+# Pad (or trim) a dialogue stem to a clip's whole-second length, without the model ever reading
+# audio bytes into its context.
+#
+# The default fix for a length mismatch is to generate the CLIP longer, not to pad the stem:
+# audio longer than picture makes VEED run the picture backwards, and padding is how that happens.
+# Reach for this only when an approved clip cannot be regenerated and its stem is shorter than it.
 #
 #   pad-stem.sh <stem.mp3> <clipSeconds> <out.mp3> [--lead 0.25] [--serve-base https://host/path]
 #

@@ -49,11 +49,16 @@ One sound per job, concrete and physical: "heavy wooden door slams, large empty 
 
 ## Lipsync constraints (VEED Lipsync V2, Sync Lipsync V2 Pro)
 
-- **VEED Lipsync V2** (`veed-lipsync-v2`) is the microdrama default: `generate_lipsync` with `videoUrl` + `audioUrl`, 14 credits per second, no sync modes — clip and stem must be within about half a second of each other, so generate the clip at the stem's length plus a 1 s handle. Source clips should be generated **non-speaking** (no dialogue, no lip movement in the video prompt) so the sync has nothing to fight.
-
+- **VEED Lipsync V2** (`veed-lipsync-v2`) is the microdrama default: `generate_lipsync` with `videoUrl` + `audioUrl`, flat 140 credits per call, and it **does** accept `syncMode` (`cut_off` default, plus `loop`, `bounce`, `silence`, `remap`).
+- **Always give it more picture than audio.** Generate the clip at the stem's length plus a 1–2 s handle. The two failure modes are asymmetric and both are ugly: audio longer than video makes VEED **run the picture backwards** to fill the gap, and video longer than audio makes `cut_off` **truncate the picture** to the audio, throwing away any action after the line. Trailing silence inside the stem counts as audio in both directions.
+- **Do not pad a stem to match the clip.** Padding is what manufactures the reversal above. Keep a padded copy for editorial handles if you want one, drive the lipsync with the tightest stem, and cut the finished shot on the last word. `syncMode: "silence"` does *not* pad — tested on exactly this case, it still trimmed to the audio length.
+- **Let the source clip talk.** Older guidance said to generate clips non-speaking. That is wrong twice: video models ignore negations like "no lip movement" and render talking mouths anyway, and VEED overwrites the mouth region wholesale, so an already-articulating face gives it *better* geometry than a closed one. Write the motion prompt with no speech vocabulary at all, not even in the negative prompt, and let VEED do its job.
+- **A lipsync is welded to the exact stem that drove it.** Re-read a line and the superseded take will silently drift the picture if the edit plays it. Match on asset id, never filename, and assert `|stem duration − lipsync duration| < 0.2 s` before rendering. Trimming a lipsynced shot means trimming picture and stem by the same amount.
+- **When a long action clip carries a short line**, lipsync it and then splice locally with ffmpeg: VEED's head up to the end of the line, then the original clip from that point. Free, frame-accurate, and the action survives.
 - Input video should be a clean talking-framing: MCU/CU, subject facing camera within ~30°, mouth unobstructed, minimal fast head motion.
 - Generate the speech first, approve the read, *then* run lipsync — re-syncing is cheaper than re-voicing.
-- Match clip and audio durations; trim audio leading silence.
+- VEED returns **25 fps** whatever went in; conform in the edit and disclose it.
+- **There is no voice changer in Elegiac.** Every audio model is text-to-something; speech-to-speech conversion of a generated performance into a cast voice is not available through the connector. Do not design a pipeline around it.
 - Real-person likeness + cloned/derived voice = consent required on **both** axes (see `elegiac-conventions.md`).
 
 ## Synthetic-voice disclosure

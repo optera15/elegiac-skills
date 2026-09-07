@@ -3,7 +3,7 @@ name: elegiac-microdrama
 description: "Create, continue, or edit episodic vertical microdramas with Elegiac production memory and HyperFrames post. Use for short drama, micro drama, vertical drama, duanju, one-minute drama, or a mobile-first scripted series; routes new-show, new-episode, and edit workflows without using Showrunner."
 allowed-tools: Bash
 argument-hint: "[premise, show/episode, or footage to edit]"
-version: 2.1.0
+version: 2.2.0
 references:
   - elegiac-conventions.md
   - platform-specs.md
@@ -17,15 +17,19 @@ Turn the smallest workable idea into a resumable vertical series package and, wh
 
 Read `references/elegiac-conventions.md` first. It governs spend, permission retries, rights, memory, and fail-closed behavior.
 
-This is edition 2.0, rebuilt after the first full pilot (Tessa S01E01, 2026-09). That episode reached a probed 1080 × 1920 master and failed as drama because stills were animated without a shot-order review, locations had one plate for seven staging positions, and the script overran the target before a stem existed. The gates below exist so that cannot happen again. If the plugin copy you are running is older than the canonical source (`skills/elegiac-microdrama` in the Elegiac repository), say so and prefer the newer references.
+This is edition 2.2, revised after the second full pilot (Another League S01E01, 2026-09), which delivered a 92 s master the user was happy with. Edition 2.0 was written after the first pilot (Tessa S01E01), which reached a probed master and failed as drama because stills were animated without a shot-order review, locations had one plate for seven staging positions, and the script overran the target before a stem existed. The gates below exist so neither can happen again.
+
+What changed in 2.2, all of it learned in production: **MiniMax H3 Max Turbo replaces Grok Imagine 1.5** as the motion default at roughly a third of the cost; the **non-speaking clause is withdrawn** because video models ignore negations and VEED prefers a moving mouth anyway; **stems are no longer padded to match clips**, because that is what makes VEED run the picture backwards; and the continuity gate gained the rule that **a still is the first frame of its clip**, not a snapshot of the scene. Read `references/field-notes.md` for the reasoning and the operational details behind these.
+
+If the plugin copy you are running is older than the canonical source (`skills/elegiac-microdrama` in the Elegiac repository), say so and prefer the newer references.
 
 ## Route one mode
 
 Choose from the user's actual starting point. Do not ask them to select a mode when it is evident.
 
 - Bare premise, title, or new series → read `references/new-show.md`, then `references/craft.md`, `references/branding.md`, and `references/schemas.md`.
-- Existing Production plus a request to plan or make an episode → read `references/new-episode.md`, then `references/production-pipeline.md` (the default clip pipeline), `references/continuity-gate.md`, `references/craft.md`, `references/schemas.md`, and `references/qa.md`. Read `references/branding.md` before the edit manifest.
-- Existing clips, Episode Board, Production Kit, rough cut, or HyperFrames project → read `references/edit.md`, `references/branding.md`, `references/schemas.md`, and `references/qa.md`. Read `references/craft.md` when story pacing is in scope.
+- Existing Production plus a request to plan or make an episode → read `references/new-episode.md`, then `references/production-pipeline.md` (the default clip pipeline), `references/continuity-gate.md`, `references/craft.md`, `references/schemas.md`, and `references/qa.md`. Read `references/branding.md` before the edit manifest, and `references/field-notes.md` before the first spend.
+- Existing clips, Episode Board, Production Kit, rough cut, or HyperFrames project → read `references/edit.md`, `references/branding.md`, `references/schemas.md`, `references/qa.md`, and `references/field-notes.md`. Read `references/craft.md` when story pacing is in scope.
 
 If a request spans modes, run them in that order and retain one state ledger. Stop when the user's requested deliverable is complete; planning does not authorize generation, and generation does not authorize rendering.
 
@@ -63,7 +67,7 @@ The first brief collects, in one consolidated question with recommended defaults
 - An Episode is exactly one Board named `S01E01 — <Title>`, created only after the title is locked (there is no rename tool). Keep every episode artifact and workflow result on that Board. Shot IDs are `S01E01-010`, `S01E01-020`, leaving gaps for inserts.
 - **App Standard** is 60 episodes × 75 seconds. Keep visible alternatives for 24 or 30 episodes at 60–120 seconds and a Custom profile. The target is enforced at script stage by `scripts/check-shot-budget.mjs`, not discovered at the edit.
 - Plan the whole season in text, but produce only one episode at a time. Never turn "make the series" into bulk generation.
-- Native final master is 1080 × 1920, rendered in post. Source clips from the default pipeline (`references/production-pipeline.md`: ElevenLabs V3 dialogue → 9:16 stills on the show's still model → Grok Imagine 1.5 non-speaking clips → VEED Lipsync V2 where one visible mouth speaks) are **704 × 1280 at 25 fps** and the call sheet discloses that; 1080p clips are a premium option on explicit request. 480 × 854 is draft-only and may not be labeled final.
+- Native final master is 1080 × 1920, rendered in post. Source clips from the default pipeline (`references/production-pipeline.md`: ElevenLabs V3 dialogue → 9:16 stills on the show's still model → MiniMax H3 Max Turbo clips at 768p → VEED Lipsync V2 where one visible mouth speaks) are **768 × 1344 at 24 fps**, and a lipsynced clip returns at **25 fps**; the call sheet discloses both. Grok Imagine 1.5 at 1080p is a per-shot repair option on explicit request, not a cheaper tier — its 720p is a smaller frame than H3's. 480 × 854 is draft-only and may not be labeled final.
 - Captions are a sidecar SRT. Burn-in is opt-in.
 - Use fixed IDs and structured files to determine the next episode; Board count and chat memory are not authoritative.
 
@@ -83,8 +87,8 @@ Planning, scripts, manifests, budgets, continuity review, the stills animatic, a
 4. **Stills** in plate batches, every one framed through `enhance_prompt` with a named `list_framings` entry, prompt-linted (no "lipsync", no ages, wardrobe/anatomy lines on inserts).
 5. **Continuity gate**: every still `pass` in shot order (`references/continuity-gate.md`); deviations flagged, absurdities rejected.
 6. **Stills animatic** watched by the user, approved with "animate".
-7. **Motion**, pilot batch first, then the rest; handheld camera by default, two or three small natural behaviours per character, non-speaking clause always.
-8. **Lipsync** only where one visible mouth speaks; padded drivers by script.
+7. **Motion**, pilot batch first, then the rest; handheld camera by default, two or three small natural behaviours per character, and **no speech vocabulary anywhere in the prompt or the negative prompt**.
+8. **Lipsync** only where one visible mouth speaks; picture always longer than audio, never a padded driver.
 
 Generate one episode only. Follow exact idempotency-key retry rules in the shared conventions; a stall over 10 minutes gets a fresh key and a linted prompt.
 
