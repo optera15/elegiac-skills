@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-social",
+  "version": "0.3.2",
+  "description": "Social and creators: virtual influencers, content calendars, and click-worthy thumbnails/covers with series consistency.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "social"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac Social",
+    "shortDescription": "Creators, calendars and thumbnails",
+    "longDescription": "Social and creators: virtual influencers, content calendars, and click-worthy thumbnails/covers with series consistency.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Plan a month of posts with one visual system",
+      "Design a virtual influencer and a first set of posts",
+      "Make a click-worthy thumbnail set for this series"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

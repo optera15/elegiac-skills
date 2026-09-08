@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-all",
+  "version": "0.3.2",
+  "description": "Elegiac — All Skills: the complete filmmaking, marketing, social, YouTube, and studio toolkit with the Elegiac MCP connector.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "all"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac",
+    "shortDescription": "Cinematic AI production from a chat",
+    "longDescription": "Elegiac — All Skills: the complete filmmaking, marketing, social, YouTube, and studio toolkit with the Elegiac MCP connector.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Plan and produce Episode 1 of a vertical microdrama",
+      "Build a campaign pack of hero stills and social cuts",
+      "List Elegiac models and quote a still before generating"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

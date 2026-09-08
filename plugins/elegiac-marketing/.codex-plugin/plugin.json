@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-marketing",
+  "version": "0.3.2",
+  "description": "Marketing and ads: campaign packs, product photography, A/B ad variants, UGC-style spots, and platform cutdowns with brand continuity.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "marketing"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac Marketing",
+    "shortDescription": "Campaigns, ads and product shots",
+    "longDescription": "Marketing and ads: campaign packs, product photography, A/B ad variants, UGC-style spots, and platform cutdowns with brand continuity.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Generate a campaign pack from this product brief",
+      "Make an A/B ad variant matrix for this message",
+      "Cut this spot down for every platform"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

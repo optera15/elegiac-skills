@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-filmmaker",
+  "version": "0.3.2",
+  "description": "Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "filmmaker"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac Filmmaker",
+    "shortDescription": "Cinematic production from a chat",
+    "longDescription": "Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key art, pitch decks, story bibles, locations, continuity, dialogue, cast, and launch kits — Elegiac as a cinematic production backend.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Turn my premise into a series plan and Episode 1",
+      "Write a shot list and storyboard for this scene",
+      "Lock a location master and its coverage plates"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-studio-tools",
+  "version": "0.3.2",
+  "description": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "studio-tools"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac Studio Tools",
+    "shortDescription": "Generate, compare, audit, deliver",
+    "longDescription": "Studio tools: one-off generation, boards, brand memory, style exploration, illustration, prompt triage, model comparison, account audits, delivery packs, and Production Kit exports.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Generate one image and quote it first",
+      "Compare three models on this prompt",
+      "Audit my Elegiac productions and credits"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

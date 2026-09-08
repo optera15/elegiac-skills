@@ -1,0 +1,46 @@
+{
+  "name": "elegiac-youtube",
+  "version": "0.3.2",
+  "description": "YouTube creators: channel identity kits, narrated/faceless video pipelines, native Shorts, and title/description/chapter packaging.",
+  "author": {
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "youtube"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Elegiac YouTube",
+    "shortDescription": "Channel kits, narrated video, Shorts",
+    "longDescription": "YouTube creators: channel identity kits, narrated/faceless video pipelines, native Shorts, and title/description/chapter packaging.",
+    "developerName": "Elegiac",
+    "category": "Creativity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://elegiac.ai",
+    "privacyPolicyURL": "https://elegiac.ai/privacy",
+    "termsOfServiceURL": "https://elegiac.ai/terms",
+    "defaultPrompt": [
+      "Turn this script into a faceless narrated video",
+      "Build a channel identity kit",
+      "Package this video: title, description, chapters"
+    ],
+    "brandColor": "#7C3AED",
+    "brandColorDark": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

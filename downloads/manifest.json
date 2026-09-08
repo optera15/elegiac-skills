@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "skillCount": 35,
   "artifacts": [
     {
@@ -42,8 +42,8 @@
         "elegiac-virtual-influencer",
         "elegiac-youtube-channel-kit"
       ],
-      "sizeBytes": 508351,
-      "sha256": "21e9c0576521a3b824820353f17618cbe9cd9e41af5bdf4142e24a17e6622dd7"
+      "sizeBytes": 585666,
+      "sha256": "b4401ca545eab3a4f6669b115c16697de7cba3f684f2f7477a324d0c116d84d3"
     },
     {
       "file": "elegiac-filmmaker-plugin.zip",
@@ -63,8 +63,8 @@
         "elegiac-character-cast",
         "elegiac-launch-kit"
       ],
-      "sizeBytes": 250274,
-      "sha256": "61d56c830750a7c20e18a08719ecac1fccaf89c1ff8fc05dd180c0e804839e4e"
+      "sizeBytes": 327621,
+      "sha256": "c49df08344992191aa470c1f8098ce4b2dfefd6f4a9fdda8a85696da20e1ab21"
     },
     {
       "file": "elegiac-marketing-plugin.zip",
@@ -76,8 +76,8 @@
         "elegiac-ugc-ads",
         "elegiac-platform-cutdowns"
       ],
-      "sizeBytes": 62998,
-      "sha256": "322452287ddebf2325f779fcece418292b6cd84cd90c50daaea799eb757bfb5a"
+      "sizeBytes": 140289,
+      "sha256": "fe0f2e50a77f14f5433af8b597e4b0d0df00476c97dd480eb3fd17f5496fc3ac"
     },
     {
       "file": "elegiac-social-plugin.zip",
@@ -87,8 +87,8 @@
         "elegiac-content-calendar",
         "elegiac-thumbnail-cover"
       ],
-      "sizeBytes": 39460,
-      "sha256": "2afcea529cf309c5511415e84c5b4b4263aa232ee8c09d7a39c8ffdccdc346c9"
+      "sizeBytes": 116738,
+      "sha256": "ab9c2181f8b2888fed6af2d28029cb57fad7445b47b302259d43f7b8db1b307c"
     },
     {
       "file": "elegiac-youtube-plugin.zip",
@@ -99,8 +99,8 @@
         "elegiac-shorts-factory",
         "elegiac-video-packaging"
       ],
-      "sizeBytes": 49096,
-      "sha256": "32da931aacc02c6634055e6f2f170dd5a6b988d9f4d74687d82ea476ecf6bc12"
+      "sizeBytes": 126361,
+      "sha256": "2f053c2d93139ffde3216dafee4f1a69d57fee0203aaa55ce26a2ccd25f106b6"
     },
     {
       "file": "elegiac-studio-tools-plugin.zip",
@@ -117,8 +117,8 @@
         "elegiac-deliver-pack",
         "elegiac-production-kit"
       ],
-      "sizeBytes": 111944,
-      "sha256": "da3b31d81be2cbca251e012aea3a2f5e9b6b1ad35d8ba7de84ad43d4c6770266"
+      "sizeBytes": 189248,
+      "sha256": "eebe9a65138b30e3c345292a3d7d4ef60bcc6c4b7acc10ef7a6f060343038abe"
     },
     {
       "file": "elegiac-ad-variants-claude.zip",

@@ -1,0 +1,80 @@
+{
+  "name": "elegiac",
+  "interface": {
+    "displayName": "Elegiac"
+  },
+  "plugins": [
+    {
+      "name": "elegiac-all",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-all"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "elegiac-filmmaker",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-filmmaker"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "elegiac-marketing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-marketing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "elegiac-social",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-social"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "elegiac-youtube",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-youtube"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "elegiac-studio-tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/elegiac-studio-tools"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    }
+  ]
+}

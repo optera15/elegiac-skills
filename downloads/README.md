@@ -1,6 +1,6 @@
 # Elegiac downloads
 
-Version **0.3.1** · **35 skills** · [Installation instructions](../README.md#install)
+Version **0.3.2** · **35 skills** · [Installation instructions](../README.md#install)
 
 ## Recommended: all skills
 
@@ -68,7 +68,8 @@ Connect the Elegiac MCP connector separately. Do not upload a plugin ZIP or the 
 ## Local skills folders
 
 [Download all skill folders](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-skills-all.zip), then extract into your
-client's skills directory (Codex: `~/.codex/skills/`). This is not a Claude single-skill upload.
+client's skills directory. Codex users: install from the marketplace instead (see the
+[installation instructions](../README.md#chatgpt--codex)). This is not a Claude single-skill upload.
 
 ## Versions and verification
 

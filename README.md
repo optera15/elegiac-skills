@@ -2,7 +2,7 @@
 
 Agent skills and plugins for driving [Elegiac](https://elegiac.ai) — cinematic AI production
 (images, video, audio, storyboards, consistent characters, campaign packs) — from Claude Code,
-Claude Desktop, Cursor, VS Code / GitHub Copilot, Codex, and other skill-aware agents.
+Claude Desktop, ChatGPT / Codex, Cursor, VS Code / GitHub Copilot, and other skill-aware agents.
 
 The recommended **Elegiac — All Skills** plugin includes all 35 skills and the
 Elegiac MCP server configuration. Smaller bundles are available below. The skills are MCP-first and
@@ -20,7 +20,7 @@ before spending, and mutating calls may pause on an approval link in your Elegia
 
 ### Claude Desktop / Cowork
 
-1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.3.1).
+1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.3.2).
 2. Open **Customize → Plugins**, choose the option to upload a plugin, and select the ZIP as downloaded.
 3. Connect the included Elegiac connector and sign in to your Elegiac account. If your build does not add the connector, use the [manual connector setup](#manual-connector-setup) below.
 4. Start a fresh conversation in the Claude mode where the plugin is available and run the read-only check below.
@@ -50,19 +50,35 @@ Choose **either elegiac-all or the smaller bundles**, to avoid duplicate skills.
 When switching to All Skills, disable/uninstall your smaller Elegiac plugins and individually
 installed Elegiac skills after confirming the complete plugin works. Keep your account connection.
 
+### ChatGPT / Codex
+
+Add the Elegiac marketplace once, then install the plugin. Both are one command in a terminal
+with the Codex CLI (installed with the ChatGPT desktop app):
+
+```text
+codex plugin marketplace add optera15/elegiac-skills
+codex plugin add elegiac-all@elegiac
+```
+
+Installing registers the Elegiac MCP server and starts its sign-in; if it does not, open
+Codex's MCP settings and connect `https://elegiac.ai/api/mcp`. Start a fresh chat afterwards so
+Codex picks up the skills. In the ChatGPT desktop app the marketplace then appears under
+**Plugins**, where the bundles can be installed or removed. Do not upload the plugin ZIP as
+a chat attachment or into a skills folder; the marketplace install replaces both.
+
 ### Other clients
 
-**Agent Plugins hosts** (Cursor, VS Code / Copilot, Copilot CLI, Kiro, ChatGPT/Codex apps):
+**Agent Plugins hosts** (Cursor, VS Code / Copilot, Copilot CLI, Kiro):
 each directory under `plugins/` is a standard [Agent Plugins](https://agent-plugins.org)
 package (`plugin.json` + `skills/` + `mcp.json`). Install from this repo using your
 client's plugin install flow — e.g. in VS Code, **Chat: Install Plugin From Source** with this
 repo's URL, or add the repo to `chat.plugins.marketplaces`.
 
-**Clients with a local skills folder**, including Codex: download
+**Other clients with a local skills folder**: download
 [all skill folders](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-skills-all.zip) and extract the contents into your
-client's skills directory (for Codex: `~/.codex/skills/`). The archive contains one folder
-per skill with its references. Configure and authenticate the Elegiac MCP server separately.
-This archive is for extraction, not for Claude's single-skill uploader.
+client's skills directory. The archive contains one folder per skill with its references.
+Configure and authenticate the Elegiac MCP server separately. This archive is for extraction,
+not for Claude's single-skill uploader, and Codex users should prefer the marketplace install above.
 
 ### Manual connector setup
 
