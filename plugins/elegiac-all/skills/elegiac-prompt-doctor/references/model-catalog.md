@@ -6,9 +6,10 @@ How to choose a model. Names and limits drift — `list_models` is the live sour
 
 | Model family | Reach for it when | Watch out |
 |---|---|---|
-| **GPT Image 2** (`gpt-image-2`, the catalog default) | Rendered text (titles, posters, thumbnails, UI), graphic design, layout-heavy compositions, general high fidelity; has an edit mode | Default for any deliverable with words on it. Override aspect presets with explicit width/height (e.g. 2400×1792 for 4:3 @2K) |
+| **GPT Image 2.5** (`gpt-image-2-5`, the catalog default) | Rendered text (titles, posters, thumbnails, UI), graphic design, layout-heavy compositions, general high fidelity; strong reference-driven editing via `gpt-image-2-5-edit` (up to 9 references) | Default for any deliverable with words on it. Five quality rungs (low/medium/high/xhigh/max, default high); every input image is billed on edits. Override aspect presets with explicit width/height (e.g. 2400×1792 for 4:3 @2K) |
+| **GPT Image 2.5 Flare** (`gpt-image-2-5-flare`) | The same model at roughly half the latency, same price | Pass it only when the user asks for speed or names Flare |
+| **GPT Image 2** (`gpt-image-2`) | Legacy. Text-to-image only — its edit endpoint is retired and a referenced call is rejected | In the app it survives only in the Characters / Locations & Assets preview picker; prefer 2.5 everywhere |
 | **Nano Banana Pro / NB2 / NB2 Lite** (`nano-banana-pro`, `nano-banana-2`, `nano-banana-2-lite`) | Reference-driven work: character likeness from refs, restyles, composite-from-references, edits; NB2 is the board default; Lite is the 1K fast-draft tier | The continuity workhorse; pairs with cast reference images. Lite is 1K only |
-| **Reve 2.1** (`reve`) | Typography-aware stills above 4K, multi-reference remixes (2–8 refs route to /remix, 1 ref to /edit) | Flat price regardless of size |
 | **Seedream 5.0** (`seedream-50-pro`) | Stylized/editorial looks, fashion, bold color; multi-reference edits | Content policy is stricter on photoreal people refs. Old `seedream-50-lite` ids resolve here |
 | **Kling Image v3 / Kling O1 Image** (`kling-image-v3`, `kling-o1-image`) | Cinematic stills up to 2K; O1 is reference-REQUIRED identity-preserving editing (up to 10 refs) | O1 has no text-to-image mode |
 | **Grok Imagine 2.0** (`grok-imagine-2`) | Fast iteration with multi-reference editing up to 2K | Cheaper loose drafts; verify finals |
@@ -16,9 +17,9 @@ How to choose a model. Names and limits drift — `list_models` is the live sour
 | **Grok Imagine Image** (`grok-imagine-t2i`) | Fastest cheap text-only drafts, exploration grids | Text-to-image only; not for finals |
 | **Recraft V4** (`recraft-v4`) | Graphic design, vector-flavoured illustration, typography-friendly layouts | Text-to-image only (no refs) |
 | **GPT 1.5** (`gpt-1-5`) | Transparent-background cutouts, quality-tiered stills | Text-to-image only |
-| **Ideogram 4** (`ideogram-4`) | Heavy in-image text rendering | Agent surface runs the Fast tier only; hidden from the app UI since 2026-07 for safety-filter false positives on photoreal people — prefer GPT Image 2 / Recraft for text |
+| **Ideogram 4** (`ideogram-4`) | Heavy in-image text rendering | Agent surface runs the Fast tier only; hidden from the app UI since 2026-07 for safety-filter false positives on photoreal people — prefer GPT Image 2.5 / Recraft for text |
 
-**Default routing:** text-on-image → GPT Image 2. Character continuity → Nano Banana with cast refs. Stylized → Seedream 5.0 / Reve. Identity-locked edits of an existing still → Kling O1 Image or Nano Banana Pro. Drafts → Nano Banana 2 Lite, Grok Imagine Image at 1K, or Muse Image (cheapest with references; also a good low-cost pick for text-on-image drafts).
+**Default routing:** text-on-image → GPT Image 2.5. Character continuity → Nano Banana with cast refs. Stylized → Seedream 5.0. Identity-locked edits of an existing still → Kling O1 Image or Nano Banana Pro. Drafts → Nano Banana 2 Lite, Grok Imagine Image at 1K, or Muse Image (cheapest with references; also a good low-cost pick for text-on-image drafts).
 
 ## Video models
 
@@ -49,7 +50,7 @@ Not on the agent surface (app-only, do not route here): LTX-2.3, WAN 2.2/2.6 (th
 | Model | Use |
 |---|---|
 | **ElevenLabs v3** (`elevenlabs-v3`) / **Gemini 3.1 Flash TTS** (`gemini-3-1-flash-tts`) | VO, dialogue, narration — ElevenLabs supports audio tags and performance direction (see `voice-and-music.md`) |
-| **MiniMax Music 3** (`minimax-music-3`) / **ElevenLabs Music v1** / **Gemini Lyria 3** | Score/temp music from a brief (genre, tempo, mood arc, duration); Lyria is the bare default |
+| **MiniMax Music 3** (`minimax-music-3`) / **ElevenLabs Music 2.5** (`elevenlabs-music-2-5`) / **Gemini Lyria 3** | Score/temp music from a brief (genre, tempo, mood arc, duration); Lyria is the bare default. ElevenLabs Music 2.5 is billed per STARTED minute (a 1:01 track costs two minutes), so prefer whole-minute lengths; its `compositionPlan` chunks sing lyrics. ElevenLabs Music v1 (`elevenlabs-music-v1`) only when the user names v1 |
 | **ElevenLabs SFX v2** (`elevenlabs-sfx-v2`) | Spot effects from short text descriptions |
 | **Sync Lipsync V2 Pro** (`sync-lipsync-v2-pro`) / **VEED Lipsync V2** (`veed-lipsync-v2`) | `generate_lipsync` with `videoUrl`: drive an existing talking-framing video with a speech track |
 | **OmniHuman 1.5** (`omnihuman-1-5`) | `generate_lipsync` with `imageUrl`: animate one still portrait to a speech/music track (optional `prompt` for performance direction, 720p/1080p); billed per audio second — the headless way to make a talking clip from a still |

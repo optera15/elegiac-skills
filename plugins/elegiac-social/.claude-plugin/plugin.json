@@ -1,8 +1,19 @@
 {
   "name": "elegiac-social",
   "description": "Social and creators: virtual influencers, content calendars, and click-worthy thumbnails/covers with series consistency.",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "author": {
-    "name": "Elegiac"
-  }
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "social"
+  ]
 }

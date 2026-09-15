@@ -55,6 +55,8 @@ elegiac generate animate --prompt "$MOTION" --start-image "$STILL_URL" --duratio
 elegiac generate audio --prompt "$LINE" --type speech --max-credits "$CAP" --wait --json
 elegiac generate audio --prompt "$MUSIC_BRIEF" --type music --max-credits "$CAP" --wait --json     # lyria: add --model lyria-3 --lyria-endpoint clip
 elegiac generate audio --prompt "$SONG_BRIEF" --type music --model minimax-music-3 --lyrics "$LYRIC_SHEET" --music-duration 180 --max-credits "$CAP" --wait --json   # full song, sung lyrics; duration is a MAX and the unused length is refunded
+elegiac generate audio --prompt "$MUSIC_BRIEF" --type music --model elevenlabs-music-2-5 --music-duration 60 --max-credits "$CAP" --wait --json   # ElevenLabs 2.5; billed per STARTED minute, so prefer whole-minute lengths
+elegiac generate audio --prompt "$SONG_BRIEF" --type music --model elevenlabs-music-2-5 --composition-plan '{"chunks":[{"text":"[Verse 1]\nFirst line here","duration_ms":30000,"positive_styles":["indie folk","acoustic guitar"]},{"text":"[Chorus]\nHook goes here","duration_ms":30000,"positive_styles":["indie folk","full band"]}]}' --max-credits "$CAP" --wait --json   # plan mode sings the chunk text; length = sum of chunk durations
 elegiac generate lipsync --video "$CLIP_URL" --audio "$SPEECH_URL" --max-credits "$CAP" --wait --json
 ```
 

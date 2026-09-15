@@ -38,7 +38,7 @@ Horror: black + single accent (red/white). Thriller: high-contrast teal/steel. D
 ## Title treatment
 
 - Title style is a brand: lock it once (style system!) and reuse identically across poster, title cards, thumbnails, social.
-- Generate with a text-capable model (GPT Image 2); always verify spelling letter-by-letter; regenerate or edit on any mangling.
+- Generate with a text-capable model (GPT Image 2.5); always verify spelling letter-by-letter; regenerate or edit on any mangling.
 - Contrast rule: title must read at thumbnail size (the poster will live as a 300px image on streaming shelves).
 
 ## Social derivatives

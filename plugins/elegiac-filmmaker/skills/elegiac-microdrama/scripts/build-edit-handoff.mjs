@@ -55,7 +55,7 @@ function decideFlow(collaboration = {}) {
   const overall = canonicalProfile(collaboration.profile);
   const edit = canonicalProfile(collaboration.departments?.edit ?? overall);
   const companion = edit === 'director' || edit === 'co-creator' || overall === 'director' || overall === 'co-creator';
-  return companion ? { flow: 'companion', storyboard: 'yes' } : { flow: 'automation', storyboard: 'no' };
+  return companion ? { flow: 'companion', storyboard: 'no' } : { flow: 'automation', storyboard: 'no' };
 }
 
 function seconds(value) {
@@ -122,7 +122,7 @@ function brandingLines(manifest) {
   lines.push(credits.mode === 'end-matter'
     ? `Credits: ${seconds(credits.durationSeconds)}s of end matter after the end card, never rolling, never before the end card.`
     : 'Credits: none on screen; platform metadata carries them.');
-  lines.push(`Bookends add ${seconds(computeBookendSeconds(branding))}s after the ${seconds(manifest.targetDurationSeconds)}s story cut.`);
+  lines.push(`Bookends add ${seconds(computeBookendSeconds(branding))}s; ${manifest.version === 2 ? 'they are included in the total episode target' : 'legacy version 1 target is story-only'}.`);
   return lines;
 }
 
@@ -135,14 +135,15 @@ export function renderBrief(manifest, { root, manifestPath }) {
   const language = manifest.captions?.language ?? 'en';
   const aspect = `${manifest.canvas.width}x${manifest.canvas.height}`;
   const bookendSeconds = computeBookendSeconds(manifest.branding);
-  const masterSeconds = Number((manifest.targetDurationSeconds + bookendSeconds).toFixed(3));
+  const storySeconds = Number(manifest.clips.reduce((n,c) => n+c.outSeconds-c.inSeconds-(c.transitionOutSeconds ?? 0),0).toFixed(3));
+  const masterSeconds = Number((storySeconds + bookendSeconds).toFixed(3));
   const clipLines = manifest.clips.map((clip, index) => {
     const duration = clip.outSeconds - clip.inSeconds;
     const transition = clip.transitionOutSeconds ?? 0;
-    return `${index + 1}. **${clip.shotId}** · ${clip.role ?? 'story'} · source ${seconds(clip.inSeconds)}–${seconds(clip.outSeconds)}s · edit ${seconds(duration)}s · transition overlap ${seconds(transition)}s`;
+    return `${index + 1}. **${clip.shotId}** · source scenelet ${clip.sourceSceneletId ?? 'legacy'} · ${clip.role ?? 'story'} · source ${seconds(clip.inSeconds)}–${seconds(clip.outSeconds)}s · edit ${seconds(duration)}s · transition overlap ${seconds(transition)}s · audio ${clip.audioMode ?? manifest.audioSource ?? 'legacy: inspect recorded tracks'}`;
   });
   const sourceLines = manifest.clips.map((clip) => sourceLine(clip, root, `${clip.shotId} ${clip.role ?? 'story'} clip`));
-  for (const kind of ['dialogue', 'music', 'sfx']) {
+  for (const kind of ['dialogue', 'native', 'music', 'sfx']) {
     for (const entry of manifest.audio?.[kind] ?? []) {
       sourceLines.push(sourceLine(entry, root, `${kind} ${entry.id}`));
     }
@@ -169,13 +170,17 @@ export function renderBrief(manifest, { root, manifestPath }) {
     'Keep faces, plot evidence, titles, and captions inside phone-safe vertical zones.',
     'Branding is brand punctuation, not an intro: no title sequence, theme song, “previously on”, episode-title card, rolling credits, production logos, or next-episode preview. Use only the mark, sting, and end-card behaviour named above; do not invent placeholder branding.',
     'The cliffhanger is sacred: the last dramatic frame stays untouched until the hard cut; the end card and sting follow it, never overlap it.',
-    'House audio rules: dialogue comes from the original stems listed above, never from a padded lipsync driver and never from the clip’s own track (mute every <video>); ducking and fades are GSAP timeline volume tweens on the main timeline, never data-automation lanes (they break Studio playback); normalise beds to about −24 dB mean before placement; music sits well under dialogue and fades out into the cut to black.',
+    manifest.version === 2
+      ? 'Native sound contract: preserve WAN generated dialogue and ambience with picture, exactly once. audioMode native keeps the video audio audible; audioMode extracted mutes only that video playback path and uses its linked same-source audio.native track at the recorded offset. Never substitute ElevenLabs voice-reference recordings. Trim picture and native audio together. Keep internal model edits intact unless the approved edit specifies otherwise. Additional music/SFX are optional and must not mask dialogue; follow current HyperFrames audio guidance.'
+      : 'Legacy sound contract: inspect recorded audioSource/audioMode and approved tracks before assembly; preserve their existing sync and provenance. Do not silently switch this version 1 edit to native-audio semantics or introduce voice-reference recordings.',
     'House picture rules: one sub-composition per scene or location, not one monolithic index.html; captions are a sidecar unless “Burn in captions: yes” above; when burned in, use a single tested caption component whose container sets bottom:auto and height:auto so the .clip inset cannot stretch it; fonts only from the families HyperFrames can supply.',
-    manifest.sourceSpec
+    manifest.version === 2
+      ? `Measured per-clip source specs: ${manifest.clips.map(c => `${c.shotId} ${c.sourceSpec.width}x${c.sourceSpec.height}@${c.sourceSpec.fps}, ${c.sourceSpec.durationSeconds}s`).join('; ')}. Conform once to ${aspect}@${manifest.canvas.fps}; disclose any upscale/frame-rate change.`
+      : manifest.sourceSpec
       ? `Sources are ${manifest.sourceSpec.width}x${manifest.sourceSpec.height} at ${manifest.sourceSpec.fps} fps, conformed to the ${aspect} master at ${manifest.canvas.fps} fps; disclose this in delivery.`
       : `Render the declared ${aspect} output profile; disclose any lower-resolution source material.`,
     `${manifest.outputProfile === 'draft-480' ? 'This is a draft-only output and must not be labeled final.' : 'Render with --quality high --low-memory-mode (a vertical over 60 s otherwise needs more than 20 GB of frame scratch); quality values are draft, standard, high.'}`,
-    'Run HyperFrames check --snapshots, inspect representative frames, and obtain explicit final Studio preview approval before render; if Studio playback is untrustworthy, review a --quality draft render and say so. Deliver a review proxy under 30 MB beside the master.',
+    'Run HyperFrames check, inspect joins and full exported playback with sound, and follow the recorded user-review agreement before final rendering. Existing authorization to finish carries forward; no redundant milestone approval. If Studio and export differ, diagnose playback before changing media. Deliver a review proxy under 30 MB beside the master.',
   ];
 
   return `---
@@ -199,7 +204,7 @@ ${sourceLines.join('\n')}
 
 ## Customizations
 
-- Assemble clips in manifest order to a ${seconds(manifest.targetDurationSeconds)} second story cut at ${manifest.canvas.fps} fps; with branding bookends the master runs ${seconds(masterSeconds)} seconds.
+- Assemble clips in manifest order to a ${seconds(storySeconds)} second story cut at ${manifest.canvas.fps} fps; with branding bookends the master runs ${seconds(masterSeconds)} seconds.
 - Cut plan:
 ${clipLines.map((line) => `  ${line}`).join('\n')}
 - Burn in ${language} captions: ${manifest.captions?.burnIn === true ? 'yes' : 'no'}.
@@ -208,7 +213,7 @@ ${clipLines.map((line) => `  ${line}`).join('\n')}
 - End card: ${manifest.graphics?.endCard ?? 'none'}.
 - Brand punctuation (series-level package, reused every episode):
 ${brandingLines(manifest).map((line) => `  - ${line}`).join('\n')}
-- Build dialogue, music, and SFX as separate controllable tracks; preserve intelligibility on phone speakers.
+- Preserve the audio routing explicitly listed per clip; never duplicate dialogue. Add only named music/SFX tracks and preserve intelligibility on phone speakers.
 
 ## Notes
 

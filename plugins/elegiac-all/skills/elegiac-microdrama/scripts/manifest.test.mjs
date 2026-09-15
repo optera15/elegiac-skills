@@ -2,13 +2,14 @@
 
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, rm, writeFile, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderBrief } from './build-edit-handoff.mjs';
-import { applyEditOrder, renderAnimatic } from './build-stills-animatic.mjs';
-import { computeBudget } from './check-shot-budget.mjs';
+import { validatePlan, PERFORMANCE_FIELDS } from './check-scenelet-plan.mjs';
+import { buildRequest } from './build-scenelet-request.mjs';
+import { createHash } from 'node:crypto';
 import { loadAndValidateManifest } from './validate-episode-manifest.mjs';
 
 const root = await mkdtemp(join(tmpdir(), 'elegiac-microdrama-'));
@@ -162,7 +163,7 @@ try {
   assert(gatedResult.warnings.some((warning) => warning.includes('sourceSpec 704x1280@25 is conformed')));
   const gatedBrief = renderBrief(gatedResult.manifest, { root, manifestPath: 'episodes/s01e01/edit-manifest.json' });
   assert.match(gatedBrief, /Bookend ground: full-bleed gradient #0B0B0F → #E4C46A at 20°/);
-  assert.match(gatedBrief, /never data-automation lanes/);
+  assert.match(gatedBrief, /Legacy sound contract/);
   assert.match(gatedBrief, /Burn in en captions: no/);
   assert.match(gatedBrief, /Sources are 704x1280 at 25 fps/);
 
@@ -190,56 +191,126 @@ try {
   assert.match(rebuilt, /## Editor notes\n\n- keep the hood insert/);
   assert.equal(rebuilt.split('## Editor notes').length, 2);
 
-  // Duration budget: estimates from lines, adds bookends, fails over target with trim candidates.
-  const blueprint = {
-    episodeId: 'S01E01',
-    targetDurationSeconds: 20,
-    shots: [
-      { shotId: 'S01E01-010', kind: 'establish', durationSeconds: 3 },
-      { shotId: 'S01E01-020', kind: 'speak', line: 'I told you— [sighs] …it doesn’t matter now. None of it matters.', speaker: 'a' },
-      { shotId: 'S01E01-030', kind: 'react', durationSeconds: 2 },
-      { shotId: 'S01E01-040', kind: 'speak', line: 'Get in.', speaker: 'b', stemDurationSeconds: 0.9 },
-      { shotId: 'S01E01-050', kind: 'insert', durationSeconds: 1.5 },
-    ],
-  };
-  const series = { branding: gated.branding, profile: { targetDurationSeconds: 20 } };
-  const pass = computeBudget(blueprint, series, 3);
-  assert.equal(pass.status, 'pass');
-  assert.equal(pass.bookendSeconds, 2.25);
-  assert.equal(pass.rows[3].basis, 'stem');
-  assert.equal(pass.rows[3].seconds, 1.65);
-  assert.equal(pass.rows[1].basis, 'line');
-  const fail = computeBudget({ ...blueprint, targetDurationSeconds: 8 }, series, 1);
-  assert.equal(fail.status, 'fail');
-  assert(fail.trimCandidates.some((candidate) => candidate.shotId === 'S01E01-030'));
-
-  // Edit order override: partial lists reorder only their own slots.
-  const ledger = ['180', '190', '200', '185', '205', '210'].map((id) => ({ shotId: `S01E01-${id}` }));
-  const reordered = applyEditOrder(ledger, ['180', '190', '200', '185', '205']);
-  assert.deepEqual(reordered.map((shot) => shot.shotId.slice(-3)), ['180', '190', '200', '185', '205', '210']);
-  const swapped = applyEditOrder(ledger, ['200', '190']);
-  assert.deepEqual(swapped.map((shot) => shot.shotId.slice(-3)), ['180', '200', '190', '185', '205', '210']);
-
-  // Stills animatic renders a seekable composition with stems and bookends.
-  const animaticHtml = renderAnimatic({
-    blueprint: { episodeId: 'S01E01', title: 'Bail' },
-    branding: { ...gated.branding, seriesMark: { status: 'typographic', title: 'TESSA', fontFamily: 'Inter' } },
-    cuts: [
-      { shotId: 'S01E01-010', kind: 'establish', speaker: null, start: 0, hold: 3, stillSrc: 'assets/stills/a.jpg', stemSrc: null, stemDuration: null },
-      { shotId: 'S01E01-020', kind: 'speak', speaker: 'tessa', start: 4, hold: 2.5, stillSrc: 'assets/stills/b.jpg', stemSrc: 'assets/stems/b.mp3', stemDuration: 1.4 },
-    ],
-    bookends: { splash: { start: 3, duration: 1 }, endCard: { blackStart: 6.5, blackout: 0.25, cardStart: 6.75, duration: 1, nextText: 'NEXT · S1 EP2' }, total: 7.75 },
-    assets: { mark: null, sting: 'assets/brand/sting.wav' },
-    canvas: { width: 1080, height: 1920, fps: 30 },
+  // Version 2 fixtures use real, tiny generated media: no external services.
+  const sceneFile = join(root, 'assets/video/s01e01/native.mp4');
+  execFileSync('ffmpeg', ['-v','error','-f','lavfi','-i','color=c=blue:s=32x48:r=24','-f','lavfi','-i','anullsrc=r=48000:cl=mono','-t','25','-c:v','libx264','-pix_fmt','yuv420p','-c:a','aac',sceneFile]);
+  const audioFile=join(root,'sample.wav');
+  execFileSync('ffmpeg',['-v','error','-f','lavfi','-i','sine=frequency=220:sample_rate=48000','-t','4',audioFile]);
+  const digest=async p=>createHash('sha256').update(await readFile(p)).digest('hex');
+  const audioHash=await digest(audioFile);
+  const makeUnit=(n,d=25)=>({
+    sceneletId:'S01E01-SC0'+n+'0',kind:'scenelet',generationDurationSeconds:d,
+    purpose:'A guarded request becomes an honest admission.',setting:'An autumn campus approach, warm soft light.',
+    startState:'Both stand on the path; Dylan holds one folded page and pencil.',
+    endState:'Both remain together; Dylan retains the bundle.',
+    characters:['dylan','logan'].map(role=>({role,name:role,speaks:true,voiceId:role+'-voice',
+      performance:Object.fromEntries(PERFORMANCE_FIELDS.map(k=>[k,'Restrained, sincere interaction; '+k+' follows established canon.']))})),
+    imageReferences:[...['dylan','logan'].map(role=>({role:'character',character:role,assetId:role+'-sheet',url:'https://example.test/'+role+'.png',approved:true,rightsCleared:true})),{role:'location',assetId:'lot',url:'https://example.test/lot.png',approved:true,rightsCleared:true}],
+    audioReferences:['dylan','logan'].map(role=>({role,voiceId:role+'-voice',assetId:role+'-audio',url:'https://example.test/'+role+'.wav',localPath:'sample.wav',sha256:audioHash,durationSeconds:4,approved:true,rightsCleared:true})),
+    shots:[{startSeconds:0,endSeconds:d,framing:'Waist-up two-shot',action:'A question is answered; both remain on the path.',transition:'End on a complete reaction.',
+      dialogue:[{id:'line'+n+'a',speaker:'logan',text:'You looking for Sienna?',delivery:'Warm, casual',visibility:'on-screen',listener:'Dylan listens.'},{id:'line'+n+'b',speaker:'dylan',text:'She lent me a pencil.',delivery:'Earnest',visibility:'on-screen',listener:'Logan listens without speaking.'}]}]
   });
-  assert.match(animaticHtml, /data-composition-id="main"[^>]*data-duration="7.75"/);
-  assert.match(animaticHtml, /<audio id="dlg-020" src="assets\/stems\/b.mp3" data-start="4" data-duration="1.4"/);
-  assert.match(animaticHtml, /id="splash" class="clip card" data-start="3"/);
-  assert.match(animaticHtml, /class="lockup">TESSA</);
-  assert.match(animaticHtml, /id="endcard" class="clip card" data-start="6.75" data-duration="1"/);
-  assert.match(animaticHtml, /linear-gradient\(20deg, #0B0B0F, #E4C46A\)/);
-  assert.match(animaticHtml, /window.__timelines\["main"\] = tl;/);
-  assert(!animaticHtml.includes('data-automation'));
+  const plan={version:2,episodeId:'S01E01',productionId:'prod-1',boardId:'board-1',runtime:{minSeconds:60,targetSeconds:75,maxSeconds:90},bookendSeconds:0,scenelets:[makeUnit(1),makeUnit(2),makeUnit(3)]};
+  const check=async p=>validatePlan(p,{root,ready:true});
+  assert.equal((await check(plan)).ok,true);
+  assert.equal((await check(plan)).summary.totalSeconds,75);
+  const invalidPlan=async (change,match)=>{const p=structuredClone(plan);change(p);const r=await check(p);assert.equal(r.ok,false);assert(r.errors.some(e=>e.includes(match)),r.errors.join('; '));};
+  await invalidPlan(p=>p.version=1,'migrate');
+  await invalidPlan(p=>p.scenelets[0].audioReferences.forEach(r=>r.durationSeconds=8),'duration disagrees');
+  // Declared lengths count in planning; actual lengths count in readiness.
+  const tooLong=structuredClone(plan);tooLong.scenelets[0].audioReferences.forEach(r=>r.durationSeconds=8);
+  assert((await validatePlan(tooLong)).errors.some(e=>e.includes('exceed 15')));
+  await invalidPlan(p=>p.scenelets[0].audioReferences[0].voiceId='other','voiceId mismatch');
+  await invalidPlan(p=>delete p.scenelets[0].audioReferences[0].durationSeconds,'measured');
+  await invalidPlan(p=>p.scenelets[0].audioReferences[0].sha256='0'.repeat(64),'hash changed');
+  await invalidPlan(p=>p.scenelets[0].audioReferences[0].approved=false,'approval');
+  await invalidPlan(p=>p.scenelets[0].audioReferences[0].rightsCleared=false,'rights');
+  await invalidPlan(p=>p.scenelets[0].imageReferences=[],'location reference');
+  await invalidPlan(p=>p.scenelets[0].generationDurationSeconds=31,'duration outside');
+  await invalidPlan(p=>p.scenelets[0].generationDurationSeconds=9,'duration outside');
+  await invalidPlan(p=>p.scenelets[0].shots[0].startSeconds=1,'contiguous');
+  await invalidPlan(p=>p.scenelets[0].shots[0].endSeconds=24,'cover');
+  await invalidPlan(p=>p.scenelets[0].shots[0].dialogue[0].speaker='absent','speaker missing');
+  await invalidPlan(p=>delete p.scenelets[0].characters[0].performance.hiddenAgenda,'hiddenAgenda');
+  await invalidPlan(p=>p.scenelets[0].characters.push(null),'character role');
+  await invalidPlan(p=>p.scenelets[0].imageReferences.push(null),'image reference');
+  await invalidPlan(p=>p.scenelets[0].audioReferences.push(null),'audio duration');
+  await invalidPlan(p=>p.scenelets[0].shots[0].dialogue.push(null),'dialogue id');
+  await invalidPlan(p=>p.scenelets[0].sceneletId=p.scenelets[1].sceneletId,'duplicate sceneletId');
+  await invalidPlan(p=>p.bookendSeconds=20,'outside the runtime window');
+  await invalidPlan(p=>p.scenelets[0].editDurationSeconds=26,'edit duration');
+  await invalidPlan(p=>p.scenelets[0].startImageUrl='https://example.test/start.png','unsupported extra');
+  const three=structuredClone(plan), third=structuredClone(three.scenelets[0].characters[0]);
+  third.role='sienna';third.voiceId='sienna-voice';three.scenelets[0].characters.push(third);
+  three.scenelets[0].shots[0].dialogue.push({id:'third',speaker:'sienna',text:'Wait.',delivery:'Quiet urgency',listener:'The men pause.',visibility:'off-screen'});
+  assert((await validatePlan(three)).errors.some(e=>e.includes('speakerException')));
+  three.scenelets[0].speakerException='A brief off-screen intervention is essential to the reveal.';
+  assert.equal((await validatePlan(three)).ok,true);
+  const scoped=structuredClone(plan);scoped.scenelets[1].audioReferences=[];scoped.scenelets[1].imageReferences=[];
+  assert.equal((await validatePlan(scoped,{root,ready:true,sceneletId:'S01E01-SC010'})).ok,true);
+  const insert=structuredClone(plan);insert.scenelets[0]={...makeUnit(1,3),sceneletId:'S01E01-IN015',kind:'insert'};
+  insert.scenelets[0].characters.forEach(c=>c.speaks=false);insert.scenelets[0].shots[0].dialogue=[];insert.scenelets[0].audioReferences=[];
+  insert.scenelets[1]=makeUnit(2,30);insert.scenelets[2]=makeUnit(3,30);
+  assert.equal((await check(insert)).ok,true);
+  const longDialogue=structuredClone(plan);longDialogue.scenelets[0]=makeUnit(1,30);
+  longDialogue.scenelets[0].shots[0].dialogue[0].text=Array(45).fill('word').join(' ');
+  const longCheck=await check(longDialogue);assert.equal(longCheck.ok,true);assert(longCheck.summary.rows[0].estimatedSpeechSeconds>15);
+  const payload=buildRequest(plan,'S01E01-SC010');
+  assert.equal(payload.model,'wan-3');assert.equal(payload.duration,'25');assert.equal(payload.generateAudio,true);
+  assert.deepEqual(payload.referenceAudioUrls,plan.scenelets[0].audioReferences.map(r=>r.url));
+  assert(!('multiPromptShots' in payload));assert(!('maxCredits' in payload));
+  assert(payload.prompt.includes('hiddenAgenda:'));assert(payload.prompt.includes('logan (on-screen; Warm, casual) says "You looking for Sienna?"'));
+  const bp=join(root,'blueprint.json'), draftRequest=join(root,'request.json');
+  await writeFile(bp,JSON.stringify(plan));
+  execFileSync(process.execPath,[join(dirname(fileURLToPath(import.meta.url)),'build-scenelet-request.mjs'),bp,'--root',root,'--scenelet','S01E01-SC010','--output',draftRequest]);
+  assert.equal(JSON.parse(await readFile(draftRequest,'utf8')).status,'unsubmitted-needs-current-quote-and-authorization');
+  assert.throws(()=>execFileSync(process.execPath,[join(dirname(fileURLToPath(import.meta.url)),'build-scenelet-request.mjs'),bp,'--root',root,'--scenelet','S01E01-SC010','--output',draftRequest],{stdio:'pipe'}));
+
+  const modern=structuredClone(gated);modern.version=2;modern.audioSource='native';
+  modern.branding={seriesMark:{status:'waived',reason:'Platform carries identity'},sting:{status:'waived',reason:'No sting requested'},opening:{mode:'none'},endCard:{mode:'none'},credits:{mode:'none'}};
+  modern.audio={dialogue:[],native:[],music:[],sfx:[]};
+  modern.clips=[1,2,3].map(n=>({shotId:'S01E01-0'+n+'0',sourceSceneletId:'S01E01-SC0'+n+'0',sourceOrigin:'elegiac',sourceAssetId:'native-take',sourceLabel:'WAN scenelet',localPath:'assets/video/s01e01/native.mp4',sha256:undefined,inSeconds:0,outSeconds:25,transitionOutSeconds:0,continuityStatus:'pass',approved:true,audioMode:'native',sourceSpec:{width:32,height:48,fps:24,durationSeconds:25,hasAudio:true}}));
+  delete modern.sourceSpec;
+  await writeFile(manifestPath,JSON.stringify(modern));
+  const modernResult=await loadAndValidateManifest(manifestPath,{root,writeHashes:true});
+  assert.deepEqual(modernResult.errors,[]);assert.equal(modernResult.summary.masterDurationSeconds,75);
+  const nativeManifest=modernResult.manifest;
+  const nativeBrief=renderBrief(nativeManifest,{root,manifestPath});
+  assert(nativeBrief.includes('preserve WAN generated dialogue'));assert(!nativeBrief.includes('mute every'));
+  assert(nativeBrief.includes('length: 75s'));assert(nativeBrief.includes('storyboard: no'));
+  const invalidEdit=async (change,match,options={})=>{const m=structuredClone(nativeManifest);change(m);await writeFile(manifestPath,JSON.stringify(m));const r=await loadAndValidateManifest(manifestPath,{root,...options});assert(r.errors.some(e=>e.includes(match)),r.errors.join('; '));};
+  await invalidEdit(m=>m.clips[0].audioMode='muted','audioMode');
+  await invalidEdit(m=>m.audio.dialogue=[{}],'audio.dialogue must be empty');
+  await invalidEdit(m=>m.clips[0].outSeconds=26,'source range');
+  await invalidEdit(m=>m.clips[0].sourceSpec.fps=30,'disagrees with ffprobe');
+  await invalidEdit(m=>m.clips[0].continuityStatus='pending','continuityStatus');
+  await invalidEdit(m=>m.clips[0].approved=false,'approved must be true',{skipFiles:true});
+  await invalidEdit(m=>m.clips[0].transitionOutSeconds=25,'shorter');
+  await invalidEdit(m=>m.audio.native=[{...m.clips[0],id:'duplicate',sourceShotId:m.clips[0].shotId,timelineStartSeconds:0}],'play twice');
+  await invalidEdit(m=>m.clips[0].audioMode='extracted','exactly one');
+  const extracted=structuredClone(nativeManifest), firstClip=extracted.clips[0];
+  const extractionFile=join(root,'native-extraction.wav');
+  execFileSync('ffmpeg',['-v','error','-i',sceneFile,'-vn','-c:a','pcm_s16le',extractionFile]);
+  firstClip.audioMode='extracted';
+  extracted.audio.native=[{id:'native-010',sourceOrigin:'user',sourceLabel:'Full-source WAN audio extraction',localPath:'native-extraction.wav',sha256:await digest(extractionFile),approved:true,inSeconds:0,outSeconds:25,timelineStartSeconds:0,sourceShotId:firstClip.shotId,sourceSceneletId:firstClip.sourceSceneletId,sourceVideoSha256:firstClip.sha256}];
+  extracted.mix.method='current-framework-reviewed-method';
+  await writeFile(manifestPath,JSON.stringify(extracted));
+  assert.deepEqual((await loadAndValidateManifest(manifestPath,{root})).errors,[]);
+  extracted.audio.native[0].localPath='sample.wav';extracted.audio.native[0].sha256=audioHash;
+  await writeFile(manifestPath,JSON.stringify(extracted));
+  assert((await loadAndValidateManifest(manifestPath,{root})).errors.some(e=>e.includes('extraction range exceeds')));
+  await invalidEdit(m=>m.branding={...m.branding,endCard:{mode:'mark-only',durationSeconds:1}},'master duration');
+  const totalWithBrand=structuredClone(nativeManifest);
+  totalWithBrand.branding={...gated.branding};totalWithBrand.clips[2].outSeconds=22.75;
+  await writeFile(manifestPath,JSON.stringify(totalWithBrand));
+  const totalResult=await loadAndValidateManifest(manifestPath,{root});
+  assert.deepEqual(totalResult.errors,[]);assert.equal(totalResult.summary.masterDurationSeconds,75);
+  assert.equal(totalResult.summary.editDurationSeconds,72.75);
+
+  // Root confinement survives symlinks, and modified frozen bytes fail.
+  await symlink('/etc/hosts',join(root,'escape'));
+  await invalidEdit(m=>m.clips[0].localPath='escape','does not exist');
+  await invalidEdit(m=>m.clips[0].sha256='0'.repeat(64),'sha256 does not match');
 
   persisted.clips[1].shotId = 'S01E01-010';
   await writeFile(manifestPath, `${JSON.stringify(persisted, null, 2)}\n`);

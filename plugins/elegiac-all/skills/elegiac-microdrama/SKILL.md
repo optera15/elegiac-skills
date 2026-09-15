@@ -1,114 +1,62 @@
 ---
 name: elegiac-microdrama
-description: "Create, continue, or edit episodic vertical microdramas with Elegiac production memory and HyperFrames post. Use for short drama, micro drama, vertical drama, duanju, one-minute drama, or a mobile-first scripted series; routes new-show, new-episode, and edit workflows without using Showrunner."
+description: "Create, continue, or edit vertical microdramas with WAN 3.0 native-audio scenelets, Elegiac cast/location memory and light HyperFrames finishing. Use for episodic mobile-first scripted drama, from a series premise to the next episode or an existing edit; never uses Showrunner."
 allowed-tools: Bash
 argument-hint: "[premise, show/episode, or footage to edit]"
-version: 2.2.0
+version: 3.0.0
 references:
   - elegiac-conventions.md
   - platform-specs.md
-  - shot-grammar.md
-  - voice-and-music.md
 ---
 
-# Elegiac MicroDrama
+# Elegiac MicroDrama — scenelet-first
 
-Turn the smallest workable idea into a resumable vertical series package and, when requested, one polished episode. Elegiac is the studio and source of production truth; HyperFrames is the cutting room. This skill orchestrates existing filmmaker tools and **never calls or imitates Showrunner**.
+Make an episode from a few coherent performed scenes, not independently animated stills. WAN 3.0 generates picture, dialogue, lip-sync, performance, internal cuts and production sound together. HyperFrames assembles approved scenelets and finishes the episode; it does not reconstruct every exchange from singles.
 
-Read `references/elegiac-conventions.md` first. It governs spend, permission retries, rights, memory, and fail-closed behavior.
+## Route the user's scope
 
-This is edition 2.2, revised after the second full pilot (Another League S01E01, 2026-09), which delivered a 92 s master the user was happy with. Edition 2.0 was written after the first pilot (Tessa S01E01), which reached a probed master and failed as drama because stills were animated without a shot-order review, locations had one plate for seven staging positions, and the script overran the target before a stem existed. The gates below exist so neither can happen again.
+- New series: read [new-show.md](references/new-show.md) and [craft.md](references/craft.md).
+- Plan/produce an episode: read [new-episode.md](references/new-episode.md), [production-pipeline.md](references/production-pipeline.md) and [schemas.md](references/schemas.md). Before generation read [wan-prompting.md](references/wan-prompting.md) and [continuity-gate.md](references/continuity-gate.md).
+- Existing footage/edit: read [edit.md](references/edit.md), [schemas.md](references/schemas.md) and [qa.md](references/qa.md). Editing does not authorize replacement generation.
+- Before delivery read [branding.md](references/branding.md) and [qa.md](references/qa.md). [field-notes.md](references/field-notes.md) records observations, not guarantees.
 
-What changed in 2.2, all of it learned in production: **MiniMax H3 Max Turbo replaces Grok Imagine 1.5** as the motion default at roughly a third of the cost; the **non-speaking clause is withdrawn** because video models ignore negations and VEED prefers a moving mouth anyway; **stems are no longer padded to match clips**, because that is what makes VEED run the picture backwards; and the continuity gate gained the rule that **a still is the first frame of its clip**, not a snapshot of the scene. Read `references/field-notes.md` for the reasoning and the operational details behind these.
+Read shared references/elegiac-conventions.md before spend (source repository: ../references/elegiac-conventions.md; packaged plugin: bundled into this skill). Live schemas and quotes outrank static model tables. This scenelet workflow supersedes shared legacy per-shot/lip-sync advice; use this skill's voice-reference guidance instead of routing through the shared voice-and-music production workflow.
 
-If the plugin copy you are running is older than the canonical source (`skills/elegiac-microdrama` in the Elegiac repository), say so and prefer the newer references.
+## Production contract
 
-## Route one mode
+- Default episode: **60–90 seconds total, ideally 75, including bookends**. Plan logical **10–30-second scenelets**, usually about three, with the fewest generations that preserve the story. A scenelet is one generation with several internal shots. Do not split at every line or mechanically make three 30-second clips.
+- Prefer **at most two speaking roles per scenelet**, including off-screen speech. This is a reliability preference, not a technical limit. Split naturally or record a justified exception; do not erase a story-critical role. Non-speaking cast do not count as speakers.
+- Default all new episode video to **WAN 3.0 (wan-3), Standard, 720p, 9:16, native audio**. One-off inserts/actions also use WAN, with single-shot prompts and shorter durations when appropriate. Set the model explicitly so generic draft routing cannot substitute another engine. Prime, higher resolution or another engine requires the user's choice and current quote.
+- Inputs: approved character sheets, inspected location masters, essential prop/vehicle anchors and expressive ElevenLabs voice references using assigned Voice IDs. **No per-cut still generation, mandatory stills animatic, separate silent-motion stage or external lip-sync stage.** Keep historical media and records; this workflow does not authorize deleting them.
+- **15 seconds is the combined duration of attached audio-reference files per request, not the scene's dialogue limit.** Measure files including silence. WAN performs the full quoted script using the reference voices; exact ElevenLabs waveform/timing reuse is not promised. Use isolated role-specific samples, not a mixed exchange.
+- Preserve generated native audio with picture. Never routinely replace it with voice-reference recordings, mute all sources or buy another lip-sync pass.
 
-Choose from the user's actual starting point. Do not ask them to select a mode when it is evident.
+## Working sequence
 
-- Bare premise, title, or new series → read `references/new-show.md`, then `references/craft.md`, `references/branding.md`, and `references/schemas.md`.
-- Existing Production plus a request to plan or make an episode → read `references/new-episode.md`, then `references/production-pipeline.md` (the default clip pipeline), `references/continuity-gate.md`, `references/craft.md`, `references/schemas.md`, and `references/qa.md`. Read `references/branding.md` before the edit manifest, and `references/field-notes.md` before the first spend.
-- Existing clips, Episode Board, Production Kit, rough cut, or HyperFrames project → read `references/edit.md`, `references/branding.md`, `references/schemas.md`, `references/qa.md`, and `references/field-notes.md`. Read `references/craft.md` when story pacing is in scope.
+1. Resume Production, Series Bible, Episode Board and manifests before creating anything. One show is one Production, one episode is one Board. Fixed episode/scenelet IDs and job/asset IDs govern resumption, not chat memory or Board count. Never use Showrunner.
+2. Write hook, want/conflict, turn and caused cliffhanger. Group beats at natural changes of objective, location, speaker pair or completed action. Budget the total runtime before spend; distinguish generation duration, selected edit range and master runtime.
+3. For every character in each scenelet specify motivation, insecurity, suspicion/knowledge, hidden agenda (or none), mood, intent/tactic, feelings, attitude, emotional change, playable behavior and forbidden misread. Do not leave room for invented jealousy, cruelty, attraction or knowledge that contradicts canon.
+4. Reuse or create only needed character sheets and location anchors. A 16:9 location master often provides useful geography and movement space; output remains natively composed in 9:16. Inspect references. Resolve missing identity, voice rights and critical geography rather than substituting.
+5. Write dialogue as performed. Generate needed solo samples with ElevenLabs V3 and assigned Voice IDs, using expressive beat-specific tags liberally where they serve the intended tone. Audition and measure; reuse suitable approved samples instead of generating every line separately by habit.
+6. Assemble one rigorous timestamped multi-shot prompt per scenelet: reference roles, named speakers, exact quoted dialogue, listener behavior, motivated cuts, opening/ending states. Run scripts/check-scenelet-plan.mjs. scripts/build-scenelet-request.mjs compiles the reviewed plan into an **unsubmitted** MCP payload.
+7. Quote the intended request/batch, show total and cap, and apply scoped authorization. Prove a new setup with one representative scenelet, then continue the approved episode. An already approved representative take avoids a redundant pilot. Review actual sound, acting, edits and continuity—not thumbnail beauty—before accepting a take.
+8. Assemble accepted scenelets with native audio, minimal boundary trims and required bookends/captions. Preserve organic internal edits. Probe and review the export; deliver provenance and billing/registration state.
 
-If a request spans modes, run them in that order and retain one state ledger. Stop when the user's requested deliverable is complete; planning does not authorize generation, and generation does not authorize rendering.
+## Collaboration and persistence
 
-## Sibling skills this pipeline routes to
+Default to Co-Creator; retain Fast Track, Co-Creator or Director and department overrides from the series. Ask only unresolved questions that materially change the result. Creative checkpoints are script/scenelet plan, new cast/location/voice choices, representative scenelet and episode preview—not an animatic gate. Respect requested pauses and authorization to finish without repeated milestone questions. Technical review is never waived; tool permission_required is an actual boundary.
 
-These already exist and are the right tool at the named moment; use them instead of improvising:
+Planning does not authorize spend. Quote new scope; reuse authorization within scope. Pending jobs keep their IDs. Unknown submissions need reconciliation, not replacement. Intentional new takes get fresh idempotency keys; unchanged approval/transport retries reuse the original. No automatic engine switches or unlimited rerolls.
 
-| Moment | Skill | What it does here |
-| --- | --- | --- |
-| Stage 0, locations | `elegiac-location-scout` | Lock a master per location, then match plates for every staging position and vehicle (the coverage set). |
-| Continuity gate, a still disagrees with its neighbours | `elegiac-scene-continuity` | Find the outlier, cheapest fix first: `edit_image`, anchored regeneration, identity repair. |
-| Stage 2b | `elegiac-animatic` timing discipline | The stills animatic is a held-stills animatic with stems; hold everything, animate nothing until approved. |
-| Casting | `elegiac-character-cast` | Reuse Cast memory; never create a second Cast member for one role. |
-| Recurring prompt failures | `elegiac-prompt-doctor` | When a prompt stalls or drifts twice. |
+Maintain a compact call sheet: episode/profile, total runtime budget, scenelet IDs/status, actual source specs, ordered references/Voice IDs, decisions, next quote, outstanding jobs, Production/Board IDs and local edit path. Version 2 manifests carry scenelets; schemas.md explains migration without deleting version 1 history.
 
-## Collaboration contract
+## Handoff and done
 
-Infer the closest profile from the request; otherwise use **Co-Creator**. State the profile and any department overrides once, then store them in the series/episode files so a resumed session does not ask again.
-
-| Profile | Behavior | Creative checkpoints |
-| --- | --- | --- |
-| **Fast Track** | Fill sensible defaults, recommend one coherent package, move in small batches. | Show promise, cast/look, stills animatic, episode preview. |
-| **Co-Creator** | Offer 2–3 materially different options and recommend one at structural decisions. | Story engine, season spine, principals, style, episode script and trim list, stills animatic, edit preview. |
-| **Director** | Pause at the departments the user chose and maintain a detailed decision ledger. | User-selected themes, arcs, casting, locations, dialogue, shots, voice, music, and edit; the stills animatic in every case. |
-
-Accept department overrides such as "Fast Track except dialogue and casting." Propose useful options before asking open-ended creative questions. Money, rights, mutating actions, the continuity gate, the stills animatic, and final render remain explicit gates in every profile.
-
-## Intake, once
-
-The first brief collects, in one consolidated question with recommended defaults: the look (`styleLine`, `lookLine`, reference images), the control profile, the format profile, the voices the user owns, the still model and its price, and any brand files. Everything goes into `series-manifest.json` before a style card, a bible paragraph, or a board exists. A style invented before this question is rewritten later into every card; a voice missing here becomes a caption-only line at the edit.
-
-## Locked product contract
-
-- A Show is one Elegiac Production tagged `microdrama`; the room is a reserved Brainstorm Board named `00 — Series Bible`.
-- An Episode is exactly one Board named `S01E01 — <Title>`, created only after the title is locked (there is no rename tool). Keep every episode artifact and workflow result on that Board. Shot IDs are `S01E01-010`, `S01E01-020`, leaving gaps for inserts.
-- **App Standard** is 60 episodes × 75 seconds. Keep visible alternatives for 24 or 30 episodes at 60–120 seconds and a Custom profile. The target is enforced at script stage by `scripts/check-shot-budget.mjs`, not discovered at the edit.
-- Plan the whole season in text, but produce only one episode at a time. Never turn "make the series" into bulk generation.
-- Native final master is 1080 × 1920, rendered in post. Source clips from the default pipeline (`references/production-pipeline.md`: ElevenLabs V3 dialogue → 9:16 stills on the show's still model → MiniMax H3 Max Turbo clips at 768p → VEED Lipsync V2 where one visible mouth speaks) are **768 × 1344 at 24 fps**, and a lipsynced clip returns at **25 fps**; the call sheet discloses both. Grok Imagine 1.5 at 1080p is a per-shot repair option on explicit request, not a cheaper tier — its 720p is a smaller frame than H3's. 480 × 854 is draft-only and may not be labeled final.
-- Captions are a sidecar SRT. Burn-in is opt-in.
-- Use fixed IDs and structured files to determine the next episode; Board count and chat memory are not authoritative.
-
-## Source of truth and resumption
-
-Read before create and resume before duplicate: resolve the Production, `00 — Series Bible`, episode Board, Cast, StyleSystem, Gallery assets, and any Production Kit/HyperFrames files. Prefer `update_board_artifact` over duplicate cards. Never overwrite local creative edits during reconciliation; write a sidecar or show a diff. After a compaction or a usage-limit resume, `episode-blueprint.json` is the state: never refire a shot whose stage asset id is set.
-
-At resumable checkpoints, report a compact **MicroDrama Call Sheet**: show/season, mode/profile, locked decisions, still model and price, true source spec, current task, next spend, open decisions, stuck jobs, Production/Board IDs, and local post path. Reconstruct it from Elegiac and files—not conversational recollection.
-
-## Spend and production invariant
-
-Planning, scripts, manifests, budgets, continuity review, the stills animatic, and Board organization are no-spend work. Before media generation, quote each homogeneous batch, show the total and cap, then wait for authorization. Then, in this order and never skipping a gate:
-
-1. **Coverage set**: a plate for every staging position and vehicle the ledger uses.
-2. **Duration budget** passed at script stage, trim list agreed.
-3. **Stems**, performed with a beat before and after the words, normalised to a 0.3 s head and 0.4 s tail, measured, clip durations written to the ledger.
-4. **Stills** in plate batches, every one framed through `enhance_prompt` with a named `list_framings` entry, prompt-linted (no "lipsync", no ages, wardrobe/anatomy lines on inserts).
-5. **Continuity gate**: every still `pass` in shot order (`references/continuity-gate.md`); deviations flagged, absurdities rejected.
-6. **Stills animatic** watched by the user, approved with "animate".
-7. **Motion**, pilot batch first, then the rest; handheld camera by default, two or three small natural behaviours per character, and **no speech vocabulary anywhere in the prompt or the negative prompt**.
-8. **Lipsync** only where one visible mouth speaks; picture always longer than audio, never a padded driver.
-
-Generate one episode only. Follow exact idempotency-key retry rules in the shared conventions; a stall over 10 minutes gets a fresh key and a linted prompt.
-
-Recurring identity, style, locations, plates, vehicles, props, voices, and rights belong in durable Elegiac memory. Reuse approved assets. A missing or ambiguous required anchor blocks generation rather than permitting a generic substitute.
-
-## HyperFrames handoff
-
-Before the first cut is built, resolve the show's **brand punctuation package** (`references/branding.md`): series mark, sonic sting, typography/colour from the fonts HyperFrames can supply, bookend ground (never bare black), Episode 1 versus later opening policy, end-card behaviour, and credits. Read it from the series manifest when it exists; otherwise ask the user once for files or permission to generate (quoted), or record an explicit waiver with a reason. Microdrama branding is bookends, not an intro: no title sequence, theme song, "previously on", or rolling credits, and the cliffhanger frame stays untouched until the hard cut. The validator refuses a manifest without a `branding` block.
-
-For fresh post, export/freeze all approved sources locally, initialize a HyperFrames project, then run:
+Before generation: run check-scenelet-plan.mjs with --ready. For finishing:
 
 ```bash
-node <installed-skill>/scripts/validate-episode-manifest.mjs <edit-manifest.json> --root <production-kit-root> --write-hashes
-node <installed-skill>/scripts/build-edit-handoff.mjs <edit-manifest.json> --root <production-kit-root> --output <hyperframes-project>/BRIEF.md
+node <skill>/scripts/validate-episode-manifest.mjs <edit-manifest.json> --root <kit> --write-hashes
+node <skill>/scripts/build-edit-handoff.mjs <edit-manifest.json> --root <kit> --output <initialized-hyperframes-project>/BRIEF.md
 ```
 
-Load the installed `hyperframes` skill and let its `general-video` workflow own composition, graphics, deterministic checks, preview, and render, under the house rules in `references/edit.md`: dialogue from original stems, ducking by timeline tweens (never automation lanes), one sub-composition per scene, normalised beds, no burned captions by default, bookends from the template. `BRIEF.md` carries the branding package and the house rules; HyperFrames places only what it names and never invents placeholder logos, stings, or credits. For an existing HyperFrames project, request only the named edit or validation operation. No composition may fetch remote media at render time. The user approves the final Studio preview (or a disclosed draft render) before any render; renders use `--low-memory-mode`.
-
-Large local masters may not fit the current MCP upload path. If registration cannot be completed, deliver the verified local files plus a review proxy under 30 MB and mark the final **not registered in Elegiac**; never imply a successful round trip.
-
-## Definition of done
-
-A finished episode has a coherent hook/turn/cliffhanger and loop ledger; a duration budget that passed at script stage; a coverage set; every still `pass` through the continuity gate and an approved stills animatic; frozen, hashed sources including the branding package; a passing manifest; a passing HyperFrames check; an inspected and approved preview; and a probed output at the declared dimensions, duration, frame rate, video/audio streams, and codec. Deliver the master, review proxy, sidecar captions, poster frame, edit/delivery manifests, credit summary including stuck jobs, Board link, and explicit omissions.
+Done means reviewed story, scenelet joins, speaker/voice assignment, acting and native sync; measured source specs; passing manifest and HyperFrames check; inspected export and any required user review. Deliver master (normally a disclosed 1080×1920 conform of 720p sources), proxy, sidecar captions, poster, manifests, billing and Board link. Report omissions/unregistered media. Stop at the requested deliverable; never mass-produce a season.

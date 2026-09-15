@@ -1,8 +1,19 @@
 {
   "name": "elegiac-all",
   "description": "Elegiac — All Skills: the complete filmmaking, marketing, social, YouTube, and studio toolkit with the Elegiac MCP connector.",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "author": {
-    "name": "Elegiac"
-  }
+    "name": "Elegiac",
+    "url": "https://elegiac.ai"
+  },
+  "homepage": "https://elegiac.ai",
+  "repository": "https://github.com/optera15/elegiac-skills",
+  "keywords": [
+    "elegiac",
+    "mcp",
+    "skills",
+    "image-generation",
+    "video-generation",
+    "all"
+  ]
 }

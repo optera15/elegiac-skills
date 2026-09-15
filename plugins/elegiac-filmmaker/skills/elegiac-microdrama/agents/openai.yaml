@@ -1,8 +1,8 @@
 interface:
   display_name: "Elegiac MicroDrama"
-  short_description: "Create polished vertical episodic dramas"
+  short_description: "Create WAN native-audio microdrama scenelets"
   brand_color: "#7C3AED"
-  default_prompt: "Use $elegiac-microdrama to turn my premise into a vertical series plan and a production-ready first episode."
+  default_prompt: "Use $elegiac-microdrama to plan a 75-second episode as a few WAN 3.0 scenelets with character/location sheets, expressive ElevenLabs voice references, precise performance intent and native-audio finishing."
 
 dependencies:
   tools:

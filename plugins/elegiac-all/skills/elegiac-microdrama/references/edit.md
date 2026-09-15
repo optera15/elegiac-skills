@@ -1,54 +1,26 @@
-# Wizard: Edit a MicroDrama
+# Light assembly and finishing
 
-## Supported inputs
+## Scope
 
-An Elegiac Episode Board, `export_pack` result, exported Production Kit, local clips/stems, an existing HyperFrames project, or a rough episode needing pacing, captions, sound, titles, or continuity repair.
+Accept Episode Boards, Production Kits, WAN scenelets or existing local edits. Edit-only work does not authorize new generations. Preserve legacy projects and their audio choices until explicitly migrated; version 1 manifests remain readable but must never silently adopt version 2 audio semantics.
 
 ## Workflow
 
-1. **Inventory read-only.** Resolve the script/blueprint and probe each file's duration, dimensions, frame rate, codec, audio streams, name, and source (`ffprobe`). Default-pipeline clips are **768 × 1344 at 24 fps** from H3 Max Turbo, and any VEED-lipsynced clip comes back at **25 fps**; note both and conform once in the composition. Detect missing, duplicate, unapproved, or draft-only shots, and any shot whose `continuity.status` is not `pass`.
-2. **Diagnose.** Separate story/pacing, picture continuity, performance/lipsync, framing/safe zones, dialogue intelligibility, music/SFX, captions, graphics/CTA, and delivery issues. A picture-continuity problem found here means the continuity gate was skipped or failed; say so and route the still back through `continuity-gate.md` rather than trying to hide it in the cut.
-3. **Propose the cut.** Present ordered shots with trim, duration, transition, audio, and caption notes, ending on the cliffhanger frame. Mark each item `editorial`, `asset substitution`, or `new generation`. If the story cut is over the profile target, the proposal includes a specific trim list, not a binary "accept the exception". Editing never silently authorizes generation.
-4. **Freeze approved sources.** Export/download them into the Production Kit with `curl` (not a Python downloader; the local Python may lack a certificate store), retain Elegiac asset IDs or explicit user provenance, and compute SHA-256 hashes. HyperFrames may not fetch remote media during render.
-5. **Prefer editorial repair.** Trim dead air; reframe; use approved inserts, reactions, still holds, J/L cuts, dialogue stems, ambience, and caption timing. Try a surgical image/audio fix before proposing regeneration. Quote any replacement separately.
-6. **Resolve the brand punctuation package.** Run the pre-render branding checklist in `branding.md` **before the first cut is built**, so the bookends are built once: reuse `series-manifest.branding` when it exists; otherwise ask the user once for the series mark, sonic sting, typography/colour, bookend ground, opening and end-card policy, and any required credits, offering a recommended default and quoted generation for each, and record explicit waivers with reasons. Freeze provided or generated files into `brand/` and hash them. Do not proceed to the manifest with the package unresolved.
-7. **Write `edit-manifest.json`.** Use `schemas.md`, including the `branding` block copied from the series package; `captions.burnIn` is `false` unless the user asked for burned-in captions. Run the validator from the Production Kit root. Resolve every error before generating a handoff.
-8. **Enter HyperFrames correctly.** For a fresh project, initialize it first, then build `BRIEF.md`; load the installed `hyperframes` entry skill and follow its `general-video` route. Fast Track maps to `flow: automation`; Co-Creator/Director or an edit department override maps to `flow: companion`. For an existing project, make only the requested edit and preserve its brief/state. `build-edit-handoff.mjs` owns `BRIEF.md` and regenerates it on every run, preserving only an `## Editor notes` section if one exists.
-9. **Compose to the house rules** (each one cost a rebuild on Tessa S01E01):
-   - **Dialogue** comes from the original stems — the same take that drove each lipsync — placed at the cut's start plus the speech lead; a clip's own audio track is never used.
-   - **Ducking and fades are timeline volume tweens** (`tl.to("#bed", { volume: … })`), never `data-automation` lanes. Automation lanes route the element through WebAudio in Studio, stutter the beds, and mute the native dialogue elements, so the preview cannot be trusted and the user hears no voices.
-   - **One sub-composition per scene or location**, not one monolithic `index.html`: a single track with more than twenty timed elements trips `timeline_track_too_dense` and hides real warnings.
-   - **Beds are normalised** to about −24 dB mean before placement (`ffmpeg -af loudnorm` or a measured gain), music sits around −20 dB below dialogue peaks, dialogue is untouched; ducking dips beds to roughly 45 % with 80 ms ramps. A generated bed shorter than the story is tiled with 2 s crossfades and disclosed.
-   - **No burned-in captions by default.** The platform overlays its own; a caption pill in the picture is distracting and doubles the caption-zone risk. If burn-in is requested, use one tested caption component with `bottom:auto; height:auto; align-items:flex-start` on the container so the `.clip{inset:0}` rule cannot stretch it.
-   - **Fonts** come from the list HyperFrames can supply from Google Fonts (Inter, Bebas Neue, JetBrains Mono, Space Grotesk, …); Inter Tight is not among them.
-   - **Sub-composition asset paths are root-relative.** Inside `compositions/<scene>.html`, write `src="assets/…"`, never `src="../assets/…"`. Renders rewrite the parent traversal but Studio resolves it against the project root and 404s; `lint` fails it as `invalid_parent_traversal_in_asset_path`.
-   - **Alternate the dialogue track indices.** Consecutive lines that abut by a few milliseconds raise `duplicate_audio_track` on a shared lane. Putting odd lines on one index and even lines on another silences the warning without changing a frame.
-   - **Cue music, do not bed it.** Cut the cue to the exact gap between two shots with its fades baked into the file. It then physically cannot swell under the cliffhanger, and no timeline tween can be got wrong later.
-   - **Drive the whole cut from one script.** Keep a single `post/build-cut.py` (or equivalent) whose top is a literal table of `(shot, source, in, out, role, dialogue, sfx)` and whose body regenerates `edit-manifest.json`, the captions and every composition file. Every note from the user then becomes a one-line change plus a rebuild, the trims stay reviewable in one place, and the manifest can never drift from the composition. This one habit carried Another League through eleven revisions of the cut without a single hand-edited HTML file.
-   - **Bookends** follow the template in `branding.md`: full-bleed brand ground, mark at 60–70 % of frame width, no blend-mode tricks to hide a mark's own background (use a transparent PNG).
-10. **Verify and approve.** Run `hyperframes check --snapshots` at hero timestamps, inspect shot/scene midpoints and first/last frames, watch once muted and once with sound, proof the sidecar captions in the preview, confirm the story cut and the bookends (cliffhanger frame untouched, end card 0.5–1.5 s, sting inside the end card, nothing after it but declared end matter), and obtain explicit final Studio preview approval. **Judge sound from a draft render, never from Studio.** A microdrama timeline carries thirty-odd audio elements and the Studio player stutters badly under that load; on Another League the user reported "choppy unlistenable audio" from a preview whose render was clean. Say this before handing over a preview link, and attach a `--quality draft` render (about two minutes for 90 s) whenever the note is about sound or timing. Do not ship a mix nobody has heard.
-    - **A concat rough is not a proof of sync.** A rough assembled by stitching the lipsync files plays each clip's own baked audio, so it will look perfect while the real edit — which takes dialogue from separate stems — drifts. Build the rough from the same source list the edit manifest will use, or treat it as picture-only.
-11. **Render.** Always with the low-memory flag for a vertical over 60 s; frame capture otherwise needs more than 20 GB of scratch:
+1. Inventory selected takes and probe actual duration, dimensions, fps and audio streams. Freeze local sources with provenance/hashes. Resolve the selected usable range and its reviewed beginning/end state.
+2. Prefer scenelet order and minimal clean boundary trims. Keep model-generated internal cuts intact unless the user requests an edit or a local defect can be repaired without changing intent. Do not force every line onto a separately generated single.
+3. **Preserve native audio.** Version 2 clips carry audioMode native and one audioSource per episode: native. Picture trims use the matching native-audio range. Do not replace the generated dialogue with ElevenLabs voice-reference samples or play both. A native scenelet's audio already contains dialogue/ambience and possibly effects; avoid duplicate beds.
+4. For an explicitly needed J/L edit, extract the SAME generated clip's audio losslessly or to a documented derivative, retain source hash and offsets, and mute only that clip's duplicated playback path. Record audioMode extracted and exactly one audio.native entry linked by sourceShotId (the cut's shotId), sourceSceneletId and sourceVideoSha256. This is a post edit of WAN sound, not external re-voicing. The standard validator supports aligned extracted tracks; advanced split edits need a dedicated reviewed edit contract, not falsified offsets.
+5. Resolve compact branding using branding.md. The 60–90-second episode goal includes all bookends; targetDurationSeconds in version 2 is TOTAL, not story-only. Do not add unbudgeted intros.
+6. Write version 2 edit-manifest.json, keeping separate generation/source and editorial durations. Each clip has stable cut ID (shotId retained for handoff compatibility), sourceSceneletId, probed sourceSpec including durationSeconds/hasAudio, in/out, audioMode, pass review and approved state. Source specs are measured per clip, not inherited from a model name.
+7. Run validate-episode-manifest.mjs with actual files/hashes, then build-edit-handoff.mjs. Initialize a fresh HyperFrames project before writing its BRIEF; use installed hyperframes/general-video guidance only for assembly/finishing. An existing project gets only the requested changes.
+8. Keep source video and its native audio synchronized through the framework's media timing. Use one sub-composition per scenelet when useful, local root-relative paths, deterministic timing, captions as sidecar by default and only the specified branding. Music/SFX are optional and must not mask native dialogue. Follow current HyperFrames audio guidance; do not impose an old global mute or old player workaround blindly.
+9. Generate/verify captions from the actual accepted speech, matched to the approved script. Do not use captions to conceal a wrong line. Review all joins and full export with sound. If preview and export disagree, diagnose playback before replacing media.
+10. Render the declared master, using low-memory rendering where supported/needed. Probe streams, exact total runtime and dimensions; disclose 720p-to-1080p conform. Deliver proxy, sidecar captions, poster, manifests, credit/registration status and omissions. No render-time remote media.
 
-    ```bash
-    HYPERFRAMES_BROWSER_PATH="<chrome>" npx hyperframes render post/hyperframes --quality high --low-memory-mode --output deliverables/s01e01/<show>_S01E01_<title>_1080x1920_master.mp4
-    ```
+## Revisions
 
-    Quality values are `draft`, `standard`, `high`. Probe the output (`ffprobe`), measure the mix (`volumedetect`), and pull the poster frame.
-12. **Deliver.** Probe the master and return the declared output profile, SRT/VTT, poster, a **review proxy under 30 MB** (`--quality draft` or an ffmpeg CRF 30 transcode, so it can travel through chat and phone attachments), optional clean/textless master, edit/delivery manifests, hashes/source ledger, Board link, and explicit omissions. Upload/register only when a safe supported path exists.
+Apply available notes together; hold export when the user says more notes are coming. Preserve original takes, request payloads, credits and approvals. Rebuild timing/captions from one edit source of truth. A new generation needs its own quote and scoped authorization. Do not insert generic cutaways that create new geography or voice problems.
 
-## Fresh-project handoff
+## Version 1 projects
 
-From the Production Kit root:
-
-```bash
-npx hyperframes init post/hyperframes --non-interactive --example=blank
-node <installed-skill>/scripts/validate-episode-manifest.mjs episodes/s01e01/edit-manifest.json --root . --write-hashes
-node <installed-skill>/scripts/build-edit-handoff.mjs episodes/s01e01/edit-manifest.json --root . --output post/hyperframes/BRIEF.md
-```
-
-The handoff builder is deterministic and spends no Elegiac credits. Run it only after the HyperFrames project exists because `BRIEF.md` lives inside it. Re-run it after every manifest change; it overwrites the generated sections and keeps `## Editor notes`.
-
-## Current-alpha round-trip limit
-
-`upload_asset` can register supported URL/base64 inputs, but a large rendered MP4 should not be base64-transferred merely to claim completion. When no secure large-media path is available, keep the verified master local, mark `registration.status` as `not_registered`, and tell the user exactly what remains. The review proxy is what travels; the master stays on disk.
+The validator still accepts version 1 for editing historical work and keeps its story-only target calculation. A legacy handoff must follow recorded audioSource/audioMode rather than assume native sound. Migration is explicit and non-destructive (schemas.md). Do not invoke retired generation scripts or regenerate old shots just because the skill changed.

@@ -13,7 +13,7 @@ references:
 
 A bake-off with a rubric, not a vibe check. Same prompt, same aspect, draft resolution, 2-4 candidates — then a recommendation the user can standardize on.
 
-Read `references/model-catalog.md` first — if the routing table already answers the question confidently (e.g. "rendered text → GPT Image 2"), SAY SO and offer to skip the spend. Before any spend or mutating call, apply the Spending, Permissions, and Defaults rules in `references/elegiac-conventions.md`.
+Read `references/model-catalog.md` first — if the routing table already answers the question confidently (e.g. "rendered text → GPT Image 2.5"), SAY SO and offer to skip the spend. Before any spend or mutating call, apply the Spending, Permissions, and Defaults rules in `references/elegiac-conventions.md`.
 
 ## Workflow
 

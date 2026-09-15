@@ -1,82 +1,45 @@
-# MicroDrama craft system
+# Scenelet craft
 
-Use these as Elegiac planning defaults, not universal laws. Distribution, audience, genre, and an existing creator format may justify a change; record the exception instead of silently forcing the template.
+## Episode and season
 
-## Format profiles
+Default to 60–90 seconds total, ideally 75 including bookends. Season length is a separate choice (60, 24, 30 or Custom); choosing fewer episodes does not silently lengthen each episode. Give the first three seconds a hook, let conflict escalate, create a turn, and end on a caused cliffhanger. Timing is a dramatic guide, not six mandatory cuts.
 
-| Profile | Season | Episode target | Master |
-| --- | ---: | ---: | --- |
-| App Standard | 60 episodes | 75 seconds | 1080 × 1920 |
-| Creator 24 | 24 episodes | 60–120 seconds | 1080 × 1920 |
-| Creator 30 | 30 episodes | 60–120 seconds | 1080 × 1920 |
-| Custom | Explicit | Explicit | Usually 1080 × 1920 |
+One dominant conflict and one material change anchor an episode. Honor the previous cliffhanger promptly. Track opens/advances/resolves; generally keep no more than three major unresolved audience loops. Plan a season in text, from premise delivery through entanglement, complications, reversal, rising cost and payoff. Preserve an existing genre/form rather than forcing romance or live-action.
 
-All are vertical, mobile-first scripted series. `720 × 1280` is a disclosed budget/model fallback. `480 × 854` is for drafts only. Separate source quality from delivery quality: a 720p keeper may be conformed into a 1080p master, but disclose the upscale/source limitation.
+## Scenelets are units of intent
 
-## App Standard episode grammar
+A scenelet is a complete playable encounter or beat, not a time bucket. Group compatible objectives, location, cast and prop history; split where knowledge, objective, location or speaker pair changes naturally. Prefer two speaking roles (including O.S./VO). More people may be present silently when the scene needs them.
 
-| Time | Function | Test |
-| ---: | --- | --- |
-| 0–3s | Cold hook | A visual, verbal, or situational question exists in the first frames. |
-| 3–12s | Re-anchor | Viewer understands who wants what and the immediate situation. |
-| 12–40s | Conflict ladder | At least two escalations; exposition arrives under pressure. |
-| 40–58s | Turn | New evidence, reversal, choice, or emotional reframe changes the scene. |
-| 58–70s | Spike/decision | A character commits, loses leverage, or reveals a consequential truth. |
-| 70–75s | Cliffhanger | A caused story event creates a precise next question. |
+Minimize generation count without stuffing an incoherent scene into 30 seconds. Start around three scenelets, not a fixed quota. A completed action or reaction is a safer join than half a handoff. Standalone WAN inserts are welcome when economical: a drawer opens, one hand retrieves one object, the ending state makes the next scene legible. No multi-shot prompt is needed for a single action.
 
-One episode should have one dominant want/conflict and one material change. Track `opens`, `advances`, and `resolves`; keep no more than three major viewer-facing loops open at once. Honor the prior cliffhanger early. A random knock, withheld sentence, or unexplained interruption is not a durable cliffhanger unless character action made it consequential.
+## Performance brief: required per character per scenelet
 
-Estimate performed time: dialogue read, reactions, reveals, transitions, and caption comprehension. Page count alone is unreliable. Favor one scene, a small cast, and one or two reusable locations, but never flatten a premise whose appeal depends on a larger world.
+Write short specific answers, not personality adjectives:
 
-## App Standard season spine
+| Field | Decision |
+|---|---|
+| motivation | What does the character need now, and why? |
+| insecurity | What private fear makes this interaction costly? |
+| suspicion | What do they know, suspect or wrongly believe? What do they NOT know? |
+| hiddenAgenda | What are they concealing or maneuvering toward? Explicitly none if sincere. |
+| mood | Emotional starting temperature, energy and composure. |
+| intent | Immediate tactic: reassure, probe, deflect, impress, protect, corner. |
+| feelings | Their feelings toward each other person or the plot object. |
+| attitude | How those feelings are presented: courteous, guarded, playful, restrained. |
+| emotionalArc | What changes during the scene, and the exact trigger. |
+| behavior | Observable gestures, pauses, gaze and listening that express the above. |
+| forbiddenMisread | A plausible but wrong performance the model must not invent. |
 
-| Episodes | Movement |
-| ---: | --- |
-| 1–3 | Deliver the premise, relationship, and first irreversible hook. |
-| 4–10 | Lock the protagonists into the engine and establish repeatable pressure. |
-| 11–20 | Complicate alliances, costs, and the apparent truth. |
-| 21–30 | Invert the working theory or relationship power. |
-| 31–45 | Squeeze options, expose secrets, and pay smaller loops. |
-| 46–60 | Converge, reveal, pay the central promise, and leave only an intentional continuation door. |
+Example: Logan wants to spare Dylan embarrassment and keep the afternoon moving. He suspects the crush, not a threat; he has no hidden agenda. He is relaxed, fondly amused, never territorial or cruel. A small eyebrow rise invites the explanation; his warmth makes Dylan's embarrassment funnier. Dylan wants the pencil returned as a dignified pretext for contact; fears being ridiculous; mistakes ordinary politeness for a chance. He protects the folded poem, answers too earnestly and briefly looks down. He does not become sneaky, angry or suddenly confident.
 
-For 24/30-episode profiles, preserve the same six movements proportionally. Plan every episode's one-line promise, hook, turn, cliffhanger, and loop effects before producing Episode 1. In Fast Track, present the movement map plus the first ten episode rows and keep the complete spine in the production files.
+Use inner life to motivate visible choices. Do not fill every pause with fidgeting. Stillness can be an intentional performance; handheld drift, close-ups and push-ins are choices, not universal requirements.
 
-## Renewable series engine
+## Dialogue and cuts
 
-Before workspace creation, express the premise as:
+Keep exact dialogue in one ordered ledger with line IDs, speaker and delivery direction. Use expressive ElevenLabs tags for the sample readings; preserve readable untagged spoken words separately. Record interruptions explicitly; prefer clean turn-taking until that pair's voice assignment works.
 
-- protagonist and active desire;
-- obstacle and personal contradiction;
-- relationship/emotional engine;
-- repeatable episode engine;
-- season truth and audience promise;
-- “why Episode 2?” question.
+Within the WAN multi-shot prompt, describe what is visible while each named character speaks and how the listener reacts. A two-shot CAN contain dialogue from both people. Specify who speaks and who listens; no one-face-only rule.
 
-Popular commercial lanes include romance and relationship melodrama, family/status conflict, revenge and rebirth, thriller/mystery/true crime, workplace/class comedy, fantasy/xianxia-inspired worlds, historical/period, science fiction, horror, action, and animation. Treat animation as a visual form, not a genre. Do not claim a universal genre-percentage split: published figures often mix China-only survey preferences, app revenue, ad revenue, and non-exclusive tags. Use current market research when a commercial decision depends on percentages.
+Write motivated cuts rather than a camera change for every sentence. “Hold on Logan's eyebrow reaction while Dylan begins off-screen; cut back after the admission” is clearer than the label J-cut alone. Assign enough time for words and behavior; exact timestamps are direction, not guaranteed edit frames.
 
-## Vertical picture and sound grammar
-
-- Compose natively for 9:16; do not crop widescreen coverage. Use upper-middle faces, readable hands/props, depth staging, motivated foregrounds, and vertical reveals.
-- Test phone-size readability and platform UI safe zones. Caption and key evidence placement must survive the destination overlay.
-- Close-ups and inserts carry plot economically. Establish geography briefly, then favor clean eyelines, reactions, and evidence details.
-- Keep one camera move per generated shot, on a **handheld camera by default**: subtle organic drift, never shaky-cam, never a tripod unless the shot's narrative demands a locked frame and the reason is written on the shot. Repeat the exact lighting/time-of-day key and approved identity/wardrobe anchors across coverage.
-- Characters are never still in a moving frame: every motion prompt gives the figure two or three small natural behaviours (weight shifts, glances, nods and head shakes, shrugs, hand gestures) matched to the beat, so performances read as people rather than mannequins.
-- Every still is framed through the plugin's "Enhance Prompt with Framing" against a named entry from `list_framings`; framings vary across consecutive cuts in size and side so the sequence cuts like a film before any motion exists.
-- Dialogue stems carry a breath before the first word and room after the last (0.3 s and 0.4 s after normalisation) so cuts can J/L and nothing pops or clicks at a clip boundary.
-- Dialogue should be performable, interrupted by behavior, and understandable on phone speakers. Generate separate character lines/stems when lipsync or editorial timing matters.
-- Brand the series, not the episode (`branding.md`): one repeatable 1–2 s brand punctuation package (mark, sting, typography, end-card behaviour) as bookends, plus a caption style, episode bug, music palette, ambience palette, and a score motif shared with the sting. No title sequence, theme song, "previously on", or rolling credits; the cliffhanger lands clean before the end card.
-- The episode must work muted and improve with sound. Captions are story timing, delivered as a sidecar the platform overlays; burned-in caption pills are opt-in because they distract and double the caption-zone risk.
-- Continuity is staged, not hoped for: every shot pins to a plate from the location's coverage set, every recurring vehicle is one vehicle with one plate, and no still becomes a clip until it has passed the shot-order checklist in `continuity-gate.md` and the user has watched the stills animatic.
-- Perform-time the ledger before stems (`scripts/check-shot-budget.mjs`): speaking cuts at about 2.6 words per second plus 0.75 s of handles, silent cuts at their target, bookends added. Over budget means a trim list now, while cutting a line is free.
-
-## Framing and prompt enhancement
-
-- Frame every still against its references, not from memory. For each shot: pick one framing from `list_framings` (group `distance-zoom` for coverage size, `conversation-dialogue` for two-handers, `dramatic` for turns; free text is allowed when nothing fits), then call `enhance_prompt` once per scene with `shots[]` (raw shot description + framing each) and the shared `referenceImageUrls` you will generate with (the shot's pinned plate first, approved cast references, vehicle and prop plates). One quote, one approval, 5 credits per shot; `wait_for_job` returns each `enhancedPrompt`.
-- Generate with `generate_shots` (batch, one approval) or per-shot `generate_image`, passing each `enhancedPrompt` VERBATIM with the same references, then the show's `styleLine` (and `lookLine` on composites). **Cast identity travels in `castMemberIds`, not `referenceImageUrls`**: `generate_shots` drops per-shot reference URLs beyond the first without erroring, so batch by character and keep `referenceImageUrls` for the plate and props (`production-pipeline.md`, stage 2). Lint the prompt first: no "lipsync" or "for <purpose>" phrases, no numeric ages, no skin-ageing adjectives on young characters, the `wardrobeAnatomy` line on inserts. Never send enhanced prompts to `generate_storyboard`: it rewrites them into numbered storyboard panels and cannot carry a location plate.
-- A two-hander with both faces visible is a reaction cut, never a speaking cut: lipsync cannot choose the speaker. Stage every line on a single-face framing and let the reverse carry the listener.
-- Never enhance twice for one shot and never feed an enhanced prompt back in as the raw prompt. Keep the framing string on the shot record; it is the continuity key when you re-run a beat.
-- On the first `permission_required`, tell the user the approval page can save a standing Permit for `enhance_prompt` / `generate_shots` in this production (optionally capped at the quoted credits), so the rest of the episode runs without prompts. Host-side tool approvals (Claude, ChatGPT) are separate and need their own always-allow.
-
-## Development package that earns its keep
-
-Maintain only artifacts with downstream value: series bible and spine; character/relationship canon; recurring location/prop registry; approved 9:16 identity, dialogue, action, and lighting tests; StyleSystem; brand punctuation package (`series-manifest.branding` and `brand/`); caption style; sound palette; episode index and loop ledger; and one complete Episode Board.
+Compose video natively for 9:16 even with a landscape location reference. Keep plot evidence readable on a phone. Express look through the approved style/light, not repeated sharpness adjectives. Wardrobe, props, geography and causal state remain stable through internal cuts and external joins.

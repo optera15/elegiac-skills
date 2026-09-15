@@ -1,5 +1,26 @@
 # elegiac-microdrama changelog
 
+## 3.0.0 — 2026-09-14 — WAN native-audio scenelets
+
+- Replace per-cut still/motion/external-lip-sync production with a few logical WAN 3.0 scenelets: normally 10–30 seconds, preferably two speakers, 60–90 seconds total with 75 ideal including bookends.
+- Reuse character/location anchors and expressive ElevenLabs solo voice samples; enforce the combined 15-second input-audio cap independently of scripted dialogue length.
+- Add character intent/performance briefs, timestamped multi-shot prompt guidance, no-spend request compilation and scenelet preflight tests.
+- Preserve native generated audio/internal edits in light finishing; version 2 manifests validate native routing, source specs/ranges and total runtime. Retain version 1 edit-only compatibility with explicit migration guidance.
+- Retire build-stills-animatic.mjs, pad-stem.sh and check-shot-budget.mjs; replace planning with check-scenelet-plan.mjs and build-scenelet-request.mjs. No production media is removed.
+- Update agent metadata, all workflow references and regression tests. Earlier entries below are historical, not active workflow instructions.
+
+## 2.3.0 — 2026-09-08 — continuity and editorial audit
+
+- Reuse mapped locations and compatible prior coverage before generating; establish blocking, access routes and camera axis for missing geography.
+- Prefer targeted GPT Image 2 edits for small still defects; verify preservation and prop scale across adjacent frames.
+- Track important prop dimensions, side, orientation, possession and handoffs as a sequence.
+- Inspect ElevenLabs dialogue tails and preserve documented local cleanup derivatives instead of regenerating good performances.
+- Use motivated L/J cuts and listener reactions; inspect face occlusions and actual edit boundaries after lipsync.
+- Separate usable source ranges and editorial timing from generated duration; retain only clean, necessary post-line action.
+- Treat longer MiniMax Music 3 requests as budgeted experiments, not duration guarantees; measure output and keep billing reconciliation explicit.
+- Honor existing authorization and user-selected pause points; reconcile unknown submissions instead of automatic ten-minute rerolls.
+- Generalize field notes for any microdrama, and add acceptance scenarios for reuse, repairs, audio tails, split edits and autonomous finishing.
+
 ## 2.2.0 — 2026-09-08 — after the Another League S01E01 pilot
 
 - **Motion default is MiniMax H3 Max Turbo at 768p** (`minimax-h3`, `qualityTier: "turbo"`, `duration` as a string, minimum `"5"`), about 10 credits per second against Grok Imagine 1.5's 28–50. True output 768 × 1344 at 24 fps. Grok 1.5 is now a per-shot repair option **at 1080p only**: its 720p tier is a smaller frame than H3's and conforms worse into the master.

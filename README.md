@@ -20,7 +20,7 @@ before spending, and mutating calls may pause on an approval link in your Elegia
 
 ### Claude Desktop / Cowork
 
-1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.3.2).
+1. **[Download Elegiac — All Skills](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-all-plugin.zip)** (35 skills, version 0.4.0).
 2. Open **Customize → Plugins**, choose the option to upload a plugin, and select the ZIP as downloaded.
 3. Connect the included Elegiac connector and sign in to your Elegiac account. If your build does not add the connector, use the [manual connector setup](#manual-connector-setup) below.
 4. Start a fresh conversation in the Claude mode where the plugin is available and run the read-only check below.
@@ -120,7 +120,7 @@ Filmmaker core: microdramas, shot lists, storyboards, animatics, trailers, key a
 
 | Skill | What it does |
 |---|---|
-| [`elegiac-microdrama`](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-microdrama-claude.zip) | Create, continue, or edit episodic vertical microdramas with Elegiac production memory and HyperFrames post. Use for short drama, micro drama, vertical drama, duanju, one-minute drama, or a mobile-first scripted series; routes new-show, new-episode, and edit workflows without using Showrunner. |
+| [`elegiac-microdrama`](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-microdrama-claude.zip) | Create, continue, or edit vertical microdramas with WAN 3.0 native-audio scenelets, Elegiac cast/location memory and light HyperFrames finishing. Use for episodic mobile-first scripted drama, from a series premise to the next episode or an existing edit; never uses Showrunner. |
 | [`elegiac-shotlist`](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-shotlist-claude.zip) | Break a script, scene, or brief into a professional shot list with coverage and lens plan, plus rendered styleframes via Elegiac. Use when the user asks for a shot list, coverage or lens plan, scene blocking, or "how should I shoot this scene". |
 | [`elegiac-storyboard`](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-storyboard-claude.zip) | Create storyboards with Elegiac — turn scripts and scene briefs into sequenced frames. Use when the user asks for storyboard frames, visual beats, script breakdowns, shot sequencing, or animating selected frames. |
 | [`elegiac-animatic`](https://github.com/optera15/elegiac-skills/raw/refs/heads/main/downloads/elegiac-animatic-claude.zip) | Turn storyboards into timed animatics with Elegiac — animate selected frames, set per-shot durations, add temp music and SFX. Use when the user asks for an animatic, timed boards, or previz. |

@@ -2,6 +2,7 @@
 
 import { createHash } from 'node:crypto';
 import { readFile, stat, writeFile } from 'node:fs/promises';
+import { probe, containedPath } from './check-scenelet-plan.mjs';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -83,6 +84,8 @@ async function sha256(path) {
 
 async function validateFrozenSource(source, label, context) {
   const { errors, options, root, warnings } = context;
+  if (source?.approved !== true && !options.allowUnapproved) errors.push(`${label}.approved must be true for a final handoff`);
+  else if (source?.approved !== true) warnings.push(`${label} is not approved`);
   if (!['elegiac', 'user'].includes(source?.sourceOrigin)) {
     errors.push(`${label}.sourceOrigin must be "elegiac" or "user"`);
   } else if (source.sourceOrigin === 'elegiac' && !nonEmpty(source.sourceAssetId)) {
@@ -102,6 +105,7 @@ async function validateFrozenSource(source, label, context) {
   }
 
   try {
+    await containedPath(root, source.localPath);
     const info = await stat(absolute);
     if (!info.isFile()) {
       errors.push(`${label}.localPath is not a file: ${displayPath(relative(root, absolute))}`);
@@ -123,11 +127,6 @@ async function validateFrozenSource(source, label, context) {
     errors.push(`${label}.sha256 does not match ${displayPath(relative(root, absolute))}`);
   }
 
-  if (source.approved !== true && !options.allowUnapproved) {
-    errors.push(`${label}.approved must be true for a final handoff`);
-  } else if (source.approved !== true) {
-    warnings.push(`${label} is not approved`);
-  }
   return 0;
 }
 
@@ -287,7 +286,10 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
     errors.push('edit manifest must be inside the declared production-kit root');
   }
 
-  if (manifest.version !== 1) errors.push('version must equal 1');
+  if (![1, 2].includes(manifest.version)) errors.push('version must equal 1 or 2');
+  const native = manifest.version === 2;
+  if (native && manifest.audioSource !== 'native') errors.push('version 2 requires audioSource native; do not replace WAN sound with voice samples');
+  if (native && (manifest.audio?.dialogue?.length ?? 0) > 0) errors.push('version 2 audio.dialogue must be empty; use generated native audio, not voice references');
   if (!nonEmpty(manifest.show)) errors.push('show must be a non-empty string');
   if (!Number.isInteger(manifest.season) || manifest.season < 1) errors.push('season must be a positive integer');
   if (!Number.isInteger(manifest.episode) || manifest.episode < 1) errors.push('episode must be a positive integer');
@@ -354,24 +356,47 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
       if (finiteNumber(clip?.inSeconds) && finiteNumber(clip?.outSeconds) && clip.outSeconds > clip.inSeconds && finiteNumber(transition)) {
         const visible = clip.outSeconds - clip.inSeconds;
         if (transition >= visible) errors.push(`${label}.transitionOutSeconds must be shorter than the clip edit`);
+        const next = manifest.clips[index + 1];
+        if (next && transition >= next.outSeconds - next.inSeconds) errors.push(`${label}.transitionOutSeconds must fit the next clip too`);
         editDurationSeconds += visible - transition;
       }
       if (clip?.continuityStatus === undefined) {
-        warnings.push(`${label}.continuityStatus is absent; copy shot.continuity.status from the blueprint so the manifest proves the continuity gate ran`);
+        (native ? errors : warnings).push(`${label}.continuityStatus is absent; record the selected take's continuity review`);
       } else if (clip.continuityStatus !== 'pass') {
-        errors.push(`${label}.continuityStatus is "${clip.continuityStatus}"; only stills that passed the continuity gate may be cut (references/continuity-gate.md)`);
+        errors.push(`${label}.continuityStatus is "${clip.continuityStatus}"; only reviewed accepted sources may be cut`);
       }
       hashesWritten += await validateFrozenSource(clip, label, context);
+      if (native) {
+        if (!new RegExp(`^${manifest.episodeId}-(SC|IN)\\d{3}$`).test(clip?.sourceSceneletId ?? '')) errors.push(`${label}.sourceSceneletId is required`);
+        if (!['native', 'extracted'].includes(clip?.audioMode)) errors.push(`${label}.audioMode must be native or extracted`);
+        const spec = clip?.sourceSpec;
+        if (!spec || ![spec.width, spec.height, spec.fps, spec.durationSeconds].every(x => finiteNumber(x) && x > 0) || spec.hasAudio !== true) errors.push(`${label}.sourceSpec requires measured width/height/fps/durationSeconds and hasAudio true`);
+        if (finiteNumber(spec?.durationSeconds) && clip.outSeconds > spec.durationSeconds + 0.001) errors.push(`${label} source range exceeds measured duration`);
+        if (!options.skipFiles) {
+          try {
+            const path = await containedPath(options.root, clip.localPath);
+            const info = probe(path), video = info.streams?.find(s => s.codec_type === 'video');
+            const audio = info.streams?.find(s => s.codec_type === 'audio');
+            const duration = Number(video?.duration ?? info.format?.duration);
+            const [n, d] = String(video?.r_frame_rate ?? '0/1').split('/').map(Number);
+            if (!video || !audio) errors.push(`${label} must contain both video and native audio streams`);
+            if (video && (spec?.width !== video.width || spec?.height !== video.height || Math.abs((spec?.fps ?? 0) - n/d) > 0.01 || Math.abs((spec?.durationSeconds ?? 0) - duration) > 0.05)) errors.push(`${label}.sourceSpec disagrees with ffprobe`);
+            if (clip.outSeconds > duration + 0.001) errors.push(`${label} source range exceeds actual video duration`);
+          } catch (e) { errors.push(`${label} media probe failed: ${e.message}`); }
+        }
+      }
     }
   }
 
   if (manifest.mix !== undefined) {
     if (!manifest.mix || typeof manifest.mix !== 'object' || Array.isArray(manifest.mix)) {
       errors.push('mix must be an object');
-    } else if (manifest.mix.method === 'automation-lanes') {
+    } else if (!native && manifest.mix.method === 'automation-lanes') {
       errors.push('mix.method automation-lanes is rejected: data-automation volume lanes route beds through WebAudio in Studio and silence native dialogue; use timeline-tweens');
-    } else if (manifest.mix.method !== undefined && manifest.mix.method !== 'timeline-tweens') {
+    } else if (!native && manifest.mix.method !== undefined && manifest.mix.method !== 'timeline-tweens') {
       errors.push('mix.method must be timeline-tweens');
+    } else if (native && manifest.mix.method !== undefined && !nonEmpty(manifest.mix.method)) {
+      errors.push('mix.method must be a non-empty description of the current finishing implementation');
     }
   }
   if (manifest.sourceSpec !== undefined) {
@@ -383,7 +408,7 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
     }
   }
 
-  for (const kind of ['dialogue', 'music', 'sfx']) {
+  for (const kind of ['dialogue', 'native', 'music', 'sfx']) {
     const entries = manifest.audio?.[kind] ?? [];
     if (!Array.isArray(entries)) {
       errors.push(`audio.${kind} must be an array`);
@@ -399,7 +424,35 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
       if (!finiteNumber(entry?.outSeconds) || entry.outSeconds <= entry.inSeconds) errors.push(`${label}.outSeconds must be greater than inSeconds`);
       if (!finiteNumber(entry?.timelineStartSeconds) || entry.timelineStartSeconds < 0) errors.push(`${label}.timelineStartSeconds must be >= 0`);
       hashesWritten += await validateFrozenSource(entry, label, context);
+      if (native && kind === 'native' && !options.skipFiles) {
+        try {
+          const path = await containedPath(options.root, entry.localPath);
+          const info = probe(path), stream = info.streams?.find(s => s.codec_type === 'audio');
+          const duration = Number(stream?.duration ?? info.format?.duration);
+          if (!stream || !finiteNumber(duration) || duration <= 0) errors.push(`${label} must contain measurable native audio`);
+          else if (entry.outSeconds > duration + 0.001) errors.push(`${label} extraction range exceeds actual audio duration`);
+        } catch (e) { errors.push(`${label} audio probe failed: ${e.message}`); }
+      }
     }
+  }
+
+  if (native) {
+    const tracks = Array.isArray(manifest.audio?.native) ? manifest.audio.native : [];
+    let start = 0;
+    for (const clip of manifest.clips ?? []) {
+      const matching = tracks.filter(a => a.sourceShotId === clip.shotId);
+      if (clip.audioMode === 'native' && matching.length) errors.push(`${clip.shotId}: native audio would play twice`);
+      if (clip.audioMode === 'extracted') {
+        if (matching.length !== 1) errors.push(`${clip.shotId}: extracted audio requires exactly one linked native track`);
+        else {
+          const a = matching[0];
+          if (a.sourceSceneletId !== clip.sourceSceneletId || a.sourceVideoSha256 !== clip.sha256) errors.push(`${clip.shotId}: extracted audio source lineage mismatch`);
+          if (a.inSeconds !== clip.inSeconds || a.outSeconds !== clip.outSeconds || Math.abs(a.timelineStartSeconds-start)>0.001) errors.push(`${clip.shotId}: extracted audio must preserve aligned source/timeline timing; advanced split edits require a reviewed custom contract`);
+        }
+      }
+      start += clip.outSeconds-clip.inSeconds-(clip.transitionOutSeconds ?? 0);
+    }
+    for (const track of tracks) if (!manifest.clips?.some(c => c.shotId===track.sourceShotId && c.audioMode==='extracted')) errors.push('audio.native has an unlinked or duplicate playback source');
   }
 
   if (!nonEmpty(manifest.captions?.language)) errors.push('captions.language must be a non-empty string');
@@ -412,6 +465,7 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
     const captionPath = resolveLocalPath(manifest.captions.sidecar, options.root, 'captions', errors);
     if (captionPath && !options.skipFiles) {
       try {
+        await containedPath(options.root, manifest.captions.sidecar);
         const info = await stat(captionPath);
         if (!info.isFile()) throw new Error('not a file');
         const actualHash = await sha256(captionPath);
@@ -441,10 +495,18 @@ export async function loadAndValidateManifest(manifestPath, suppliedOptions = {}
   const bookendSeconds = computeBookendSeconds(manifest.branding);
 
   const roundedDuration = Number(editDurationSeconds.toFixed(3));
+  const masterDuration = Number((roundedDuration + bookendSeconds).toFixed(3));
+  if (native) {
+    const range = manifest.runtimeRange ?? { minSeconds: 60, maxSeconds: 90 };
+    if (!finiteNumber(range.minSeconds) || !finiteNumber(range.maxSeconds) || range.minSeconds <= 0 || range.minSeconds > range.maxSeconds) errors.push('runtimeRange must be positive min <= max');
+    if ((range.minSeconds !== 60 || range.maxSeconds !== 90) && !nonEmpty(range.reason)) errors.push('custom runtimeRange requires reason');
+    if (masterDuration < range.minSeconds || masterDuration > range.maxSeconds) errors.push('total master runtime including bookends falls outside runtimeRange');
+  }
   if (finiteNumber(manifest.targetDurationSeconds) && finiteNumber(tolerance)) {
-    const difference = Math.abs(roundedDuration - manifest.targetDurationSeconds);
+    const comparisonDuration = native ? masterDuration : roundedDuration;
+    const difference = Math.abs(comparisonDuration - manifest.targetDurationSeconds);
     if (difference > tolerance) {
-      errors.push(`edit duration ${roundedDuration}s differs from target ${manifest.targetDurationSeconds}s by more than ${tolerance}s`);
+      errors.push(`${native ? 'master' : 'edit'} duration ${comparisonDuration}s differs from target ${manifest.targetDurationSeconds}s by more than ${tolerance}s`);
     }
   }
 
