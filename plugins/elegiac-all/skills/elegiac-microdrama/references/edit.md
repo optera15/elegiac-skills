@@ -17,6 +17,18 @@ Accept Episode Boards, Production Kits, WAN scenelets or existing local edits. E
 9. Generate/verify captions from the actual accepted speech, matched to the approved script. Do not use captions to conceal a wrong line. Review all joins and full export with sound. If preview and export disagree, diagnose playback before replacing media.
 10. Render the declared master, using low-memory rendering where supported/needed. Probe streams, exact total runtime and dimensions; disclose 720p-to-1080p conform. Deliver proxy, sidecar captions, poster, manifests, credit/registration status and omissions. No render-time remote media.
 
+## Final Cut Pro handoff (optional)
+
+When the editor cuts in Final Cut Pro instead of HyperFrames, write an FCPXML 1.11 timeline from the same validated version 2 manifest:
+
+```bash
+node <skill>/scripts/build-fcpxml.mjs episodes/s01e01/edit-manifest.json --root <kit> --output episodes/s01e01/S01E01.fcpxml
+```
+
+The script validates the manifest first (same rules as validate-episode-manifest.mjs; `--allow-unapproved` / `--skip-files` pass through) and refuses invalid input. It writes one project/sequence at the manifest canvas and fps (1080×1920 by default), one primary-storyline clip per manifest clip using the frozen localPath, inSeconds/outSeconds and, when present on every clip, timelineStartSeconds (else sequential), a Cross Dissolve for each transitionOutSeconds trimmed so the timeline runtime equals the manifest's story runtime, a marker at every clip start named by shotId, `audio.music[]` as a connected music lane with volume keyframes from `volumeKeyframes: [{ atSeconds, gainDb }]` (seconds on the story timeline) or a flat `gainDb`, and, for extracted-mode clips, the clip's embedded audio pulled down with the linked native track connected on its own lane. Bookends are not emitted; add the splash/blackout/end card from BRIEF.md in Final Cut. All times are whole-frame rationals (`<frames>/<fps>s`) at the canvas fps, so a fractional in/out point rounds to the nearest frame (up to half a frame per cut) and the reported runtime can differ from the manifest's by a few hundredths of a second.
+
+Import with File → Import → XML, choosing the `.fcpxml` file; Final Cut relinks the `file://` media paths resolved from `--root`, so import from the same machine or relink to the copied kit. Re-run with `--force` after any manifest change; the FCPXML is derived, never hand-edited, and it does not replace the manifest as the edit's source of truth.
+
 ## Revisions
 
 Apply available notes together; hold export when the user says more notes are coming. Preserve original takes, request payloads, credits and approvals. Rebuild timing/captions from one edit source of truth. A new generation needs its own quote and scoped authorization. Do not insert generic cutaways that create new geography or voice problems.

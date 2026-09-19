@@ -18,7 +18,7 @@ Include character sheets only for people actually present, plus essential props/
 
 ## 3. Prepare expressive voice references
 
-Every speaking role has its assigned ElevenLabs Voice ID in series memory. Generate required dialogue/sample passages with generate_audio, model elevenlabs-v3, audioCategory speech, voice set to that ID. Reuse an approved sample when identity, accent and emotional register fit. One clean solo sample per role is the starting point; extra samples must earn their input budget.
+Every speaking role has its assigned ElevenLabs Voice ID in series memory. Generate required dialogue/sample passages with generate_audio, model elevenlabs-v3, audioCategory speech, voice set to that ID; the default `trailingSilenceMs: 300` keeps the last word intact (raise it up to 2000 for a slow tail, and count the padding in the measured 15-second cap). Reuse an approved sample when identity, accent and emotional register fit. One clean solo sample per role is the starting point; extra samples must earn their input budget.
 
 Use emotion/delivery tags deliberately and liberally at meaningful changes: [whispers], [sighs], [laughs], [sarcastic], [excited], [crying], with punctuation and selective emphasis. Choose tags that match the character's actual intention. A friendly line must not gain sarcasm just to sound expressive; do not stack contradictory tags. Audition because tag support and response vary. Translate the intended delivery into playable prose in the WAN prompt; tags are not words for WAN to speak.
 
@@ -30,13 +30,15 @@ WAN uses these samples as voice identity and emotional-register references, then
 
 ## 4. Preflight and submit
 
-Read wan-prompting.md. Current integration contract (recheck live): wan-3, qualityTier standard, resolution 720p, aspectRatio 9:16, duration as an explicit integer string, generateAudio true. Reference-to-video takes ordered image/audio arrays. Standard supports 2–30 seconds; scenelets normally 10–30, standalone inserts 2–9 when sufficient. Single-shot inserts use the same WAN family and visual language, not another model.
+Read wan-prompting.md. Current integration contract (recheck live): wan-3, qualityTier standard, resolution 720p, aspectRatio 9:16, an explicit integer `duration` (number or numeric string; any integer 2–30, rejected rather than clamped outside that range), generateAudio true, promptExpansion false for scripted dialogue. Reference-to-video takes ordered image/audio arrays sent as real JSON arrays, never comma-joined strings. Standard supports 2–30 seconds; scenelets normally 10–30, standalone inserts 2–9 when sufficient. Single-shot inserts use the same WAN family and visual language, not another model.
 
 Reference limits: images <=10; audio <=5 and <=15 seconds combined; videos <=5 and <=15 seconds combined; <=20 files overall. This workflow omits video references. A startImageUrl added to references shifts image numbering and does not promise a hard opening-frame lock; omit it by default.
 
-Run check-scenelet-plan.mjs --ready after references are approved and measured. Build the payload with build-scenelet-request.mjs, inspect the generated prompt and arrays, then quote those exact settings. The builder never submits, polls or invents a quote/permission grant. Store prompt revision, reference IDs/hashes, actual request, quote, cap and idempotency key before submission.
+Run check-scenelet-plan.mjs --ready after references are approved and measured. Build the payload with build-scenelet-request.mjs, inspect the generated prompt and arrays, then quote those exact settings with `quote_generation`: pass the same integer `duration` as the request (never `multiPromptShots`, which WAN rejects) and confirm `pricedInputs.durationSeconds` equals the scenelet length. The quote is a free dry run of the full request validation, so a passing quote means the identical generate call is admissible; a `model_not_deployed` error means the worker is behind the catalog and the scenelet must wait or use an authorized alternative. The builder never submits, polls or invents a quote/permission grant. Store prompt revision, reference IDs/hashes, actual request, quote, cap and idempotency key before submission.
 
-Call generate_video once per authorized scenelet. Supply productionId, and boardId only where the current tool supports it. Check actual placement/registration; do not infer board persistence merely from request fields. Do not send Kling's multiPromptShots to WAN: multiple shots live in ONE prompt string.
+Call generate_video once per authorized scenelet. Supply productionId, and boardId only where the current tool supports it. Read `registration` and `billing` off the returned job; do not infer board persistence merely from request fields. Do not send Kling's multiPromptShots to WAN: multiple shots live in ONE prompt string.
+
+On the first `permission_required` of an episode, tell the owner the approval page can save a standing permit for this action, all video generation (`generate_video`, `animate_image`, `animate_board_frame`), all audio generation or all paid generation, scoped to the production or client and optionally capped; one approval then covers the authorized scenelet batch. The payload's `coverageOptions` lists what is offered.
 
 Use one representative scenelet as the first take of a new setup, not an additional disposable generation by default. Continue through authorized work after review. Dependent scenelets wait until the prior ending state is accepted; independent scenes may be generated together within the approved batch cap.
 
@@ -46,7 +48,7 @@ Use continuity-gate.md and qa.md. Watch with sound at normal speed, inspect inte
 
 Keep an accepted complete scenelet intact. Minor head/tail trims are fine if they preserve story and native sync. If a scene has wrong intent, identity, voice or speaker assignment, revise the performance/reference ambiguity and propose a scoped new take. Do not automatically reconstruct it from singles or external lip-sync. One failed take is evidence about that take, not universal model failure.
 
-Keep job, debit, refund and delivery state separate. Poll the same job in bounded windows; wait expiry is pending. A generic rejection does not identify which reference offended. Do not disable safety checks or remove required cast to force a result. New creative attempts require scope/budget authorization and fresh keys; transport/permission retries reuse the identical call.
+Keep job, debit, refund and delivery state separate: each job's `billing` object is the debit/refund record and `registration` the delivery record. Poll the same job in bounded windows; wait expiry is pending. If `requiresAction` is true, stop polling, report jobId/idempotencyKey/billing to the owner and never resubmit. Jobs stalled at the provider past the video ceiling (30 minutes or more) fail with `provider_timeout` and are refunded automatically. A generic rejection does not identify which reference offended. Do not disable safety checks or remove required cast to force a result. New creative attempts require scope/budget authorization and fresh keys; transport/permission retries reuse the identical call.
 
 ## 6. Light finishing
 

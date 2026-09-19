@@ -32,11 +32,11 @@ export function buildRequest(plan, sceneletId) {
     lines.push('Transition: '+shot.transition,'');
   }
   lines.push('ENDING STATE',s.endState,'SOUND AND CONTINUITY',
-    'Perform each quoted line exactly once, in order, with its named speaker and assigned voice. Visible speech synchronizes to that speaker; listeners do not mouth another character\'s words. No invented lines, narrator, subtitles or captions. No overlapping speech unless the shot explicitly directs an interruption. No score unless explicitly specified in the approved scene direction. Clear dialogue over restrained location ambience.',
+    'Perform each quoted line exactly once, in order, with its named speaker and assigned voice. Visible speech synchronizes to that speaker; listeners do not mouth another character\'s words. No invented lines, narrator, subtitles or captions. No overlapping speech unless the shot explicitly directs an interruption. Production sound only: no score, no underscore, no music bed unless explicitly specified in the approved scene direction. Clear dialogue over restrained location ambience.',
     'Preserve identities, wardrobe, prop count/ownership, physical geography and light across cuts. Complete the specified actions and emotional turn. Do not add reactions or camera moves that change the intended pacing.');
   return {
     model:'wan-3', mode:'reference-to-video', qualityTier:'standard', resolution:'720p', aspectRatio:'9:16',
-    duration:String(s.generationDurationSeconds),generateAudio:true,
+    duration:String(s.generationDurationSeconds),generateAudio:true,promptExpansion:false,
     prompt:lines.join('\n'),referenceImageUrls:s.imageReferences.map(r=>r.url),referenceAudioUrls:s.audioReferences.map(r=>r.url),
     ...(plan.productionId?{productionId:plan.productionId}:{}),...(plan.boardId?{boardId:plan.boardId}:{}),
     name:plan.episodeId+' '+s.sceneletId+' — '+s.purpose, usageType:'shot'

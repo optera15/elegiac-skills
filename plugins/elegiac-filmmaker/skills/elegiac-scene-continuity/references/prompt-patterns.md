@@ -30,6 +30,40 @@ The combination of {style system + cast refs + verbatim lighting key} is Elegiac
 
 Keep under ~40 words. The start image already carries style — restating style in motion prompts causes drift. See `shot-grammar.md` for reliable moves.
 
+## Boreal's four-section prompt (`creatify-boreal`)
+
+Boreal does not read the motion skeleton above — it reads four bracketed
+sections, in this order, with every one present:
+
+```
+[VISUAL]
+One present-tense paragraph: the action, the camera, the beats timed in prose.
+
+[SPEECH]
+Who speaks, when the line starts, and the line in double quotes. Or "None."
+
+[SOUNDS]
+Effects in the order of the visual beats, then ambience, then an explicit
+music decision.
+
+[TEXT]
+On-screen text in quotes, or "None."
+```
+
+- Budget the speech at about **2 words per second**, starting ~1 second in. A
+  10-second clip holds roughly 20 words — an over-long line gets clipped, not
+  spoken faster.
+- With a reference image, open `[VISUAL]` with "Animate the exact &lt;subject&gt; in
+  the reference, preserving …" and never re-describe the still as a new scene.
+- With an audio clip attached, the clip REPLACES generated speech: `[SPEECH]`
+  describes the delivery and must never invent a line.
+- Never use shot numbers, timestamp lines (`0-4s:`), or reference tokens
+  (`@Image1`, `<IMAGE_REF_0>`) here — those are other models' grammars and
+  Boreal renders them as literal text or ignores them.
+- A prose prompt still works: Elegiac wraps it into the four sections with the
+  speech section left empty, so the clip comes out silent. Write the sections
+  yourself whenever the shot needs a voice.
+
 ## negativePrompt discipline
 
 - A style system's `negativePrompt` is governance — pass it through untouched, never edit or "improve" it.

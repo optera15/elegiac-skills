@@ -1,6 +1,6 @@
 # Evidence and integration notes
 
-Observations dated 14 September 2026; not guarantees or hardcoded prices. Check current schema/quotes before generation.
+Observations dated 14–19 September 2026; not guarantees or hardcoded prices. Check current schema/quotes before generation.
 
 ## Native scenelet pilot
 
@@ -12,14 +12,24 @@ The WAN first attempt was content-check rejected; an explicitly requested identi
 
 ## Tool traps
 
-- Model schema default resolution/aspect/duration may differ from this skill: explicitly send wan-3, standard, 720p, 9:16 and duration string.
-- Live WAN references are numbered Image 1 / Audio 1 by array order. Static catalogs have used other syntax; verify live/provider guidance. Adding a start image alongside references can shift numbering.
-- quote_generation has rejected duration even as the required string. A quote-only multiPromptShots sum produced the correct 15-second quote in observed tests; actual WAN generation still used one prompt and duration, no shots array. Use this only if current quote semantics confirm the intended sum, compare the generation's approved quote/cap, and never reuse a default-duration quote as if it priced a longer take. If exact pricing cannot be established, report the problem rather than spend an unknown amount.
+Gateway behaviour below is current as of the 2026-09-19 agent-route closedown (skill 3.1.0); recheck `get_model_schema` and a live quote when in doubt.
+
+- Model schema default resolution/aspect/duration may differ from this skill: explicitly send wan-3, standard, 720p, 9:16 and an explicit `duration`.
+- **List parameters are JSON arrays.** `referenceImageUrls`, `referenceAudioUrls`, `referenceVideoUrls`, `castMemberIds`, `assetIds`, `galleryItemIds` and every other list are advertised as `type: array`; send real arrays. A bare comma-separated string still works, and a string starting with `[` is parsed as JSON. A malformed bracket string fails with `invalid_list_parameter` naming the entry; nothing is queued or charged. Object lists (`multiPromptShots`, `speakers`, `shots`, `keyframes`) also accept their JSON text.
+- Live WAN references are numbered Image 1 / Audio 1 by array order. Adding a start image alongside references can shift numbering; omit it in this pack.
+- **Quote with the real duration.** `quote_generation` takes `duration` as a number or numeric string, exactly like `generate_video`; WAN accepts any integer 2–30 and rejects (never clamps) anything else in both quote and generate. The quote's `pricedInputs { endpoint, provider, durationSeconds, resolution, qualityTier, mode }` shows what was priced: check `durationSeconds` equals the scenelet length before authorizing. `multiPromptShots` is rejected (`invalid_params`) for wan-3 and every non-Kling/non-Seedance model; shots live in one prompt with `duration` set to the total. There is no quote-only shots trick; a quote that priced the 5-second default is a wrong quote, not a cheaper one.
+- **A quote is a free dry run.** It runs the full request validation (URL safety, reference caps, required params, model availability), so a successful quote means the identical `generate_video` call will be accepted. Quote the exact compiled payload, not a simplified one.
+- **Model availability.** `list_models` / `get_model_schema` carry `availability: ready | worker_pending | unknown`. Only `ready` models can be generated; a quote or generate on a `worker_pending` model fails with `model_not_deployed` before any job or approval exists. Disclose and resolve an authorized alternative; do not silently reroute.
+- **Every job carries `billing` and `registration`.** `get_job` / `wait_for_job` / `generate_*` return `billing { quotedCredits, deductedCredits, refundedCredits, netCredits, status: pending | settled | refund_pending | refunded | not_charged, transactionId?, refundTransactionId? }` and `registration { galleryItemId, productionId, productionGalleryItemId, productionAssetId, boardPlacement, registered }`; the MCP text adds `Billing:` and `Registered:` lines. Record both in the call sheet from the job, not from the quote. `registered: false` on a completed job is a delivery defect to report, not a reason to regenerate.
+- **`requiresAction: true` means STOP polling.** The job is paused for operator reconciliation (`submission_unknown` / `recovery_required`); report jobId, idempotencyKey and the billing object to the owner and never resubmit. Jobs stuck at the provider beyond the per-operation ceiling (speech/SFX 10 min, music 20 min, image 15 min, video 30 min or more) are cancelled, failed and refunded automatically with error `provider_timeout`; a refund still requires the billing evidence on the job.
+- Speech tails: `generate_audio` speech models (`elevenlabs-v3`, `gemini-3-1-flash-tts`) take `trailingSilenceMs` (0–2000, default 300) so the last word is not clipped. The trailing `...` in the prompt still works but is no longer required; do not use both on a sample you will measure against the 15-second cap.
+- Scripted dialogue: send `promptExpansion: false` on WAN requests so the provider does not paraphrase exact lines (see wan-prompting.md). No provider flag disables music alone; "no score" is prompt-level.
+- Standing permits: the approval page can save a permit covering this action, all video generation (`generate_video` + `animate_image` + `animate_board_frame`), all image generation, all audio generation or all paid generation, scoped to the production or client. The `permission_required` payload lists `coverageOptions`; tell the owner which coverage a scenelet loop needs before they approve.
 - URLs must come from actual assets; never fabricate storage tokens.
-- Pending/result-fetch errors do not authorize duplicate jobs. Keep IDs and reconcile unknown submissions. A refund requires billing evidence.
-- Probe actual media. Resolution labels, prompt timestamps and requested duration are not proof of output specs.
-- Image-model catalog presence is not proof the worker supports generation. On an unsupported model, disclose and resolve an authorized alternative; do not silently reroute.
-- Board placement and final registration are separate from successful generation. Verify each.
+- Pending/result-fetch errors do not authorize duplicate jobs. Keep IDs and reconcile unknown submissions.
+- Probe actual media. Resolution labels, prompt timestamps and requested duration are not proof of output specs. Agent-route videos now get a real extracted poster frame (`thumbnailSource: extracted_frame`), but a poster is still not a voice or sync review.
+- `list_assets` with `productionId` returns both the production asset library (app-added images such as location masters) and production gallery items, with `membership`, `productionAssetId`, `category` and `consistentCharacter`. Prefer `consistentCharacter: true` sheets for cast references.
+- Board placement and production registration are reported on the job (`registration`); verify each rather than inferring from request fields.
 
 ## Creative lessons retained
 

@@ -1,6 +1,6 @@
 # Elegiac downloads
 
-Version **0.4.0** · **35 skills** · [Installation instructions](../README.md#install)
+Version **0.5.0** · **35 skills** · [Installation instructions](../README.md#install)
 
 ## Recommended: all skills
 

@@ -11,7 +11,7 @@ Apply checks to the requested deliverable. Planning-only does not need render ch
 - Reference sheets/location anchors are inspected and approved. Rights and assigned Voice IDs are resolved. Only necessary references are attached in known order.
 - All attached audio files are measured, isolated by speaker, expressive but clean, and sum to <=15 seconds. This cap is not confused with the dialogue/script duration.
 - Ordered shot windows cover the requested generation duration; exact dialogue and speaker/listener assignments are explicit. Standalone action inserts need no multiple-shot structure.
-- Current WAN schema and exact settings checked; quoted total/cap and authorization recorded. No implicit premium tier/model substitution. Request builder is no-spend.
+- Current WAN schema and exact settings checked; model `availability` is `ready`; quote succeeded on the exact payload with `pricedInputs.durationSeconds` equal to the scenelet length; quoted total/cap and authorization recorded. No implicit premium tier/model substitution. Request builder is no-spend.
 - check-scenelet-plan.mjs --ready passes with actual local audio files.
 
 ## Before take acceptance
@@ -21,7 +21,8 @@ Apply checks to the requested deliverable. Planning-only does not need render ch
 - Confirm native lip-sync, clarity, no invented lines/music/captions, no clipping.
 - Check internal geometry, hands/props/vehicle logic, light and ending state.
 - Record measured specs, actual transcript, usable range, defects and review evidence. Thumbnails do not certify voices or sync. A script/tool pass cannot certify artistic quality.
-- Reconcile jobs and credit debits/refunds independently; failed generation does not imply a refund until confirmed.
+- Reconcile jobs and credit debits/refunds from each job's `billing` line (`quotedCredits`, `deductedCredits`, `refundedCredits`, `status`); failed generation does not imply a refund until `status` is `refunded` or `not_charged`. A `refund_pending` or `requiresAction` job is listed as unresolved, not as settled.
+- Each accepted take's `registration` line shows `registered: true` with a `productionGalleryItemId`; otherwise record it as not_registered for delivery.
 
 ## Before delivery
 
@@ -32,7 +33,7 @@ Apply checks to the requested deliverable. Planning-only does not need render ch
 - Captions follow actual approved words/timing; burn-in is opt-in.
 - Compact branding resolved/reused; no invented logo/sting or long intro.
 - HyperFrames check and exported preview reviewed with sound; output probed and decodable. Report any axis not reviewed.
-- Master/proxy/captions/poster/manifests/Board link delivered as requested. Registration verified or explicitly not_registered; unresolved debits/jobs listed.
+- Master/proxy/captions/poster/manifests/Board link delivered as requested. Registration verified from job `registration` lines or explicitly not_registered; unresolved debits/jobs listed with their `billing.status`.
 
 ## Behavioral regression scenarios
 

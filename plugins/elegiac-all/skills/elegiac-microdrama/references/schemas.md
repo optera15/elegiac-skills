@@ -65,7 +65,7 @@ node <skill>/scripts/build-scenelet-request.mjs episodes/s01e03/episode-blueprin
 
 Planning validates structure/runtime and declared reference limits; ready additionally requires approved references/rights/Voice IDs and probes/hashes local audio. --scenelet scopes readiness to one unit while the whole episode's structural runtime still checks. Future scenelets need not have all voice assets ready to begin the first one. Missing duration is not zero.
 
-The compiler writes model, mode, standard tier, 720p, 9:16, duration string, native audio, prompt, arrays and Production/Board IDs. It refuses overwrite by default. It deliberately supplies no pricingQuoteId, maxCredits or idempotencyKey: the operator adds the current quoted cap/key and persists the exact final submitted payload, rather than treating a draft as authorized. A successful compile is not artistic approval.
+The compiler writes model, mode, standard tier, 720p, 9:16, duration string, native audio, promptExpansion false, prompt, arrays (real JSON arrays) and Production/Board IDs. It refuses overwrite by default. It deliberately supplies no pricingQuoteId, maxCredits or idempotencyKey: the operator adds the current quoted cap/key and persists the exact final submitted payload, rather than treating a draft as authorized. A successful compile is not artistic approval.
 
 ## Version 2 edit manifest
 
@@ -86,7 +86,19 @@ Output profiles: master-1080 (1080×1920), fallback-720 (720×1280; valid 720p f
 
 Timeline math: story = sum(out-in) - sum(transition overlaps); master = story + branding bookends. Last overlap is zero and every overlap fits both neighbors. Version 2 compares master to target, not story. In extracted mode, timelineStartSeconds is on the story timeline; the composition offsets both picture and sound equally for any splash.
 
-Branding required: seriesMark provided/typographic/waived(reason); sting provided/waived(reason); opening none/overlay-mark/splash (0.5–2s); endCard none/mark-only/mark-and-sting (0.5–1.5s, blackout0–0.5); credits none/end-matter (0.5–3s). Provided elements use frozen-source fields. Use the chosen brand ground; do not invent media. Bookends are included in the runtime budget.
+Branding required: seriesMark provided/typographic/waived(reason); sting provided/waived(reason); opening none/overlay-mark/splash (0.5–2s); endCard none/mark-only/mark-and-sting (0.5–1.5s by default, blackout 0–0.5); credits none/end-matter (0.5–3s by default). Provided elements use frozen-source fields. Use the chosen brand ground; do not invent media. Bookends are included in the runtime budget.
+
+Optional `branding.limits` raises the two bookend ceilings for a show whose format needs it (a sponsored end card, contractual end matter):
+
+```json
+"limits": { "endCardMaxSeconds": 2.5, "endMatterMaxSeconds": 5 }
+```
+
+Each key is optional; the defaults are 1.5 and 3 seconds; the hard cap is 10 seconds each (an error above it). A value above the default validates but emits a warning so the longer bookend is a recorded decision, not an accident. Unknown keys and non-positive values are errors. The minimums (0.5 s) and the runtime window are unchanged; a longer bookend still has to fit inside runtimeRange.
+
+## Final Cut Pro timeline (FCPXML)
+
+`scripts/build-fcpxml.mjs` writes an FCPXML 1.11 document from a validated version 2 edit manifest (edit.md, "Final Cut Pro handoff"): one project/sequence at the manifest canvas and fps, one asset-clip per clip with its in/out range (sequential placement, or `clip.timelineStartSeconds` when present), an optional music lane from `audio.music[]` with volume keyframes from `audio.music[].volumeKeyframes` (`[{ "atSeconds": 0, "gainDb": -12 }, ...]`, seconds on the story timeline), and a marker at each clip start named by shotId. Asset paths are the frozen localPath values resolved against --root; the XML never references remote media.
 
 ## Migration, delivery and resumption
 

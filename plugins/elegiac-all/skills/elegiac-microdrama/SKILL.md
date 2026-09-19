@@ -3,7 +3,7 @@ name: elegiac-microdrama
 description: "Create, continue, or edit vertical microdramas with WAN 3.0 native-audio scenelets, Elegiac cast/location memory and light HyperFrames finishing. Use for episodic mobile-first scripted drama, from a series premise to the next episode or an existing edit; never uses Showrunner."
 allowed-tools: Bash
 argument-hint: "[premise, show/episode, or footage to edit]"
-version: 3.0.0
+version: 3.1.0
 references:
   - elegiac-conventions.md
   - platform-specs.md
@@ -57,6 +57,7 @@ Before generation: run check-scenelet-plan.mjs with --ready. For finishing:
 ```bash
 node <skill>/scripts/validate-episode-manifest.mjs <edit-manifest.json> --root <kit> --write-hashes
 node <skill>/scripts/build-edit-handoff.mjs <edit-manifest.json> --root <kit> --output <initialized-hyperframes-project>/BRIEF.md
+node <skill>/scripts/build-fcpxml.mjs <edit-manifest.json> --root <kit> --output <kit>/episodes/s01e01/S01E01.fcpxml   # optional Final Cut Pro timeline
 ```
 
 Done means reviewed story, scenelet joins, speaker/voice assignment, acting and native sync; measured source specs; passing manifest and HyperFrames check; inspected export and any required user review. Deliver master (normally a disclosed 1080×1920 conform of 720p sources), proxy, sidecar captions, poster, manifests, billing and Board link. Report omissions/unregistered media. Stop at the requested deliverable; never mass-produce a season.

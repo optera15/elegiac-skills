@@ -1,5 +1,16 @@
 # elegiac-microdrama changelog
 
+## 3.1.0 — 2026-09-19 — agent-route closedown (Closedown S01E01 report)
+
+- Field notes rewritten for the fixed gateway contract: list parameters are JSON arrays (`type: array`; comma strings and JSON text still accepted, malformed brackets fail with `invalid_list_parameter`); `quote_generation` takes an integer `duration` like `generate_video`, is a free dry run of the full request validation, returns `pricedInputs`, and rejects `multiPromptShots` for WAN (the quote-only shots sum is withdrawn — it priced the 5-second default); WAN `duration` is any integer 2–30, rejected rather than clamped; models carry `availability` and a `worker_pending` model fails with `model_not_deployed` before any approval.
+- Every job now reports `billing { quotedCredits, deductedCredits, refundedCredits, netCredits, status }` and `registration { galleryItemId, productionGalleryItemId, productionAssetId, boardPlacement, registered }`; qa.md and the call sheet read debit/refund/delivery state from those lines. `requiresAction: true` means stop polling and report jobId + idempotencyKey + billing; stalled provider jobs are cancelled and refunded automatically (`provider_timeout`).
+- WAN scripted dialogue sends `promptExpansion: false`; the request compiler sets it and closes every prompt with "Production sound only: no score, no underscore, no music bed" — the only music control WAN has. Craft lessons added to wan-prompting.md: name a background prop once, never turn the camera toward a wall the plate does not show, no "face out of fog" reveals for a person, no breath cues outside close-ups.
+- Speech samples: `trailingSilenceMs` (default 300) on `generate_audio` speech models keeps the last word; the trailing `...` workaround remains valid but optional. Standing permits can cover all video / image / audio / paid generation for the production or client; tell the owner which coverage a scenelet loop needs.
+- `list_assets` with `productionId` now unions the production asset library and gallery items with `membership` and `consistentCharacter`; agent-route videos get an extracted poster frame instead of the gradient placeholder.
+- F5: `branding.limits { endCardMaxSeconds, endMatterMaxSeconds }` raises the end-card (1.5 s) and end-matter (3 s) ceilings up to a 10-second hard cap, with a warning above the default; schemas.md documents it and manifest.test.mjs covers it.
+- F4 step 1: new `scripts/build-fcpxml.mjs` writes an FCPXML 1.11 timeline (clips, transitions, shotId markers, music lane with volume keyframes, extracted native audio lane) from a validated version 2 edit manifest; edit.md explains the Final Cut Pro import; `build-fcpxml.test.mjs` plus a CLI smoke in manifest.test.mjs cover it.
+- Contract note for CLI users: list fields are published as JSON arrays instead of `anyOf [array, string]`; typed comma lists still work at runtime.
+
 ## 3.0.0 — 2026-09-14 — WAN native-audio scenelets
 
 - Replace per-cut still/motion/external-lip-sync production with a few logical WAN 3.0 scenelets: normally 10–30 seconds, preferably two speakers, 60–90 seconds total with 75 ideal including bookends.

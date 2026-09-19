@@ -59,11 +59,28 @@ Dylan's brief, nonverbal embarrassed glance lands the joke. No added reply or lo
 End with the same pencil/page in Dylan's hand and both men still together.
 
 Natural American English, exact lines once and in order, no added dialogue.
-Each voice stays with its named character. No music, narrator or subtitles.
+Each voice stays with its named character. No narrator or subtitles.
+Production sound only: no score, no underscore, no music bed.
 Keep faces, wardrobe, prop ownership, geography and afternoon light stable.
 ```
 
 The time windows are directional, not a promise of frame-accurate cuts. Read the words aloud and allow necessary action; do not pack the final line at the last instant.
+
+## Sound contract: music is prompt-level only
+
+WAN exposes one `generateAudio` switch covering dialogue, ambience and music together; there is no provider flag that removes music alone, and turning audio off removes the performed dialogue. The only control is the closing line of every scenelet prompt: "Production sound only; no score, no underscore, no music bed." Keep it verbatim at the end of the SOUND AND CONTINUITY block (the request compiler writes it). If a take still carries invented score, that is a reject-and-retake decision, not a mixing problem.
+
+## Prompt expansion: off for scripted dialogue
+
+The provider rewrites prompts by default (`enable_prompt_expansion`). Send `promptExpansion: false` on every scenelet and insert that carries quoted lines so the exact words, speaker assignments and shot windows reach the model unparaphrased; the compiler sets it. Leave expansion on only for a deliberately loose, dialogue-free mood insert, and record that choice on the scenelet. The delivered `actual_prompt` is persisted on the gallery item; compare it with the submitted prompt when a take drifts.
+
+## Craft lessons from produced episodes
+
+- Name a background prop **once**. Repeating "the telephone on the desk" in three shot windows produced three telephones; state it in the opening state and refer to it afterwards as "the phone".
+- Never turn the camera toward a wall the location plate does not show. WAN invents the reverse angle (a mirrored room, a second door). If the blocking needs it, generate the reverse-angle plate first (Location Recce angle alternates) and attach it as its own numbered image.
+- Avoid "face comes forward out of fog/darkness" imagery for a person; it reads as an apparition and breaks identity. Reveal a character by movement, light or a cut, not by emergence.
+- Do not list "breath" as a visible or audible cue unless the shot is a close-up; in wider framings it becomes a closed-mouth chest heave or an audible gasp on the wrong line.
+- Close every scenelet prompt with the production-sound-only line above, even when the scene is quiet.
 
 ## Boundary and insert prompts
 
@@ -73,6 +90,6 @@ A drawer insert needs one action, not an artificial multi-shot sequence: whose h
 
 ## Integration
 
-Recheck get_model_schema("wan-3") before submissions. Explicit Standard/720p/9:16/duration/native audio avoids different service defaults. Current image/audio numbering is Image 1 / Audio 1; a start image alongside references can shift numbering, so omit it in this pack. No default video references. See production-pipeline.md for limits and field-notes.md for quote-validation issues.
+Recheck get_model_schema("wan-3") before submissions. Explicit Standard/720p/9:16/duration/native audio plus `promptExpansion: false` avoids different service defaults. `duration` is any integer 2–30 (the schema now exposes `min`/`max`/`step`; `presets` are advisory); out-of-range values are rejected by quote and generate, never clamped. Current image/audio numbering is Image 1 / Audio 1; a start image alongside references can shift numbering, so omit it in this pack. No default video references. See production-pipeline.md for limits and field-notes.md for quote-validation issues.
 
 The compiler builds the same sections from the blueprint, but cannot certify good acting direction. Review its text for contradictions, crowded shot windows, vague pronouns, speaker swaps and unintended emotion before spend.

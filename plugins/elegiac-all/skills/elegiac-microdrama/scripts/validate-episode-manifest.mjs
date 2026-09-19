@@ -22,6 +22,10 @@ const END_CARD_MODES = new Set(['none', 'mark-only', 'mark-and-sting']);
 const CREDIT_MODES = new Set(['none', 'end-matter']);
 const GROUND_MODES = new Set(['gradient', 'texture', 'plate-blur']);
 
+/** Default bookend ceilings; a show may raise them through branding.limits up to BRANDING_LIMIT_HARD_CAP_SECONDS. */
+export const BRANDING_LIMIT_DEFAULTS = Object.freeze({ endCardMaxSeconds: 1.5, endMatterMaxSeconds: 3 });
+export const BRANDING_LIMIT_HARD_CAP_SECONDS = 10;
+
 /** True for a hex colour whose channels are all under ~0x24, i.e. visually black. */
 function isNearBlack(color) {
   const match = typeof color === 'string' ? color.trim().match(/^#([0-9a-f]{6})$/i) : null;
@@ -36,6 +40,39 @@ function finiteNumber(value) {
 
 function inRange(value, min, max) {
   return finiteNumber(value) && value >= min && value <= max;
+}
+
+/**
+ * Resolve the effective bookend ceilings from branding.limits. Each override must be a finite number between the
+ * default and the hard cap; a value above the default is allowed but warned about (bookends are punctuation, not an outro).
+ */
+export function resolveBrandingLimits(branding, errors = [], warnings = []) {
+  const limits = { ...BRANDING_LIMIT_DEFAULTS };
+  const supplied = branding?.limits;
+  if (supplied === undefined || supplied === null) return limits;
+  if (typeof supplied !== 'object' || Array.isArray(supplied)) {
+    errors.push('branding.limits must be an object with endCardMaxSeconds and/or endMatterMaxSeconds');
+    return limits;
+  }
+  for (const key of Object.keys(supplied)) {
+    if (!(key in BRANDING_LIMIT_DEFAULTS)) {
+      errors.push(`branding.limits.${key} is not a recognised limit (endCardMaxSeconds, endMatterMaxSeconds)`);
+      continue;
+    }
+    const value = supplied[key];
+    const fallback = BRANDING_LIMIT_DEFAULTS[key];
+    if (!finiteNumber(value) || value <= 0) {
+      errors.push(`branding.limits.${key} must be a positive number of seconds`);
+    } else if (value > BRANDING_LIMIT_HARD_CAP_SECONDS) {
+      errors.push(`branding.limits.${key} must not exceed ${BRANDING_LIMIT_HARD_CAP_SECONDS} seconds`);
+    } else {
+      limits[key] = value;
+      if (value > fallback) {
+        warnings.push(`branding.limits.${key} raises the ${key === 'endCardMaxSeconds' ? 'end card' : 'end matter'} ceiling from ${fallback}s to ${value}s; keep bookends inside the runtime budget and record the reason`);
+      }
+    }
+  }
+  return limits;
 }
 
 /** Seconds the branding bookends add after the story cut (splash + blackout + end card + end matter). */
@@ -139,6 +176,8 @@ async function validateBranding(manifest, context) {
     return 0;
   }
 
+  const limits = resolveBrandingLimits(branding, errors, warnings);
+
   const mark = branding.seriesMark;
   const markStatus = mark?.status;
   if (!MARK_STATUSES.has(markStatus)) {
@@ -191,8 +230,8 @@ async function validateBranding(manifest, context) {
     if (!markAvailable) errors.push(`branding.endCard.mode ${endCard.mode} requires a series mark that is not waived`);
     if (endCard.mode === 'mark-and-sting' && !stingAvailable) errors.push('branding.endCard.mode mark-and-sting requires a provided sting');
     if (!inRange(endCard.blackoutSeconds ?? 0, 0, 0.5)) errors.push('branding.endCard.blackoutSeconds must be between 0 and 0.5');
-    if (!inRange(endCard.durationSeconds, 0.5, 1.5)) {
-      errors.push('branding.endCard.durationSeconds must be between 0.5 and 1.5 (brand punctuation, not an outro)');
+    if (!inRange(endCard.durationSeconds, 0.5, limits.endCardMaxSeconds)) {
+      errors.push(`branding.endCard.durationSeconds must be between 0.5 and ${limits.endCardMaxSeconds} (brand punctuation, not an outro${limits.endCardMaxSeconds === BRANDING_LIMIT_DEFAULTS.endCardMaxSeconds ? '; raise branding.limits.endCardMaxSeconds deliberately' : ''})`);
     }
     if (endCard.mode === 'mark-only' && stingAvailable) {
       warnings.push('branding.endCard.mode is mark-only although a sting is provided; the reveal → sting → mark conditioning is weaker');
@@ -206,7 +245,9 @@ async function validateBranding(manifest, context) {
   if (!CREDIT_MODES.has(credits?.mode)) {
     errors.push('branding.credits.mode must be none or end-matter');
   } else if (credits.mode === 'end-matter') {
-    if (!inRange(credits.durationSeconds, 0.5, 3)) errors.push('branding.credits.durationSeconds must be between 0.5 and 3 for end matter');
+    if (!inRange(credits.durationSeconds, 0.5, limits.endMatterMaxSeconds)) {
+      errors.push(`branding.credits.durationSeconds must be between 0.5 and ${limits.endMatterMaxSeconds} for end matter${limits.endMatterMaxSeconds === BRANDING_LIMIT_DEFAULTS.endMatterMaxSeconds ? ' (raise branding.limits.endMatterMaxSeconds deliberately)' : ''}`);
+    }
     warnings.push('branding.credits.mode end-matter: keep credits after the end card and outside the dramatic flow; confirm the requirement is contractual');
   }
 

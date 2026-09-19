@@ -5,12 +5,13 @@ import { execFileSync } from 'node:child_process';
 import { mkdtemp, mkdir, readFile, rm, writeFile, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { renderBrief } from './build-edit-handoff.mjs';
 import { validatePlan, PERFORMANCE_FIELDS } from './check-scenelet-plan.mjs';
 import { buildRequest } from './build-scenelet-request.mjs';
 import { createHash } from 'node:crypto';
-import { loadAndValidateManifest } from './validate-episode-manifest.mjs';
+import { loadAndValidateManifest, BRANDING_LIMIT_DEFAULTS, BRANDING_LIMIT_HARD_CAP_SECONDS } from './validate-episode-manifest.mjs';
+import { buildFcpxml } from './build-fcpxml.mjs';
 
 const root = await mkdtemp(join(tmpdir(), 'elegiac-microdrama-'));
 
@@ -122,6 +123,50 @@ try {
   const badResult = await loadAndValidateManifest(manifestPath, { root });
   assert(badResult.errors.some((error) => error.includes('endCard.durationSeconds must be between 0.5 and 1.5')));
   assert(badResult.errors.some((error) => error.includes('sting.durationSeconds must be between 0.3 and 3')));
+
+  // F5: branding.limits raises the end-card / end-matter ceilings (warning above the default, error above the hard cap).
+  assert.deepEqual(BRANDING_LIMIT_DEFAULTS, { endCardMaxSeconds: 1.5, endMatterMaxSeconds: 3 });
+  assert.equal(BRANDING_LIMIT_HARD_CAP_SECONDS, 10);
+  const raisedLimits = structuredClone(persisted);
+  // version 1 compares story (75s) to target; bookends only report through summary.bookendSeconds
+  raisedLimits.branding.limits = { endCardMaxSeconds: 3, endMatterMaxSeconds: 5 };
+  raisedLimits.branding.endCard.durationSeconds = 3;
+  raisedLimits.branding.credits = { mode: 'end-matter', durationSeconds: 3 };
+  raisedLimits.branding.sting.durationSeconds = 1.1;
+  await writeFile(manifestPath, `${JSON.stringify(raisedLimits, null, 2)}\n`);
+  const raisedResult = await loadAndValidateManifest(manifestPath, { root });
+  assert.deepEqual(raisedResult.errors, [], raisedResult.errors.join('; '));
+  assert.equal(raisedResult.summary.bookendSeconds, 7.25);
+  assert(raisedResult.warnings.some((warning) => warning.includes('branding.limits.endCardMaxSeconds raises the end card ceiling from 1.5s to 3s')));
+  assert(raisedResult.warnings.some((warning) => warning.includes('branding.limits.endMatterMaxSeconds raises the end matter ceiling from 3s to 5s')));
+  const endMatterAtLimit = structuredClone(raisedLimits);
+  endMatterAtLimit.branding.credits.durationSeconds = 5;
+  await writeFile(manifestPath, `${JSON.stringify(endMatterAtLimit, null, 2)}\n`);
+  assert.deepEqual((await loadAndValidateManifest(manifestPath, { root })).errors, []);
+  const beyondLimit = structuredClone(raisedLimits);
+  beyondLimit.branding.endCard.durationSeconds = 3.5;
+  beyondLimit.branding.credits.durationSeconds = 5.5;
+  await writeFile(manifestPath, `${JSON.stringify(beyondLimit, null, 2)}\n`);
+  const beyondResult = await loadAndValidateManifest(manifestPath, { root });
+  assert(beyondResult.errors.some((error) => error.includes('endCard.durationSeconds must be between 0.5 and 3')));
+  assert(beyondResult.errors.some((error) => error.includes('credits.durationSeconds must be between 0.5 and 5')));
+  const lowerLimits = structuredClone(persisted);
+  lowerLimits.branding.limits = { endCardMaxSeconds: 1 };
+  await writeFile(manifestPath, `${JSON.stringify(lowerLimits, null, 2)}\n`);
+  const lowerResult = await loadAndValidateManifest(manifestPath, { root });
+  assert.deepEqual(lowerResult.errors, []);
+  assert(!lowerResult.warnings.some((warning) => warning.includes('branding.limits')));
+  const badLimits = structuredClone(persisted);
+  badLimits.branding.limits = { endCardMaxSeconds: 11, endMatterMaxSeconds: -1, outroMaxSeconds: 4 };
+  await writeFile(manifestPath, `${JSON.stringify(badLimits, null, 2)}\n`);
+  const badLimitsResult = await loadAndValidateManifest(manifestPath, { root });
+  assert(badLimitsResult.errors.some((error) => error.includes('branding.limits.endCardMaxSeconds must not exceed 10 seconds')));
+  assert(badLimitsResult.errors.some((error) => error.includes('branding.limits.endMatterMaxSeconds must be a positive number')));
+  assert(badLimitsResult.errors.some((error) => error.includes('branding.limits.outroMaxSeconds is not a recognised limit')));
+  const arrayLimits = structuredClone(persisted);
+  arrayLimits.branding.limits = [3];
+  await writeFile(manifestPath, `${JSON.stringify(arrayLimits, null, 2)}\n`);
+  assert((await loadAndValidateManifest(manifestPath, { root })).errors.some((error) => error.includes('branding.limits must be an object')));
 
   const waivedSting = structuredClone(persisted);
   waivedSting.branding.sting = { status: 'waived', reason: 'no sting yet' };
@@ -259,6 +304,7 @@ try {
   assert.equal(payload.model,'wan-3');assert.equal(payload.duration,'25');assert.equal(payload.generateAudio,true);
   assert.deepEqual(payload.referenceAudioUrls,plan.scenelets[0].audioReferences.map(r=>r.url));
   assert(!('multiPromptShots' in payload));assert(!('maxCredits' in payload));
+  assert.equal(payload.promptExpansion,false);assert(payload.prompt.includes('Production sound only: no score, no underscore, no music bed'));
   assert(payload.prompt.includes('hiddenAgenda:'));assert(payload.prompt.includes('logan (on-screen; Warm, casual) says "You looking for Sienna?"'));
   const bp=join(root,'blueprint.json'), draftRequest=join(root,'request.json');
   await writeFile(bp,JSON.stringify(plan));
@@ -306,6 +352,22 @@ try {
   const totalResult=await loadAndValidateManifest(manifestPath,{root});
   assert.deepEqual(totalResult.errors,[]);assert.equal(totalResult.summary.masterDurationSeconds,75);
   assert.equal(totalResult.summary.editDurationSeconds,72.75);
+
+  // F4 step 1: the FCPXML builder runs on the validated version 2 manifest (library + CLI) and refuses invalid input.
+  const fcp=buildFcpxml(totalResult.manifest,{root});
+  assert.equal(fcp.summary.clipCount,3);assert(Math.abs(fcp.summary.storyDurationSeconds-72.75)<1/30,'story runtime is frame-rounded at the 30 fps canvas');assert.equal(fcp.summary.storyDurationFrames,2183);
+  assert(fcp.xml.includes('<fcpxml version="1.11">'));assert(fcp.xml.includes('value="S01E01-030"'));
+  const fcpPath=join(root,'episodes/s01e01/S01E01.fcpxml');
+  const fcpOut=execFileSync(process.execPath,[join(dirname(fileURLToPath(import.meta.url)),'build-fcpxml.mjs'),manifestPath,'--root',root,'--output',fcpPath],{encoding:'utf8'});
+  assert.match(fcpOut,/3 clips, 0 music cues, 3 markers, 72.767s at 30 fps \(1080x1920\)/);
+  const fcpFile=await readFile(fcpPath,'utf8');
+  assert(fcpFile.startsWith('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE fcpxml>\n<fcpxml version="1.11">'));
+  assert(fcpFile.includes('frameDuration="1/30s" width="1080" height="1920"'));
+  assert(fcpFile.includes(`src="${pathToFileURL(join(root,'assets/video/s01e01/native.mp4')).href}"`));
+  assert.throws(()=>execFileSync(process.execPath,[join(dirname(fileURLToPath(import.meta.url)),'build-fcpxml.mjs'),manifestPath,'--root',root,'--output',fcpPath],{stdio:'pipe'}),/already exists/);
+  const brokenForFcp=structuredClone(totalResult.manifest);brokenForFcp.clips[0].continuityStatus='reject';
+  await writeFile(manifestPath,JSON.stringify(brokenForFcp));
+  assert.throws(()=>execFileSync(process.execPath,[join(dirname(fileURLToPath(import.meta.url)),'build-fcpxml.mjs'),manifestPath,'--root',root,'--output',fcpPath,'--force'],{stdio:'pipe'}),/invalid manifest/);
 
   // Root confinement survives symlinks, and modified frozen bytes fail.
   await symlink('/etc/hosts',join(root,'escape'));
