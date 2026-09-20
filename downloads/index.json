@@ -106,11 +106,11 @@
     "zips": {
       "codex": {
         "file": "elegiac-character-cast-codex.zip",
-        "sizeBytes": 13007
+        "sizeBytes": 13491
       },
       "claude": {
         "file": "elegiac-character-cast-claude.zip",
-        "sizeBytes": 13007
+        "sizeBytes": 13491
       }
     }
   },

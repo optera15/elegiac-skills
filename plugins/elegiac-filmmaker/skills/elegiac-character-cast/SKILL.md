@@ -95,11 +95,26 @@ Use `make_gallery_character_consistent` when the user has a one-off Gallery char
 Use `generate_character_variants` when the user wants controlled looks, poses, profiles, expression studies, or wardrobe variants for one existing cast member:
 
 - Always pass `productionId` and one `castMemberId` or `characterName`.
-- Use `variantTypes` for common controlled outputs such as `portrait`, `profile`, `wardrobe`, `pose`, `expression`, or `scene_look`.
+- **One change to an existing Consistent Character is a sheet variation.** When the user asks to
+  change a wardrobe item, remove an accessory, or restyle a cast member who already has a Consistent
+  Character sheet, pass just a `brief` describing that single change ("remove the tan suede shoulder
+  bag"). The workflow regenerates the same seven-panel identity sheet with the change applied to
+  every panel, and inherits the sheet's own orientation. **Do not pass `aspectRatio` unless the user
+  named one** — a turnaround regenerated in the opposite orientation squeezes the figures.
+- Use `variantTypes` for other controlled outputs: `sheet`, `portrait`, `profile`, `wardrobe`,
+  `pose`, `expression`, or `scene_look`. Against a Consistent Character, `wardrobe` is also treated
+  as a sheet variation.
 - Use `variants` only when the user gives explicit variant prompts.
-- Include `stylePrompt`, `wardrobePrompt`, `posePrompt`, or `scenePrompt` for creative constraints.
+- Include `stylePrompt`, `wardrobePrompt`, or `posePrompt` for creative constraints. `scenePrompt` is
+  ignored on a sheet variation, which must not place the character in a location.
 - If the workflow is `partial`, do not rerun the whole batch. Inspect failed frames and call `retry_character_variant` with the `workflowId` plus `frameIndex` or `jobId`; it quotes/spends only the single replacement image.
-- To make a completed variant part of durable cast memory, call `promote_character_variant` with the `workflowId` plus `frameIndex`/`jobId`/`galleryItemId`, or with `productionId`, `castMemberId`, and `galleryItemId`.
+- **File keepers with `promote_character_variant`**, passing the `workflowId` plus
+  `frameIndex`/`jobId`/`galleryItemId`, or `productionId`, `castMemberId`, and `galleryItemId`. By
+  default the variant becomes an **alternate image on the cast member's Consistent Character sheet**
+  — that is where the app shows a variation, beside the sheet's "Original" — and the standalone
+  gallery item is removed. Give it a `label` the user would recognise ("No shoulder bag"). Pass
+  `mode: 'reference'` only when the user wants the image as a separate cast reference asset; that is
+  also what happens automatically when the cast member has no Consistent Character sheet.
 
 ## CLI
 
