@@ -1,6 +1,6 @@
 # Voice, Music & SFX Direction
 
-Direction language for Elegiac's audio generation (ElevenLabs V3 speech, music, SFX) and lipsync constraints.
+Direction language for Elegiac's audio generation (ElevenLabs V3 / V4 speech, music, SFX) and lipsync constraints. V4 (`elevenlabs-v4`) takes the same inline audio tags but speaks one voice per take — keep multi-speaker dialogue on V3.
 
 ## Voice casting vocabulary
 
@@ -42,6 +42,7 @@ Structure: **genre anchor + instrumentation + tempo + emotional arc + duration +
 - Anchor to a *genre tradition*, not an artist name.
 - For trailer use, specify the silence: "hard drop to silence at 0:50 for two beats, then climax."
 - Loopable social beds: "seamless loop, no intro/outro, consistent energy."
+- **Gemini Lyria 3.5** shapes a song from timestamped sections in the structure field — `[0:00-0:15] Intro: soft piano` / `[0:15-0:45] Verse: vocals enter` — and prices every song the same, so ask for the length the scene needs. It has no negative prompt (say what you want), and it refuses named-artist or voice imitation.
 
 ## SFX briefs
 
@@ -49,7 +50,7 @@ One sound per job, concrete and physical: "heavy wooden door slams, large empty 
 
 ## Lipsync constraints (VEED Lipsync V2, Sync Lipsync V2 Pro)
 
-- **VEED Lipsync V2** (`veed-lipsync-v2`) is the microdrama default: `generate_lipsync` with `videoUrl` + `audioUrl`, flat 140 credits per call, and it **does** accept `syncMode` (`cut_off` default, plus `loop`, `bounce`, `silence`, `remap`).
+- **VEED Lipsync V2** (`veed-lipsync-v2`) is the microdrama default: `generate_lipsync` with `videoUrl` + `audioUrl`, priced per second of output video (pass the real `duration`; the quote defaults to 10s), and it **does** accept `syncMode` (`cut_off` default, plus `loop`, `bounce`, `silence`, `remap`).
 - **Always give it more picture than audio.** Generate the clip at the stem's length plus a 1–2 s handle. The two failure modes are asymmetric and both are ugly: audio longer than video makes VEED **run the picture backwards** to fill the gap, and video longer than audio makes `cut_off` **truncate the picture** to the audio, throwing away any action after the line. Trailing silence inside the stem counts as audio in both directions.
 - **Do not pad a stem to match the clip.** Padding is what manufactures the reversal above. Keep a padded copy for editorial handles if you want one, drive the lipsync with the tightest stem, and cut the finished shot on the last word. `syncMode: "silence"` does *not* pad — tested on exactly this case, it still trimmed to the audio length.
 - **Let the source clip talk.** Older guidance said to generate clips non-speaking. That is wrong twice: video models ignore negations like "no lip movement" and render talking mouths anyway, and VEED overwrites the mouth region wholesale, so an already-articulating face gives it *better* geometry than a closed one. Write the motion prompt with no speech vocabulary at all, not even in the negative prompt, and let VEED do its job.

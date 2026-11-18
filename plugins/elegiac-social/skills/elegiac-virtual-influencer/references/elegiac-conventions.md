@@ -17,7 +17,7 @@ Every Elegiac skill follows these rules. Skills reference this file instead of d
 ## Quotes are dry runs
 
 - `quote_generation` runs the full request validation (URL safety, reference caps, required params, model availability) at zero cost. A quote that succeeds means `generate_*` with the same params will be accepted; quote the exact payload you intend to send, including `duration` as a number or numeric string (both actions accept both).
-- Read `pricedInputs { endpoint, provider, durationSeconds, resolution, qualityTier, mode }` on the quote and confirm it priced what you meant before showing the total. `multiPromptShots` is accepted only by `kling-3`, `kling-o3`, `kling-3-turbo`, `seedance-2` and `seedance-2-mini`; every other model rejects it with `invalid_params` — write the shots into one prompt and set `duration` to the total.
+- Read `pricedInputs { provider, durationSeconds, resolution, qualityTier, mode }` on the quote and confirm it priced what you meant before showing the total. `multiPromptShots` is accepted only by `kling-3`, `kling-o3`, `kling-3-turbo`, `seedance-2` and `seedance-2-mini`; every other model rejects it with `invalid_params` — write the shots into one prompt and set `duration` to the total.
 - Numeric params expose `min` / `max` / `step` in `get_model_schema`; `presets` are advisory. Out-of-range values are rejected by quote and generate alike, never clamped.
 
 ## Permissions
@@ -62,7 +62,7 @@ Every Elegiac skill follows these rules. Skills reference this file instead of d
 ## Billing on every job
 
 - Every job from `get_job`, `wait_for_job` and `generate_*` carries `billing { quotedCredits, deductedCredits, refundedCredits, netCredits, status: 'pending' | 'settled' | 'refund_pending' | 'refunded' | 'not_charged', transactionId?, refundTransactionId? }` and `registration { galleryItemId, productionId, productionGalleryItemId, productionAssetId, boardPlacement, registered }`; the MCP text adds `Billing:` and `Registered:` lines. Report spend from `billing`, not from the quote, and report delivery from `registration`, not from the request fields. A failed job shows its refund here (`refunded` or `not_charged`); `refund_pending` is unresolved, not settled.
-- Speech models (`elevenlabs-v3`, `gemini-3-1-flash-tts`) accept `trailingSilenceMs` (0–2000, default 300) so the last word is not clipped; the trailing `...` prompt trick still works but is no longer required.
+- Speech models (`elevenlabs-v3`, `elevenlabs-v4`, `gemini-3-1-flash-tts`) accept `trailingSilenceMs` (0–2000, default 300) so the last word is not clipped; the trailing `...` prompt trick still works but is no longer required.
 
 ## Paused jobs (requiresAction)
 

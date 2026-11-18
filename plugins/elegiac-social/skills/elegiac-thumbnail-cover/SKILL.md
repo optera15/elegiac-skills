@@ -28,7 +28,7 @@ Read the stills table in `references/platform-specs.md` for exact pixel specs an
 
 1. Confirm the surface (YouTube / podcast / banner / playlist) and pull its exact spec from `platform-specs.md`. Pull creator likeness refs with `list_characters` / `get_character`, and an existing series look with `find_style_system`.
 2. Propose 2 draft concepts (one face-led, one object/symbol-led) with `generate_image` → `wait_for_job`. User picks.
-3. Final at the surface's full resolution and exact aspect ratio with a **text-capable model** (`model-catalog.md`: GPT Image 2.5 for rendered text). Quote the exact overlay words; verify spelling in the output.
+3. Final at the surface's full resolution and exact aspect ratio with a **text-capable model** (`model-catalog.md`: GPT Image 2.6 for rendered text). Quote the exact overlay words; verify spelling in the output.
 4. Fix text zones or swap backgrounds with `edit_image` ("clear the left third and darken it for title text; keep the face and palette unchanged") rather than re-rolling an approved composition.
 5. For a series: promote the winning look via `promote_visual_style_to_style_system` (or `create_style_system`) and reuse by id.
 

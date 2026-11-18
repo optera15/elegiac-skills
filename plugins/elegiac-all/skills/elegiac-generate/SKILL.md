@@ -21,14 +21,14 @@ When choosing a model, consult `references/model-catalog.md`; when a result miss
 - Quality controls are provider-specific (fast/pro endpoints, `qualityTier`, `veoQualityMode`, resolution-backed tiers) — call `get_model_schema` before passing a model-specific quality or tier param you are not certain about, and `list_models` when the user names a model, mode, or setting you don't recognize.
 - Preserve requested aspect ratio, resolution, quality, duration, audio setting, production id, and source image URL exactly unless the server rejects them.
 - List params (`referenceImageUrls`, `castMemberIds`, `assetIds`, …) are JSON arrays: send real arrays, never a quoted or comma-joined string (see conventions, List parameters). Read `billing` and `registration` off every job and stop polling when `requiresAction` is true.
-- Speech (`elevenlabs-v3`, `gemini-3-1-flash-tts`): pass `trailingSilenceMs` (default 300, up to 2000) rather than a trailing `...` when a read clips its last word.
+- Speech (`elevenlabs-v3`, `elevenlabs-v4`, `gemini-3-1-flash-tts`): `elevenlabs-v3` stays the default and the only ElevenLabs dialogue model; `elevenlabs-v4` is single-voice with `qualityTier` `standard` (default) or `turbo` (half price) — use it only when the user names V4. Pass `trailingSilenceMs` (default 300, up to 2000) rather than a trailing `...` when a read clips its last word.
 - Never expose or ask the user to paste permission grant tokens — approval retry is tokenless when the request is unchanged.
 
 ## MCP Read Behavior
 
 - For "list models", call the Elegiac MCP `list_models` tool directly.
 - For camera framings ("what framings are there", "give me a two-shot framing"), call `list_framings` — no arguments for the per-group summary, then `{ group: "<id>" }` or `{ query: "<text>" }`. Pick one framing string per shot; it is guidance for reframing a prompt, not a generation parameter.
-- To reframe shot prompts against their references (the web app's Enhance With Framing), call `enhance_prompt` with `shots[]` + shared `referenceImageUrls` (5 credits per shot, one approval), `wait_for_job`, then generate with `generate_shots` (batch) or `generate_image` using each `enhancedPrompt` verbatim and the same references. Never send enhanced prompts to `generate_storyboard`; it rewrites them into storyboard panels.
+- To reframe shot prompts against their references (the web app's Enhance With Framing), call `enhance_prompt` with `shots[]` + shared `referenceImageUrls` (a flat per-shot price at the user's tier, one approval), `wait_for_job`, then generate with `generate_shots` (batch) or `generate_image` using each `enhancedPrompt` verbatim and the same references. Never send enhanced prompts to `generate_storyboard`; it rewrites them into storyboard panels.
 - For "quote", call `quote_generation`; do not start a generation job. It is a free dry run of the full validation — quote the exact params (integer `duration`, real arrays) and check `pricedInputs` before quoting the total.
 - For "list productions" or "list assets", use the matching MCP read tool.
 - If the MCP call fails for auth, report that Elegiac needs MCP authentication. Do not open a browser or attempt OAuth manually unless the user asks.

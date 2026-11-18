@@ -126,7 +126,7 @@ The agent should use `elegiac-campaign-pack`, quote the aggregate cost once, and
 
 ## Model Bake-off
 
-> Same prompt on GPT Image 2.5, Nano Banana, and Seedream — which should I use for this series?
+> Same prompt on GPT Image 2.6, Nano Banana, and Seedream — which should I use for this series?
 
 `elegiac-model-compare` runs the identical brief at 1K draft cost, scores each result against the rubric (adherence, anatomy, text, style fit, cost), and recommends a standard — or tells you the routing table already answers it without spending.
 

@@ -22,7 +22,7 @@ Read `references/poster-key-art.md` before designing. Before any spend or mutati
 1. Establish: genre, teaser vs payoff stage, and whether cast likenesses should appear (if yes — `list_characters`, `get_character` for reference images to pass; consent rules apply).
 2. Pick ONE archetype from `references/poster-key-art.md` (big head, lone figure, concept/symbol, character stack…) and say which and why. Offer one alternate; don't generate five posters speculatively.
 3. Generate the art via `generate_image` at 2:3 portrait, 2K, with the production's style system, prompting the lower third quiet for the title and the bottom ~12% reserved for billing. Draft at 1K first if the user wants options.
-4. Title treatment: render with a text-capable model (`references/model-catalog.md` routing — GPT Image 2.5); quote the exact title text; **verify spelling letter-by-letter** in the output.
+4. Title treatment: render with a text-capable model (`references/model-catalog.md` routing — GPT Image 2.6); quote the exact title text; **verify spelling letter-by-letter** in the output.
 5. Iterate with `edit_image`, not regeneration: a surgical instruction on the approved art ("replace the sky with storm clouds at dusk; keep the figure, palette, and composition unchanged") — clear/darken the title zone, relight, swap the background, adjust palette.
 6. Social derivatives: re-compose to 1:1 and 9:16 per `references/platform-specs.md`.
 

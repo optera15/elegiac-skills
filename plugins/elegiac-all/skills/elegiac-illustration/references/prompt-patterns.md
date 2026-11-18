@@ -74,7 +74,7 @@ On-screen text in quotes, or "None."
 | Symptom | Fix ladder (stop at first success) |
 |---|---|
 | Ignored part of the prompt | 1) Move the ignored element earlier in the prompt 2) Cut competing clauses (prompt is overloaded) 3) Split into generate-then-edit |
-| Mangled text/lettering | 1) Shorten to ≤4 words, quote them: title reads "DUSK" 2) Switch to a text-capable model (GPT Image 2.5) 3) Generate art clean + add text via edit pass |
+| Mangled text/lettering | 1) Shorten to ≤4 words, quote them: title reads "DUSK" 2) Switch to a text-capable model (GPT Image 2.6) 3) Generate art clean + add text via edit pass |
 | Hands/anatomy broken | 1) Reframe so hands are minor or occluded 2) Change the action verb (static poses break less) 3) Switch model family |
 | Character looks different each frame | 1) Confirm cast reference images were actually passed 2) Reduce frame-to-frame wardrobe/lighting variation 3) Run make_board_character_consistent and regenerate from the consistent identity |
 | Style drifting across a series | 1) Verify the same styleSystemId on every call 2) Add the verbatim continuity anchors 3) Generate keeper frame first, pass it as a reference to siblings |
